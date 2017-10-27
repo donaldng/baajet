@@ -1,5 +1,6 @@
 {
   "name": "myApp",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "7de5c0b3",
+  "type": "ionic-angular",
+  "integrations": {}
 }
