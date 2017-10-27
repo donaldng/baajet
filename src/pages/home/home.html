@@ -5,30 +5,23 @@
 </ion-header>
 
 
-<ion-content padding>
-      <ion-grid>
-  <ion-row>
-      <h2>RMB 300.50 per day</h2>
-        </ion-row>
-    <ion-row>
+<ion-content >
+  <h2><span class="extra">$300.50</span>/day</h2>
+  <ion-list bottom>
+    <ion-item>
+      <ion-label color="primary">Starting budget:</ion-label>
+      <ion-input placeholder="1000"></ion-input>
+    </ion-item>
 
-    <ion-list>
-      <ion-item>
-        <ion-label color="primary">Starting budget:</ion-label>
-        <ion-input placeholder="Text Input"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label color="primary">Country</ion-label>
+      <ion-select (ionChange)="selectedCountry()">
+        <ion-option *ngFor="let item of items" value="{{item}}" >{{item}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 
-      <ion-item>
-        <ion-label color="primary">Country</ion-label>
-        <ion-select (ionChange)="selectedCountry()">
-          <ion-option *ngFor="let item of items" value="{{item}}" >{{item}}</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-
-      <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="tab2Root"><ion-icon name="add"></ion-icon></button>
-      </ion-fab>
-</ion-row>
-</ion-grid>
+    <ion-fab right bottom>
+      <button ion-fab color="danger" (click)="tab2Root"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>
