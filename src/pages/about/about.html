@@ -8,4 +8,29 @@
 
 <ion-content padding>
 
+<ion-card *ngFor="let expenses of expensesList">
+  <ion-item>
+    <h2 color="primary">{{ expenses.name }} <span class="datetime">November 5, 1955</span></h2>
+  </ion-item>
+
+  <ion-card-content>
+    <p class="price">${{ expenses.body }}</p>
+  </ion-card-content>
+
+  <ion-row>
+    <ion-col>
+    </ion-col>
+    <ion-col>
+    </ion-col>
+    <ion-col text-right>
+      <ion-note>
+        
+      </ion-note>
+    </ion-col>
+  </ion-row>
+</ion-card>
+
+    <ion-fab right bottom>
+      <button ion-fab color="danger" (click)="tab2Root"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>

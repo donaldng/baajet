@@ -1,3 +1,20 @@
 page-about {
 
 }
+
+ion-item{
+    h2{
+        float: left;
+        font-size: 120%;
+    }
+
+    .datetime{
+        font-size: 70%;
+        color: silver;
+    }
+}
+
+.price{
+    font-size: 150%;
+    text-align: center;
+}
