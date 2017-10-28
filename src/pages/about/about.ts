@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular'
 import { ModalController, ViewController } from 'ionic-angular';
-import { EditPage } from '../edit/edit';
+import { ManagePage } from '../manage/manage';
 
 @Component({
   selector: 'page-about',
@@ -29,7 +29,7 @@ export class AboutPage {
          text: 'Edit',
          handler: () => {
             let cur_id = theItem.id;
-            this.gotoEdit(cur_id);
+            this.gotoManage(cur_id);
          }
        },
        {
@@ -44,8 +44,8 @@ export class AboutPage {
    actionSheet.present();
  }
 
- gotoEdit(id) {
-    let modal = this.modalCtrl.create(EditPage, {'charNum': id});
+ gotoManage(id) {
+    let modal = this.modalCtrl.create(ManagePage, {'id': id});
     modal.present();
  }
 
