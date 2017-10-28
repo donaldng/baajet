@@ -10,6 +10,7 @@ export class ManagePage {
   expenses;
   public pageName;
   id;
+  color;
 
   constructor(
     public params: NavParams,
