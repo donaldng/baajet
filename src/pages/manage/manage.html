@@ -26,10 +26,18 @@
           <ion-input type="text" value="{{ expenses.amount }}" [(ngModel)]="expenses.amount" name="amount"></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label stacked>How frequent?</ion-label>
-          <ion-input type="text" value="{{ expenses.freq }}" [(ngModel)]="expenses.freq" name="freq"></ion-input>
-        </ion-item>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>How frequent?</ion-label>
+            <ion-select [(ngModel)]="expenses.freq" name="freq">
+              <ion-option value="0">One time</ion-option>
+              <ion-option value="1">Reserved fund</ion-option>
+              <ion-option value="2">Daily</ion-option>
+              <ion-option value="3">Weekly</ion-option>
+              <ion-option value="4">Monthly</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
 
       </ion-list>
 

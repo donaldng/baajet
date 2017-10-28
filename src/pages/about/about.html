@@ -11,7 +11,7 @@
     <ion-card ng-if="expensesList.length > 0" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
         <ion-item>
             <h2 color="primary">
-                {{ expenses.name }} <span class="freq">{{ expenses.freq }}</span>
+                {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
                 <span class="datetime">{{ expenses.datetime }}</span>
             </h2>
 

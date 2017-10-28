@@ -13,10 +13,12 @@ export class AboutPage {
     expensesList;
     display_currency;
     oriList;
+    freqMap;
 
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage) {
         this.display_currency = '$';
-        
+        this.freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
+
         this.loadData();
         this.reload_currency();
         setInterval(this.reload_currency.bind(this), 1000);

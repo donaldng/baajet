@@ -19,7 +19,7 @@ export class ManagePage {
 constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
     this.id = this.params.get('id');
     this.expensesList = this.params.get('expensesList');
-        
+
     if(this.id == '-1'){
         console.log("add new expenses");
         this.expenses = {name: '', amount: '', freq: ''};

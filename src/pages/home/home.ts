@@ -14,10 +14,12 @@ export class HomePage {
     display_currency;
     tot_budget;
     day_budget;
+    budgetTmp;
+    n_day;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';
-
+        this.day_budget = this.tot_budget;        
         this.updateData();
 
         setInterval(this.updateData.bind(this), 1000);
@@ -34,6 +36,13 @@ export class HomePage {
                 this.tot_budget = v;
             }
         });
+
+        this.storage.get('n_day').then((v) => {
+            if (this.n_day != v){
+                this.n_day = v;
+            }
+        });
+
         this.storage.get('currency').then((v) => {
             if (this.display_currency != v){
                 this.display_currency = v;
@@ -43,7 +52,7 @@ export class HomePage {
     }
 
     openSettingModal(){
-        let modal = this.modalCtrl.create(SettingPage, {'budget': this.tot_budget, 'currency': this.display_currency});
+        let modal = this.modalCtrl.create(SettingPage, {'budget': this.tot_budget, 'currency': this.display_currency, 'n_day': this.n_day});
         modal.onDidDismiss(data => {
             this.updateData();
         });
@@ -52,9 +61,14 @@ export class HomePage {
     }
 
     calculateBudget(){
+        this.budgetTmp = this.tot_budget;
+
         this.storage.get('expensesList').then((v) => {
-            console.log(v);
-            this.day_budget = '300.50';
+            
+            for (var i=0; i < v.length; i++){
+                this.budgetTmp -= v[i].amount;
+            }
+            this.day_budget = (this.budgetTmp / this.n_day).toFixed(2);
         });
     }
 

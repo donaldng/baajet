@@ -17,6 +17,11 @@
         <ion-list>
 
             <ion-item>
+                <ion-label stacked>How long is the trip? (days)</ion-label>
+                <ion-input type="number" [(ngModel)]="n_day" name="n_day"></ion-input>
+            </ion-item>
+
+            <ion-item>
                 <ion-label stacked>What's the trip budget?</ion-label>
                 <ion-input type="text" [(ngModel)]="budget" name="name"></ion-input>
             </ion-item>
