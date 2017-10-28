@@ -10,7 +10,8 @@ export class EditPage {
   character;
 
   constructor(
-    public params: NavParams
+    public params: NavParams,
+    public viewCtrl: ViewController
   ) {
     var characters = [
       {
