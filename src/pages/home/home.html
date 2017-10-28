@@ -12,11 +12,11 @@
         <p class="lbl">Daily Budget</p>
         <h2>
             <span class="currency">{{ display_currency }}</span>
-            <span class="extra">{{ budget }}</span>
+            <span class="extra">{{ day_budget }}</span>
         </h2>
     </ion-card>
 
-    <ion-card padding>
+    <ion-card padding (click)="openSettingModal()">
         <p class="lbl">Total Budget</p>
         <h2>
             <span class="currency">{{ display_currency }}</span>
@@ -24,17 +24,4 @@
         </h2>
     </ion-card>
 
-    <ion-list style="position: absolute; bottom: 0px; width: 100%">
-        <ion-item>
-            <ion-label color="primary">Travel Budget:</ion-label>
-            <ion-input class="fright" placeholder="1000"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label color="primary">Currency</ion-label>
-            <ion-select ngModel (ionChange)="selectedCurrency(currency.value)" name="currency" #currency>
-                <ion-option *ngFor="let item of items" value="{{item}}" >{{item}}</ion-option>
-            </ion-select>
-        </ion-item>
-    </ion-list>
 </ion-content>

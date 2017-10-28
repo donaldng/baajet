@@ -18,11 +18,11 @@ export class AboutPage {
         this.display_currency = '$';
         
         this.loadData();
-        this.getCurrency();
-        this.task = setInterval(this.getCurrency.bind(this), 1000);
+        this.reload_currency();
+        setInterval(this.reload_currency.bind(this), 1000);
     }
     
-getCurrency(){
+reload_currency(){
     this.storage.get('currency').then((currency) => {
         if (currency){
             if(this.display_currency != currency)
@@ -34,9 +34,7 @@ getCurrency(){
 loadData(){
     this.storage.get('expensesList').then((expensesList) => {
         if (expensesList){
-            this.expensesList = expensesList.sort(function(a, b) { 
-                                                        return b.id - a.id;
-                                                    });
+            this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
             this.oriList = expensesList;
         }
         else{
