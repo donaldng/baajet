@@ -18,5 +18,9 @@ export class HomePage {
   selectedCountry(){
     console.log('');
   }
+  
+  currency = '$';
+  budget = '300.50';
+  greetMsg = 'Good day, spend your wealth with good health!';
 
 }
