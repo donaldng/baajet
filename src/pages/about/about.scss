@@ -3,16 +3,26 @@ page-about {
 }
 
 ion-item{
+    float: left;
+
     h2{
-        float: left;
         font-size: 120%;
     }
 
-    .datetime{
+    .freq{
         font-size: 70%;
         color: silver;
     }
+
+    .datetime{
+        font-size: 80%;
+
+        float: right !important;
+        display: block;
+    }
 }
+
+
 
 .price{
     font-size: 150%;

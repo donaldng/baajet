@@ -8,9 +8,13 @@
 
 <ion-content padding>
 
-<ion-card *ngFor="let expenses of expensesList">
+<ion-card *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
   <ion-item>
-    <h2 color="primary">{{ expenses.name }} <span class="datetime">November 5, 1955</span></h2>
+    <h2 color="primary">
+      {{ expenses.name }} <span class="freq">{{ expenses.frequency }}</span>
+      <span class="datetime">{{ expenses.datetime }}</span>
+    </h2>
+    
   </ion-item>
 
   <ion-card-content>
@@ -31,6 +35,6 @@
 </ion-card>
 
     <ion-fab right bottom>
-      <button ion-fab color="danger" (click)="tab2Root"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>
