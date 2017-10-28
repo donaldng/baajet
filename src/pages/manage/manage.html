@@ -4,7 +4,7 @@
       {{ pageName }}
     </ion-title>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">
+      <button ion-button (click)="dismiss(0)">
         <span ion-text color="primary" showWhen="ios">Cancel</span>
         <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </button>
@@ -13,27 +13,29 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
+    <form (ngSubmit)="submitForm()">
+      <ion-list>
 
-      <ion-item>
-        <ion-label stacked>What's that?</ion-label>
-        <ion-input type="text" value="{{ expenses.name }}"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>What's that?</ion-label>
+          <ion-input type="text" value="{{ expenses.name }}" [(ngModel)]="expenses.name" name="name"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>How much?</ion-label>
-        <ion-input type="text" value="{{ expenses.amount }}"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>How much?</ion-label>
+          <ion-input type="text" value="{{ expenses.amount }}" [(ngModel)]="expenses.amount" name="amount"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>How frequent?</ion-label>
-        <ion-input type="text" value="{{ expenses.freq }}"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>How frequent?</ion-label>
+          <ion-input type="text" value="{{ expenses.freq }}" [(ngModel)]="expenses.freq" name="freq"></ion-input>
+        </ion-item>
 
-    </ion-list>
+      </ion-list>
 
-    <div padding>
-        <button ion-button full padding color="{{ color }}">Save</button>
-    </div>
+      <div padding>
+          <button ion-button full padding color="{{ color }}" type="submit">Save</button>
+      </div>
+  </form>
 
 </ion-content>

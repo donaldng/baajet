@@ -1,74 +1,91 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { NavController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-manage',
-  templateUrl: 'manage.html'
+    selector: 'page-manage',
+    templateUrl: 'manage.html',
 })
 
 export class ManagePage {
-  expenses;
-  public pageName;
-  id;
-  color;
+    expensesList;
+    expenses;
+    pageName;
+    id;
+    color;
+    promise;
 
-  constructor(
-    public params: NavParams,
-    public viewCtrl: ViewController
-  ) {
-    var expenses = [
-      {
-        name: 'Gollum',
-        amount: 'Sneaky little hobbitses!',
-        freq: 'assets/img/avatar-gollum.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'River Folk' },
-          { title: 'Alter Ego', note: 'Smeagol' }
-        ]
-      },
-      {
-        name: 'Frodo',
-        amount: 'Go back, Sam! I\'m going to Mordor alone!',
-        freq: 'assets/img/avatar-frodo.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'Shire Folk' },
-          { title: 'Weapon', note: 'Sting' }
-        ]
-      },
-      {
-        name: 'Samwise Gamgee',
-        amount: 'What we need is a few good taters.',
-        freq: 'assets/img/avatar-samwise.jpg',
-        items: [
-          { title: 'Race', note: 'Hobbit' },
-          { title: 'Culture', note: 'Shire Folk' },
-          { title: 'Nickname', note: 'Sam' }
-        ]
-      }
-    ];
+
+// ui input
+expenses = {};
+
+constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
     this.id = this.params.get('id');
-
-    if(this.id != 0){
-      this.expenses = expenses[this.id];
-      this.pageName = "Edit expenses";
-      this.color = "secondary";
+    this.expensesList = this.params.get('expensesList');
+        
+    if(this.id == '-1'){
+        console.log("add new expenses");
+        this.expenses = {name: '', amount: '', freq: ''};
+        this.pageName = "Add expenses";
+        this.color = "primary";
     }
     else{
-      this.expenses = {
-                        name: '',
-                        amount: '',
-                        freq: '',
-                        items: []
-                      };
-      this.pageName = "Add expenses";
-      this.color = "primary";
+        console.log('edit old expenses');
+        let index = this.findIndex(this.id);
+
+        this.expenses = this.expensesList[index];
+        console.log(this.expenses);
+        this.pageName = "Edit expenses";
+        this.color = "secondary";
     }
+}
 
-  }
+findIndex(find_id){
+    for (var i = 0, len = this.expensesList.length; i < len; i++) {
+        if (this.expensesList[i].id == find_id){
+            console.log('found', this.expensesList[i]);
+            return i;
+        }
+    }
+    return -1;
+}
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+submitForm() {
+    var changes = {
+                    'id': this.expenses.id,
+                    'name':this.expenses.name,
+                    'amount': this.expenses.amount,
+                    'freq': this.expenses.freq,
+                    'datetime': this.expenses.datetime
+                };
+    this.storage.get('expensesList').then((expensesList) => {
+        if (expensesList){
+            this.expensesList = expensesList;
+    
+            if (this.id == "-1"){
+                changes['id'] = parseInt(window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now());
+                changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
+
+                this.expensesList.push(changes);
+            }
+            else{
+
+                let index = this.findIndex(this.id);
+                console.log(changes);
+                this.expensesList[index] = changes;
+                console.log(this.expensesList);
+
+            }
+
+            this.storage.set('expensesList', this.expensesList);
+            this.dismiss(1);              
+        }
+    });    
+  
+}
+
+dismiss(status) {
+    this.viewCtrl.dismiss(status);
+}
 }

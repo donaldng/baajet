@@ -1,40 +1,28 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Expenses
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+            Expenses
+        </ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-<ion-card *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
-  <ion-item>
-    <h2 color="primary">
-      {{ expenses.name }} <span class="freq">{{ expenses.frequency }}</span>
-      <span class="datetime">{{ expenses.datetime }}</span>
-    </h2>
-    
-  </ion-item>
+    <ion-card ng-if="expensesList.length > 0" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
+        <ion-item>
+            <h2 color="primary">
+                {{ expenses.name }} <span class="freq">{{ expenses.freq }}</span>
+                <span class="datetime">{{ expenses.datetime }}</span>
+            </h2>
 
-  <ion-card-content>
-    <p class="price">${{ expenses.body }}</p>
-  </ion-card-content>
+        </ion-item>
 
-  <ion-row>
-    <ion-col>
-    </ion-col>
-    <ion-col>
-    </ion-col>
-    <ion-col text-right>
-      <ion-note>
-        
-      </ion-note>
-    </ion-col>
-  </ion-row>
-</ion-card>
+        <ion-card-content>
+            <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
+        </ion-card-content>
+    </ion-card>
 
     <ion-fab right bottom>
-      <button ion-fab color="danger" (click)="gotoManage(0)"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="secondary" (click)="gotoManage('-1', [])"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>
