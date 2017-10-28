@@ -60,7 +60,7 @@ submitForm() {
             this.expensesList = expensesList;
     
             if (this.id == "-1"){
-                changes['id'] = parseInt(window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now());
+                changes['id'] = parseInt(Date.now());
                 changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
 
                 this.expensesList.push(changes);
