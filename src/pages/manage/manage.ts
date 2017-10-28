@@ -52,6 +52,7 @@ export class ManagePage {
     if(this.id != 0){
       this.expenses = expenses[this.id];
       this.pageName = "Edit expenses";
+      this.color = "secondary";
     }
     else{
       this.expenses = {
@@ -61,6 +62,7 @@ export class ManagePage {
                         items: []
                       };
       this.pageName = "Add expenses";
+      this.color = "primary";
     }
 
   }

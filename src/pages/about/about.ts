@@ -18,18 +18,18 @@ export class AboutPage {
      title: 'Action',
      buttons: [
        {
+         text: 'Edit',
+         handler: () => {
+            let cur_id = theItem.id;
+            this.gotoManage(cur_id);
+         }
+       },
+       {
          text: 'Delete',
          role: 'destructive',
          handler: () => {
             let index = this.expensesList.indexOf(theItem);
             this.expensesList.splice(index,1);
-         }
-       },
-       {
-         text: 'Edit',
-         handler: () => {
-            let cur_id = theItem.id;
-            this.gotoManage(cur_id);
          }
        },
        {

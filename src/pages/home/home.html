@@ -6,8 +6,11 @@
 
 
 <ion-content>
-  <h2 style="vertical-align: middle;">{{ currency }}<span class="extra">{{ budget }}</span>/day</h2>
   <p>{{ greetMsg }}</p>
+  
+  <ion-card>
+    <h2 style="vertical-align: middle;" padding>{{ currency }}<span class="extra">{{ budget }}</span>/day</h2>
+  </ion-card>
   <ion-list style="position: absolute; bottom: 0px; width: 100%">
     <ion-item>
       <ion-label color="primary">Starting budget:</ion-label>
