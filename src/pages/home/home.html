@@ -18,7 +18,7 @@
 
     <ion-grid *ngIf="tot_budget != 0">
         <ion-row>
-            <ion-col width-33>
+            <ion-col width-100>
                 <ion-card color="primary" padding>
                     <p class="lbl" *ngIf="campaign_ended == 0">Daily Budget</p>
                     <p class="lbl" *ngIf="campaign_ended == 1">Left Overs</p>
@@ -30,8 +30,10 @@
                 </ion-card>
 
             </ion-col>
-
-            <ion-col width-33>
+        </ion-row>
+        <!--
+        <ion-row>
+            <ion-col width-100>
                 <ion-card color="secondary" padding>
                     <p class="lbl">Total Budget</p>
                     <h2>
@@ -40,8 +42,10 @@
                     </h2>
                 </ion-card>
             </ion-col>
+        </ion-row>
+        <ion-row>
 
-            <ion-col width-33>
+            <ion-col width-100>
                 <ion-card color="danger" padding>
                     <p class="lbl">Total Expenses</p>
                     <h2>
@@ -51,5 +55,6 @@
                 </ion-card> 
             </ion-col>
         </ion-row>
+        -->
     </ion-grid>
 </ion-content>
