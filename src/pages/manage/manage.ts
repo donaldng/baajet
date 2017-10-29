@@ -60,7 +60,7 @@ submitForm() {
             this.expensesList = expensesList;
     
             if (this.id == "-1"){
-                changes['id'] = parseInt(Math.round((new Date()).getTime() / 1000));
+                changes['id'] = Math.round((new Date()).getTime() / 1000);
                 changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
 
                 this.expensesList.push(changes);
