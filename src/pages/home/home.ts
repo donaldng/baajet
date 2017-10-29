@@ -26,12 +26,19 @@ export class HomePage {
     greetMsg;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
+        //this.storage.clear();
+
         this.display_currency = '$';
+        this.display_tot_expenses = 0;
+        this.day_budget = 0;
+        this.tot_budget = 0;
+
         this.day_color = 'secondary';
         this.updateData();
         setInterval(this.checkReload.bind(this), 100);
-        this.greetMsg = 'Good day, spend your wealth with good health!';
         this.campaign_ended = 0;
+        this.getGreetMsg()
+        
     }
 
     checkReload(){
@@ -48,13 +55,13 @@ export class HomePage {
         console.log('update data home');
         // update once modal close
         this.storage.get('budget').then((v) => {
-            if (this.tot_budget != v){
+            if (v && this.tot_budget != v){
                 this.tot_budget = v;
             }
         });
 
         this.storage.get('day_budget').then((v) => {
-            if (this.day_budget != v){
+            if (v && this.day_budget != v){
                 this.day_budget = v;
 
                 if (this.day_budget > 0){
@@ -67,13 +74,13 @@ export class HomePage {
         });        
 
         this.storage.get('currency').then((v) => {
-            if (this.display_currency != v){
+            if (v && this.display_currency != v){
                 this.display_currency = v;
             }
         });
 
         this.storage.get('n_day').then((v) => {
-            if (this.n_day != v && !this.campaign_ended){
+            if (v && this.n_day != v && !this.campaign_ended){
                 this.n_day = v;
             }
         });
@@ -97,7 +104,7 @@ export class HomePage {
             }
             else{
                 this.campaign_ended = 0;
-                this.greetMsg = 'Good day, spend your wealth with good health!';
+                this.getGreetMsg()            
             }
         });
 
@@ -126,24 +133,17 @@ export class HomePage {
         var diff = Math.abs(tripEnd - tripStart);
         return (Math.floor(diff / 36e5)/24).toFixed(4);
     }
+    getGreetMsg(){
+        if(this.tot_budget)
+            this.greetMsg = 'Good day, spend your wealth with good health!';
+        else
+            this.greetMsg = 'Opps, we need your input on your trip\'s budget, sir.';
 
+    }
     calculateBudget(){
 
         // minus expenses
         this.storage.get('expensesList').then((v) => {
-            // starting budget
-            this.budgetTmp = this.tot_budget;
-
-            this.tot_expenses = 0;
-
-            for (var i=0; i < v.length; i++){
-                this.tot_expenses -= v[i].amount;
-                console.log(v[i].amount);
-            }
-
-            this.display_tot_expenses = Math.abs(this.tot_expenses);
-            this.budgetTmp -= this.display_tot_expenses;
-
             var startDate = new Date();
 
             if (new Date(this.tripStart) > startDate){
@@ -151,14 +151,38 @@ export class HomePage {
             }
 
             var n_day = 1;
+
             if (!this.campaign_ended) n_day = parseFloat(this.dateDiff(startDate, new Date(this.tripEnd)));
-            this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+            this.budgetTmp = this.tot_budget;
+            this.tot_expenses = 0;
 
-            this.storage.set('day_budget', this.day_budget);
+            if(v){
 
-            this.n_day = n_day.toFixed(0);
-            if (this.campaign_ended) this.n_day = 0;
-            this.storage.set('n_day', this.n_day);
+                for (var i=0; i < v.length; i++){
+                    this.tot_expenses -= v[i].amount;
+                    console.log(v[i].amount);
+                }
+
+                this.display_tot_expenses = Math.abs(this.tot_expenses);
+                this.budgetTmp -= this.display_tot_expenses;
+
+                this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+
+                this.storage.set('day_budget', this.day_budget);
+
+                this.n_day = n_day.toFixed(0);
+                if (this.campaign_ended) this.n_day = 0;
+                this.storage.set('n_day', this.n_day);
+            }
+            else if(this.tot_budget) {
+                this.n_day = n_day.toFixed(0);
+                this.storage.set('n_day', this.n_day);
+                this.day_budget = (this.budgetTmp / n_day).toFixed(2);                
+            }
+            else{
+                this.n_day = 0;
+            }
+
         });
     }
 }

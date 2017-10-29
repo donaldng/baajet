@@ -18,6 +18,7 @@ export class AboutPage {
 
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage) {
         this.display_currency = '$';
+        this.expensesList = [];
         this.freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
         this.loadData();
         this.reload_currency();
@@ -41,6 +42,7 @@ export class AboutPage {
             }
             else{
                 this.storage.set('expensesList', []);
+                this.expensesList = [];
             }
         });
         this.findRunningId();
@@ -89,21 +91,31 @@ export class AboutPage {
         modal.present();
     }
 
+    checklist(){
+        if (this.expensesList)
+            return this.expensesList.length;
+        else
+            return 0;
+    }
+
     findRunningId(){
         this.storage.get('expensesList').then((l) => {
             var id = 0;
             var return_id = 0;
 
-            for (var i = 0 ; i < l.length; i++ ){
-                if (l[i].name.indexOf('Expenses #') >= 0){
-                    id = l[i].name.split('#')[1];
+            if (l){
+                for (var i = 0 ; i < l.length; i++ ){
+                    if (l[i].name.indexOf('Expenses #') >= 0){
+                        id = l[i].name.split('#')[1];
 
-                    if (!isNaN(id) && id > return_id){
-                        return_id = id;
+                        if (!isNaN(id) && id > return_id){
+                            return_id = id;
+                        }
                     }
                 }
             }
-            this.runningId = Number(return_id) + 1;
+
+            this.runningId = Number(return_id) + 1;        
         });
     }   
 }
