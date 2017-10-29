@@ -20,21 +20,21 @@
                 <ion-label color="primary" stacked>Budget for the trip?</ion-label>
                 <ion-input type="number" [(ngModel)]="budget" name="name"></ion-input>
             </ion-item>
-
+            <!-- H:mm -->
             <ion-item>
               <ion-label color="primary" stacked>Trips from?</ion-label>
-              <ion-datetime displayFormat="DD MMM YYYY H:mm" [(ngModel)]="tripStart" name="tripStart"></ion-datetime>
+              <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripStart" name="tripStart"></ion-datetime>
             </ion-item>
 
             <ion-item>
               <ion-label color="primary" stacked>Trips until?</ion-label>
-              <ion-datetime displayFormat="DD MMM YYYY H:mm" [(ngModel)]="tripEnd" name="tripEnd"></ion-datetime>
+              <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripEnd" name="tripEnd"></ion-datetime>
             </ion-item>  
 
             <ion-item>
                 <ion-label color="primary" stacked>Currency</ion-label>
-                <ion-select [(ngModel)]="currency" name="currency">
-                    <ion-option *ngFor="let item of items" value="{{item}}" [selected]="currency == item">{{item}}</ion-option>
+                <ion-select [(ngModel)]="currency" name="currency" interface="action-sheet">
+                    <ion-option *ngFor="let item of items" value="{{item}}" [selected]="currency == item" >{{item}}</ion-option>
                 </ion-select>
             </ion-item>                      
         </ion-list>

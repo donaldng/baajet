@@ -29,7 +29,6 @@ import { IonicStorageModule } from '@ionic/storage';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,3 +47,5 @@ import { IonicStorageModule } from '@ionic/storage';
   ]
 })
 export class AppModule {}
+export class SharedModule {}
+

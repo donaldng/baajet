@@ -128,18 +128,20 @@ export class HomePage {
 
         modal.present();
     }
-
-    dateDiff(tripStart, tripEnd){
-        var diff = Math.abs(tripEnd - tripStart);
-        return (Math.floor(diff / 36e5)/24).toFixed(4);
+    
+    dayDiff(tripStart, tripEnd){
+        var timeDiff = Math.abs(tripEnd - tripStart);
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        return diffDays;
     }
+
     getGreetMsg(){
         if(this.tot_budget)
             this.greetMsg = 'Good day, spend your wealth with good health!';
         else
             this.greetMsg = 'Opps, we need your input on your trip\'s budget, sir! Go set it up in Setting!';
-
     }
+    
     calculateBudget(){
 
         // minus expenses
@@ -152,15 +154,18 @@ export class HomePage {
 
             var n_day = 1;
 
-            if (!this.campaign_ended) n_day = parseFloat(this.dateDiff(startDate, new Date(this.tripEnd)));
+            if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
+
+            console.log(n_day);
+
             this.budgetTmp = this.tot_budget;
             this.tot_expenses = 0;
 
             if(v){
-
+                
                 for (var i=0; i < v.length; i++){
-                    this.tot_expenses -= v[i].amount;
-                    console.log(v[i].amount);
+                    
+                    this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_start, v[i].freq_end));
                 }
 
                 this.display_tot_expenses = Math.abs(this.tot_expenses);
@@ -184,5 +189,15 @@ export class HomePage {
             }
 
         });
+    }
+
+    calcFrequency(freq_type, start, end){
+        if (freq_type == 0 || freq_type == 1) return 1;
+
+        if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end));
+
+        if (freq_type == 3) return this.dayDiff(new Date(start), new Date(end)) / 7;
+
+        if (freq_type == 4) return this.dayDiff(new Date(start), new Date(end)) / 30;
     }
 }

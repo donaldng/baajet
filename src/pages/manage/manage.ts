@@ -14,71 +14,101 @@ export class ManagePage {
     pageName;
     id;
     default_placeholder;
+    freq;
+    tripStart;
+    tripEnd;
+    selected_freq;
 
-constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
-    this.id = this.params.get('id');
-    this.expensesList = this.params.get('expensesList');
-    this.default_placeholder = 'Expenses #' + this.params.get('runningId');
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
+        this.id = this.params.get('id');
+        this.expensesList = this.params.get('expensesList');
+        this.default_placeholder = 'Expenses #' + this.params.get('runningId');
+        this.selected_freq = 0;
 
-    if(this.id == '-1'){
-        this.expenses = {name: '', amount: '', freq: ''};
-        this.pageName = "Add expenses";
-        this.expenses.freq = 0;
-    }
-    else{
-        let index = this.findIndex(this.id);
-
-        this.expenses = this.expensesList[index];
-        this.pageName = "Edit expenses";
-    }
-}
-
-findIndex(find_id){
-    for (var i = 0, len = this.expensesList.length; i < len; i++) {
-        if (this.expensesList[i].id == find_id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-submitForm() {
-    var name = this.default_placeholder;
-
-    if (this.expenses.name.trim() != "") name = this.expenses.name.trim(); 
-
-    var changes = {
-                    'id': this.expenses.id,
-                    'name':name,
-                    'amount': Number(this.expenses.amount),
-                    'freq': this.expenses.freq,
-                    'datetime': this.expenses.datetime
-                };
-
-    this.storage.get('expensesList').then((expensesList) => {
-        if (expensesList){
-            this.expensesList = expensesList;
-    
-            if (this.id == "-1"){
-                changes['id'] = Math.round((new Date()).getTime() / 1000);
-                changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
-
-                this.expensesList.push(changes);
+        this.storage.get('duration').then((v) => {
+            if (v){
+                var duration = v.split(" ~ ");
+                this.tripStart = duration[0];
+                this.tripEnd = duration[1];
             }
             else{
-
-                let index = this.findIndex(this.id);
-                this.expensesList[index] = changes;
+                this.tripStart = new Date().toISOString().slice(0, 19);
+                var tripEnd = new Date();
+                tripEnd.setDate(tripEnd.getDate() + 7);
+                this.tripEnd = tripEnd.toISOString().slice(0, 19);
             }
+            this.expenses.freq_start = new Date().toISOString().slice(0, 19);
+            this.expenses.freq_end = this.tripEnd;
+        });
 
-            this.storage.set('expensesList', this.expensesList);
-            this.dismiss(1);              
+        if(this.id == '-1'){
+            this.expenses = {name: '', amount: '', freq: ''};
+            this.pageName = "Add expenses";
+            this.expenses.freq = 0;
         }
-    });    
-  
-}
+        else{
+            let index = this.findIndex(this.id);
 
-dismiss(status) {
-    this.viewCtrl.dismiss(status);
-}
+            this.expenses = this.expensesList[index];
+            this.selected_freq = this.expenses.freq;
+
+            this.pageName = "Edit expenses";
+        }
+    }
+
+    findIndex(find_id){
+        for (var i = 0, len = this.expensesList.length; i < len; i++) {
+            if (this.expensesList[i].id == find_id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    submitForm() {
+        var name = this.default_placeholder;
+
+        if (this.expenses.name.trim() != "") name = this.expenses.name.trim(); 
+        if (this.expenses.freq_start.trim()  == "") this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
+        if (this.expenses.freq_end.trim()  == "") this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+
+        var changes = {
+            'id': this.expenses.id,
+            'name':name,
+            'amount': Number(this.expenses.amount),
+            'freq': this.expenses.freq,
+            'freq_start': this.expenses.freq_start,
+            'freq_end': this.expenses.freq_end,
+            'datetime': this.expenses.datetime
+        };
+
+        this.storage.get('expensesList').then((expensesList) => {
+            if (expensesList){
+                this.expensesList = expensesList;
+
+                if (this.id == "-1"){
+                    changes['id'] = Math.round((new Date()).getTime() / 1000);
+                    changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
+
+                    this.expensesList.push(changes);
+                }
+                else{
+                    let index = this.findIndex(this.id);
+                    this.expensesList[index] = changes;
+                }
+
+                this.storage.set('expensesList', this.expensesList);
+                this.dismiss(1);              
+            }
+        });    
+
+    }
+
+    onSelectChange(selectedValue: any){
+        this.selected_freq = selectedValue;
+    }
+
+    dismiss(status) {
+        this.viewCtrl.dismiss(status);
+    }
 }
