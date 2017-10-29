@@ -21,6 +21,7 @@ export class HomePage {
     duration;
     day_color;
     tot_expenses;
+    display_tot_expenses;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';
