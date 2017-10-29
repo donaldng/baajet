@@ -13,7 +13,6 @@ export class ManagePage {
     expenses;
     pageName;
     id;
-    color;
     default_placeholder;
 
 constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
@@ -24,7 +23,6 @@ constructor( public params: NavParams, public viewCtrl: ViewController, public s
     if(this.id == '-1'){
         this.expenses = {name: '', amount: '', freq: ''};
         this.pageName = "Add expenses";
-        this.color = "primary";
         this.expenses.freq = 0;
     }
     else{
@@ -32,7 +30,6 @@ constructor( public params: NavParams, public viewCtrl: ViewController, public s
 
         this.expenses = this.expensesList[index];
         this.pageName = "Edit expenses";
-        this.color = "secondary";
     }
 }
 
