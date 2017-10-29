@@ -20,7 +20,7 @@ export class ManagePage {
     tripEnd;
     selected_freq;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private mediaCapture: MediaCapture ) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public mediaCapture: MediaCapture ) {
         this.id = this.params.get('id');
         this.expensesList = this.params.get('expensesList');
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');

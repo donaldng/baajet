@@ -3,21 +3,25 @@
         <ion-title>
             {{ pageName }}
         </ion-title>
+
         <ion-buttons start>
             <button ion-button (click)="dismiss(0)">
                 <span ion-text color="primary" showWhen="ios">Cancel</span>
                 <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
             </button>
         </ion-buttons>
+
+        <ion-buttons end>
+            <button ion-button (click)="captureImage()">
+                <ion-icon name="camera"></ion-icon>
+            </button>
+        </ion-buttons>        
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <form (ngSubmit)="submitForm()">
         <ion-list>
-            <ion-item>
-                <ion-icon name="camera" (click)="captureImage()"></ion-icon>
-            </ion-item>
 
             <ion-item>
                 <ion-label color="primary" stacked>What's that?</ion-label>
@@ -56,5 +60,4 @@
             <button ion-button full padding color="primary" type="submit">Save</button>
         </div>
     </form>
-
 </ion-content>
