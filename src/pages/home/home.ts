@@ -18,6 +18,7 @@ export class HomePage {
     tripEnd;
     tripStart;
     n_day;
+    duration;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';

@@ -13,6 +13,8 @@ export class SettingPage {
     budget;
     currency;
     duration;
+    tripStart;
+    tripEnd;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
         this.items = ['$', '¥', '€', '£', '฿'];
