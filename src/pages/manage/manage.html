@@ -15,6 +15,9 @@
 <ion-content>
     <form (ngSubmit)="submitForm()">
         <ion-list>
+            <ion-item>
+                <ion-icon name="camera" (click)="captureImage()"></ion-icon>
+            </ion-item>
 
             <ion-item>
                 <ion-label color="primary" stacked>What's that?</ion-label>

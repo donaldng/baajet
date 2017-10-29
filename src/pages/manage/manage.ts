@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture';
 
 @Component({
     selector: 'page-manage',
@@ -19,12 +20,11 @@ export class ManagePage {
     tripEnd;
     selected_freq;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private mediaCapture: MediaCapture ) {
         this.id = this.params.get('id');
         this.expensesList = this.params.get('expensesList');
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');
         this.selected_freq = 0;
-
         this.storage.get('duration').then((v) => {
             if (v){
                 var duration = v.split(" ~ ");
@@ -63,6 +63,15 @@ export class ManagePage {
             }
         }
         return -1;
+    }
+
+    captureImage(){
+        console.log('Capture image');
+        let options: CaptureImageOptions = { limit: 3 };
+        this.mediaCapture.captureImage(options).then(
+            (data: MediaFile[]) => console.log(data),
+            (err: CaptureError) => console.error(err)
+          );        
     }
 
     submitForm() {
