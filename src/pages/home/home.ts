@@ -23,6 +23,7 @@ export class HomePage {
     tot_expenses;
     display_tot_expenses;
     campaign_ended;
+    greetMsg;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';
