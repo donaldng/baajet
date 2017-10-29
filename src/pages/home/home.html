@@ -1,14 +1,22 @@
 <ion-header>
     <ion-navbar>
         <ion-title>Dashboard</ion-title>
+
+        <ion-buttons start>
+        <button ion-button (click)="openSettingModal()">
+            <span ion-text color="primary">Setting</span>
+        </button>
+        </ion-buttons>
+
     </ion-navbar>
+
 </ion-header>
 
 
 <ion-content>
     <p padding>{{ greetMsg }}</p>
 
-    <ion-card padding>
+    <ion-card color="primary" padding>
         <p class="lbl">Daily Budget</p>
         <h2>
             <span class="currency">{{ display_currency }}</span>
@@ -17,12 +25,27 @@
         </h2>
     </ion-card>
 
-    <ion-card padding (click)="openSettingModal()">
-        <p class="lbl">Total Budget</p>
-        <h2>
-            <span class="currency">{{ display_currency }}</span>
-            <span class="extra">{{ tot_budget }}</span>
-        </h2>
-    </ion-card>
+    <ion-grid>
+      <ion-row>
+          <ion-col width-50>
+            <ion-card color="secondary" padding>
+            <p class="lbl">Total Budget</p>
+            <h2>
+                <span class="currency">{{ display_currency }}</span>
+                <span class="extra">{{ tot_budget }}</span>
+            </h2>
+            </ion-card>
+          </ion-col>
+          <ion-col width-50>
+            <ion-card color="danger" padding>
+                <p class="lbl">Total Expenses</p>
+                <h2>
+                    <span class="currency">{{ display_currency }}</span>
+                    <span class="extra">{{ display_tot_expenses }}</span>
+                </h2>
+            </ion-card> 
+          </ion-col>
+      </ion-row>
+    </ion-grid>
 
 </ion-content>

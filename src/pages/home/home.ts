@@ -19,9 +19,12 @@ export class HomePage {
     tripStart;
     n_day;
     duration;
+    day_color;
+    tot_expenses;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';
+        this.day_color = 'secondary';
         this.updateData();
         setInterval(this.checkReload.bind(this), 100);
     }
@@ -48,6 +51,13 @@ export class HomePage {
         this.storage.get('day_budget').then((v) => {
             if (this.day_budget != v){
                 this.day_budget = v;
+
+                if (this.day_budget > 0){
+                    this.day_color = 'secondary';
+                }
+                else{
+                    this.day_color = 'danger';
+                }                
             }
         });        
 
@@ -101,12 +111,16 @@ export class HomePage {
 
         // minus expenses
         this.storage.get('expensesList').then((v) => {
-            
+            this.tot_expenses = 0;
+
             for (var i=0; i < v.length; i++){
-                this.budgetTmp -= v[i].amount;
+                this.tot_expenses -= v[i].amount;
             }
 
+            this.display_tot_expenses = Math.abs(this.tot_expenses);
+
             if (!isNaN(this.budgetTmp)){
+                this.budgetTmp -= this.tot_expenses;
                 // divide by total days left
                 this.n_day = parseFloat(this.dateDiff(new Date(), this.tripEnd));
                 this.day_budget = (this.budgetTmp / this.n_day).toFixed(2);

@@ -7,21 +7,17 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card ng-if="expensesList.length > 0" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
+    <ion-card color="light" ng-if="expensesList.length > 0" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" padding>
         <ion-item>
-            <h2 color="primary">
+            <h2>
                 {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
                 <span class="datetime">{{ expenses.datetime }}</span>
             </h2>
-
-        </ion-item>
-
-        <ion-card-content>
             <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
-        </ion-card-content>
+        </ion-item>
     </ion-card>
 
     <ion-fab right bottom>
-        <button ion-fab color="secondary" (click)="gotoManage('-1', [])"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="danger" (click)="gotoManage('-1', [])"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>

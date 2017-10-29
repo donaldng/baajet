@@ -1,31 +1,43 @@
 page-about {
+    letter-spacing: 0.5px;
+   .item-md{
+        background-color: transparent !important;
+    }    
 
-}
-
-ion-title{
-    text-align: center;
-}
-
-ion-item{
-    float: left;
-
-    h2{
-        font-size: 5rem;
+    ion-title{
+        text-align: center;
     }
 
-    .freq{
-        font-size: 70%;
-        color: #6C7A89;
-    }
+    ion-item{
 
-    .datetime{
-        font-size: 80%;
-        display: block;
-        color: #446CB3;
-    }
-}
+        float: left;
 
-.price{
-    text-align: right;
-    font-size: 3rem;
+        h2{
+            font-size: 5rem;
+        }
+
+        .freq{
+            font-size: 70%;
+            color: #6C7A89;
+        }
+
+        .datetime{
+            padding-top: 10px;
+            font-size: 80%;
+            display: block;
+            color: #446CB3;
+        }
+
+        .price{
+            float:right !important;
+            vertial-align: middle;
+            text-align: right;
+            font-size: 3rem;
+            top:18px;
+            right: 10px;
+            position: absolute;
+            /* color: #E26A6A; */
+        }
+
+    }    
 }
