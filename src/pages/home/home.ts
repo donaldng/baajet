@@ -22,12 +22,15 @@ export class HomePage {
     day_color;
     tot_expenses;
     display_tot_expenses;
+    campaign_ended;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
         this.display_currency = '$';
         this.day_color = 'secondary';
         this.updateData();
         setInterval(this.checkReload.bind(this), 100);
+        this.greetMsg = 'Good day, spend your wealth with good health!';
+        this.campaign_ended = 0;
     }
 
     checkReload(){
@@ -69,7 +72,7 @@ export class HomePage {
         });
 
         this.storage.get('n_day').then((v) => {
-            if (this.n_day != v){
+            if (this.n_day != v && !this.campaign_ended){
                 this.n_day = v;
             }
         });
@@ -86,6 +89,12 @@ export class HomePage {
                 this.tripEnd.setDate(this.tripEnd.getDate() + 7);
                 this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
             }
+
+            if(new Date() > new Date(this.tripEnd)){
+                this.campaign_ended = 1;
+                this.n_day = 0;
+            }
+            else this.campaign_ended = 0;
         });
 
         this.calculateBudget();
@@ -101,7 +110,6 @@ export class HomePage {
     }
 
     dateDiff(tripStart, tripEnd){
-        tripEnd = new Date(tripEnd);
         var diff = Math.abs(tripEnd - tripStart);
         return (Math.floor(diff / 36e5)/24).toFixed(4);
     }
@@ -122,18 +130,25 @@ export class HomePage {
 
             if (!isNaN(this.budgetTmp)){
                 this.budgetTmp -= this.tot_expenses;
+
+                var startDate = new Date();
+
+                if (new Date(this.tripStart) > startDate){
+                    startDate = new Date(this.tripStart);
+                }
+
+                var n_day = (this.campaign_ended ? 1 : this.n_day);
+
                 // divide by total days left
-                this.n_day = parseFloat(this.dateDiff(new Date(), this.tripEnd));
-                this.day_budget = (this.budgetTmp / this.n_day).toFixed(2);
+                n_day = parseFloat(this.dateDiff(startDate, new Date(this.tripEnd)));
+                this.day_budget = (this.budgetTmp / n_day).toFixed(2);
 
                 this.storage.set('day_budget', this.day_budget);
-                this.n_day = this.n_day.toFixed(0);
+
+                this.n_day = n_day.toFixed(0);
+                if (this.campaign_ended) this.n_day = 0;
                 this.storage.set('n_day', this.n_day);
             }
         });
     }
-
-    
-    greetMsg = 'Good day, spend your wealth with good health!';
-
 }

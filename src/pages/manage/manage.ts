@@ -14,24 +14,23 @@ export class ManagePage {
     pageName;
     id;
     color;
-    promise;
+    default_placeholder;
 
 constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
     this.id = this.params.get('id');
     this.expensesList = this.params.get('expensesList');
+    this.default_placeholder = 'Expenses #' + this.params.get('runningId');
 
     if(this.id == '-1'){
-        console.log("add new expenses");
         this.expenses = {name: '', amount: '', freq: ''};
         this.pageName = "Add expenses";
         this.color = "primary";
+        this.expenses.freq = 0;
     }
     else{
-        console.log('edit old expenses');
         let index = this.findIndex(this.id);
 
         this.expenses = this.expensesList[index];
-        console.log(this.expenses);
         this.pageName = "Edit expenses";
         this.color = "secondary";
     }
@@ -40,7 +39,6 @@ constructor( public params: NavParams, public viewCtrl: ViewController, public s
 findIndex(find_id){
     for (var i = 0, len = this.expensesList.length; i < len; i++) {
         if (this.expensesList[i].id == find_id){
-            console.log('found', this.expensesList[i]);
             return i;
         }
     }
@@ -48,13 +46,18 @@ findIndex(find_id){
 }
 
 submitForm() {
+    var name = this.default_placeholder;
+
+    if (this.expenses.name.trim() != "") name = this.expenses.name.trim(); 
+
     var changes = {
                     'id': this.expenses.id,
-                    'name':this.expenses.name,
+                    'name':name,
                     'amount': this.expenses.amount,
                     'freq': this.expenses.freq,
                     'datetime': this.expenses.datetime
                 };
+
     this.storage.get('expensesList').then((expensesList) => {
         if (expensesList){
             this.expensesList = expensesList;
@@ -68,10 +71,7 @@ submitForm() {
             else{
 
                 let index = this.findIndex(this.id);
-                console.log(changes);
                 this.expensesList[index] = changes;
-                console.log(this.expensesList);
-
             }
 
             this.storage.set('expensesList', this.expensesList);
