@@ -63,6 +63,7 @@ presentActionSheet(theItem) {
                 let index = this.expensesList.indexOf(theItem);
                 this.expensesList.splice(index,1);
                 this.storage.set('expensesList', this.expensesList);
+                this.storage.set('reload_home', 1);
             }
         },
         {
@@ -81,6 +82,7 @@ gotoManage(id, list) {
     let modal = this.modalCtrl.create(ManagePage, {'id': id, 'expensesList':list});
     modal.onDidDismiss(data => {
         this.loadData();
+        this.storage.set('reload_home', 1);        
     });
 
     modal.present();
