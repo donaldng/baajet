@@ -93,12 +93,24 @@ export class HomePage {
 
             if(new Date() > new Date(this.tripEnd)){
                 this.campaign_ended = 1;
-                this.n_day = 0;
+                this.trip_ended();
             }
-            else this.campaign_ended = 0;
+            else{
+                this.campaign_ended = 0;
+                this.greetMsg = 'Good day, spend your wealth with good health!';
+            }
         });
 
         this.calculateBudget();
+    }
+
+    trip_ended(){
+        if (this.day_budget > 0)
+            this.greetMsg = 'Trip has ended, and money was well spent!';
+        else
+            this.greetMsg = 'Hope this trip don\'t break your bank account. :(';
+
+        this.n_day = 0;
     }
 
     openSettingModal(){
@@ -116,40 +128,37 @@ export class HomePage {
     }
 
     calculateBudget(){
-        // starting budget
-        this.budgetTmp = this.tot_budget;
 
         // minus expenses
         this.storage.get('expensesList').then((v) => {
+            // starting budget
+            this.budgetTmp = this.tot_budget;
+
             this.tot_expenses = 0;
 
             for (var i=0; i < v.length; i++){
                 this.tot_expenses -= v[i].amount;
+                console.log(v[i].amount);
             }
 
             this.display_tot_expenses = Math.abs(this.tot_expenses);
+            this.budgetTmp -= this.display_tot_expenses;
 
-            if (!isNaN(this.budgetTmp)){
-                this.budgetTmp -= this.tot_expenses;
+            var startDate = new Date();
 
-                var startDate = new Date();
-
-                if (new Date(this.tripStart) > startDate){
-                    startDate = new Date(this.tripStart);
-                }
-
-                var n_day = (this.campaign_ended ? 1 : this.n_day);
-
-                // divide by total days left
-                n_day = parseFloat(this.dateDiff(startDate, new Date(this.tripEnd)));
-                this.day_budget = (this.budgetTmp / n_day).toFixed(2);
-
-                this.storage.set('day_budget', this.day_budget);
-
-                this.n_day = n_day.toFixed(0);
-                if (this.campaign_ended) this.n_day = 0;
-                this.storage.set('n_day', this.n_day);
+            if (new Date(this.tripStart) > startDate){
+                startDate = new Date(this.tripStart);
             }
+
+            var n_day = 1;
+            if (!this.campaign_ended) n_day = parseFloat(this.dateDiff(startDate, new Date(this.tripEnd)));
+            this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+
+            this.storage.set('day_budget', this.day_budget);
+
+            this.n_day = n_day.toFixed(0);
+            if (this.campaign_ended) this.n_day = 0;
+            this.storage.set('n_day', this.n_day);
         });
     }
 }

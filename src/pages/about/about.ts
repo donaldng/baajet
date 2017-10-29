@@ -92,12 +92,12 @@ export class AboutPage {
     findRunningId(){
         this.storage.get('expensesList').then((l) => {
             var id = 0;
-            var return_id = 1;
+            var return_id = 0;
 
             for (var i = 0 ; i < l.length; i++ ){
                 if (l[i].name.indexOf('Expenses #') >= 0){
                     id = l[i].name.split('#')[1];
-                    
+
                     if (!isNaN(id) && id > return_id){
                         return_id = id;
                     }

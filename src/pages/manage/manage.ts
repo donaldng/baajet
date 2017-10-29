@@ -53,7 +53,7 @@ submitForm() {
     var changes = {
                     'id': this.expenses.id,
                     'name':name,
-                    'amount': this.expenses.amount,
+                    'amount': Number(this.expenses.amount),
                     'freq': this.expenses.freq,
                     'datetime': this.expenses.datetime
                 };
