@@ -16,7 +16,7 @@
 <ion-content>
     <p padding>{{ greetMsg }}</p>
 
-    <ion-grid>
+    <ion-grid *ngIf="tot_budget != 0">
         <ion-row>
             <ion-col width-100>
                 <ion-card color="primary" padding>
