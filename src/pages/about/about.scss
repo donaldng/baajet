@@ -2,11 +2,15 @@ page-about {
 
 }
 
+ion-title{
+    text-align: center;
+}
+
 ion-item{
     float: left;
 
     h2{
-        font-size: 120%;
+        font-size: 5rem;
     }
 
     .freq{
@@ -16,13 +20,12 @@ ion-item{
 
     .datetime{
         font-size: 80%;
-        float: right !important;
         display: block;
         color: #446CB3;
     }
 }
 
 .price{
-    font-size: 150%;
-    text-align: center;
+    text-align: right;
+    font-size: 3rem;
 }
