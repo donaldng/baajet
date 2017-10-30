@@ -10,7 +10,7 @@
     <p class="emptyMsg" *ngIf="!checklist();">You have no expenses at all!?</p>
 
     <ion-card color="light" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" padding>
-        <ion-item>
+        <ion-item color="light">
             <h2>
                 {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
                 <span class="datetime">{{ expenses.datetime }}</span>

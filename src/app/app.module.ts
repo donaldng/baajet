@@ -14,7 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { IonicStorageModule } from '@ionic/storage';
-import { MediaCapture } from '@ionic-native/media-capture';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -44,10 +44,9 @@ import { MediaCapture } from '@ionic-native/media-capture';
   providers: [
     StatusBar,
     SplashScreen,
-    MediaCapture,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}
-export class SharedModule {}
 

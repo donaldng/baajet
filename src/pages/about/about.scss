@@ -1,14 +1,11 @@
 page-about {
     letter-spacing: 0.5px;
-   .item-md{
-        background-color: transparent !important;
-    }    
 
     ion-title{
         text-align: center;
     }
 
-    ion-item{
+    ion-card{
 
         float: left;
 
@@ -43,5 +40,6 @@ page-about {
 
     .emptyMsg{
         text-align: center;
+        font-size: 1.85rem;
     }
 }

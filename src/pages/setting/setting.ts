@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
 
 @Component({
     selector: 'page-setting',
@@ -16,10 +17,17 @@ export class SettingPage {
     tripStart;
     tripEnd;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController ) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController ) {
         this.items = ['$', '¥', '€', '£', '฿'];
-        this.budget = this.params.get('budget');
-        this.currency = this.params.get('currency');
+        this.storage.get('budget').then((v) => {
+            if(v) this.budget = v;
+        });
+
+        this.storage.get('currency').then((v) => {
+            if(v) this.currency = v;
+
+        });
+
         this.storage.get('duration').then((v) => {
 
             if (v){
@@ -36,16 +44,20 @@ export class SettingPage {
         });
     }
 
-    submitForm() {
+    presentToast() {
+        let toast = this.toastCtrl.create({
+          message: 'Ok, I got it!',
+          duration: 3000,
+          position: 'top'
+      });
+        toast.present();
+    }
 
+    submitForm() {
         this.storage.set('budget', Number(this.budget));
         this.storage.set('currency', this.currency);
         this.storage.set('duration', this.tripStart + ' ~ ' + this.tripEnd);
         this.storage.set('reload_home', 1);
-        this.dismiss();
-    }
-
-    dismiss() {
-        this.viewCtrl.dismiss();
+        this.presentToast();
     }
 }
