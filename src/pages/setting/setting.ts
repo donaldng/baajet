@@ -59,5 +59,6 @@ export class SettingPage {
         this.storage.set('duration', this.tripStart + ' ~ ' + this.tripEnd);
         this.storage.set('reload_home', 1);
         this.presentToast();
+        this.navCtrl.parent.select(0);
     }
 }

@@ -11,11 +11,17 @@
 
     <ion-card color="light" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" padding>
         <ion-item color="light">
-            <h2>
-                {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
-                <span class="datetime">{{ expenses.datetime }}</span>
-            </h2>
-            <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <h2>
+                        {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
+                        <span class="datetime">{{ expenses.datetime }}</span>
+                    </h2>
+                    <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
         </ion-item>
     </ion-card>
 
