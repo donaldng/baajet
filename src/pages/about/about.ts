@@ -39,6 +39,9 @@ export class AboutPage {
             if (expensesList){
                 this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
                 this.oriList = expensesList;
+                for (var i = 0 ; i < this.expensesList.length ; i++ ){
+                    this.expensesList[i].datetime = this.timeSince(this.expensesList[i].datetime);
+                }
             }
             else{
                 this.storage.set('expensesList', []);
@@ -97,6 +100,23 @@ export class AboutPage {
         else
             return 0;
     }
+
+    timeSince(oridate) {
+
+        var date = new Date(oridate.replace(" ","T"));
+
+        var seconds = Math.floor((new Date() - date) / 1000);
+        var interval = Math.floor(seconds / 31536000);
+
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) return interval + " hours";
+        
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) return interval + " minutes";
+
+        return oridate;
+    }
+
 
     findRunningId(){
         this.storage.get('expensesList').then((l) => {

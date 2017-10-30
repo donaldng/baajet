@@ -13,13 +13,14 @@
         <ion-item color="light">
         <ion-grid>
             <ion-row>
-                <ion-col>
-                    <h2>
-                        {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
-                        <span class="datetime">{{ expenses.datetime }}</span>
-                    </h2>
-                    <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
-                </ion-col>
+                <img *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
+                <img *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+
+                <h3>
+                    {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
+                    <span class="datetime">{{ expenses.datetime }}</span>
+                </h3>
+                <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
             </ion-row>
         </ion-grid>
         </ion-item>

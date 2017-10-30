@@ -9,13 +9,9 @@ page-about {
 
         float: left;
 
-        h2{
-            font-size: 3.75rem;
-        }
-
         .freq{
-            font-size: 70%;
-            color: #6C7A89;
+            font-size: 80%;
+            color: #535e69;
         }
 
         .datetime{
@@ -30,10 +26,12 @@ page-about {
             vertial-align: middle;
             text-align: right;
             font-size: 2.25rem;
-            top:18px;
             right: 10px;
             position: absolute;
-            color: #2ecc71;
+            color: #fff;
+            background: #26A65B;
+            border-radius: 10%;
+            padding: 10px;
         }
 
     }    
@@ -42,10 +40,26 @@ page-about {
         text-align: center;
         font-size: 1.85rem;
     }
+    img{ 
+        float: left;
+        margin-right: 20px;
+     }
 
-    img{
-        height: 30px;
-        width: auto;
-        text-align: center;
+    .image {
+        height: 5vw; 
+        width: 5vw; 
+        border: 2px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 5px gray;
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .circle-pic{
+        width:40px;
+        height:40px;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
     }
 }
