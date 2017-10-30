@@ -105,8 +105,9 @@ export class AboutPage {
 
         var date = new Date(oridate.replace(" ","T"));
 
-        var seconds = Number(Math.floor((new Date() - date) / 1000));
-        var interval = Number(Math.floor(seconds / 31536000));
+        var seconds = Math.floor(Number((new Date() - date) / 1000));
+        
+        var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
         if (interval > 1) return interval + " hours";
