@@ -28,6 +28,7 @@ export class ManagePage {
 
         this.tmpImage = 0;
         this.selected_freq = 0;
+
         this.storage.get('duration').then((v) => {
             if (v){
                 var duration = v.split(" ~ ");
@@ -54,7 +55,7 @@ export class ManagePage {
 
             this.expenses = this.expensesList[index];
             this.selected_freq = this.expenses.freq;
-
+            this.tmpImage = this.expenses.image;
             this.pageName = "Edit expenses";
         }
     }
@@ -100,7 +101,8 @@ export class ManagePage {
             'freq': this.expenses.freq,
             'freq_start': this.expenses.freq_start,
             'freq_end': this.expenses.freq_end,
-            'datetime': this.expenses.datetime
+            'datetime': this.expenses.datetime,
+            'image': this.tmpImage
         };
 
         this.storage.get('expensesList').then((expensesList) => {
@@ -123,6 +125,10 @@ export class ManagePage {
             }
         });    
 
+    }
+    
+    removeImage(){
+        this.tmpImage = 0;
     }
 
     onSelectChange(selectedValue: any){

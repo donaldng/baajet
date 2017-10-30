@@ -12,9 +12,16 @@
         </ion-title>
 
         <ion-buttons end>
-            <button ion-button (click)="captureImage()">
+
+            <button ion-button (click)="captureImage()" *ngIf="tmpImage == 0">
                 <ion-icon name="camera"></ion-icon>
             </button>
+
+            <button ion-button (click)="removeImage()" *ngIf="tmpImage != 0">
+                <span ion-text color="primary" showWhen="ios">Remove</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>                
+            </button>
+
         </ion-buttons>        
     </ion-toolbar>
 </ion-header>
