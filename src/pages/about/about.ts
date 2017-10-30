@@ -102,11 +102,11 @@ export class AboutPage {
     }
 
     timeSince(oridate) {
+        var now = +new Date();
+        var d = +new Date(oridate.replace(" ","T"));
 
-        var date = new Date(oridate.replace(" ","T"));
+        var seconds = Math.floor((now - d) / 1000);
 
-        var seconds = Math.floor(Number((new Date() - date) / 1000));
-        
         var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
