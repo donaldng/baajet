@@ -9,8 +9,7 @@
 <ion-content padding>
     <p class="emptyMsg" *ngIf="!checklist();">You have no expenses at all!?</p>
 
-    <ion-card color="light" *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" padding>
-        <ion-item color="light">
+    <ion-item *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" >
         <ion-grid>
             <ion-row>
                 <img *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
@@ -23,8 +22,7 @@
                 <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
             </ion-row>
         </ion-grid>
-        </ion-item>
-    </ion-card>
+    </ion-item>
 
     <ion-fab right bottom>
         <button ion-fab color="danger" (click)="gotoManage('-1', [])"><ion-icon name="add"></ion-icon></button>
