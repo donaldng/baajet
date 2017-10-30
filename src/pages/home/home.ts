@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ModalController } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
+import { Events } from 'ionic-angular';
 
 @Component({
     selector: 'page-home',
@@ -24,8 +25,9 @@ export class HomePage {
     display_tot_expenses;
     campaign_ended;
     greetMsg;
+    expensesList;
 
-    constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController) {
+    constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
 
         this.display_currency = '$';
@@ -35,25 +37,35 @@ export class HomePage {
 
         this.day_color = 'secondary';
         this.updateData();
-        setInterval(this.checkReload.bind(this), 100);
+
+        events.subscribe('reload:home', (k, v) => {
+            if (k == "expensesList")
+                this.calc(v);                
+            else if(k == "tot_budget"){
+                this.tot_budget = v;
+                this.calcDbBudget();
+            }
+            else if(k == "duration"){
+                this.decodeDuration(v);    
+                this.check_ended();
+            }
+        });
+
+        events.subscribe('reload:expenses', (v) => {
+            this.calc(v);                
+        });
+
+        events.subscribe('update:currency', (c) => {
+            this.display_currency = c;
+        });
+
         this.campaign_ended = 0;
         this.getGreetMsg()
         
     }
 
-    checkReload(){
-        this.storage.get('reload_home').then((v) => {
-            if(v){
-                console.log('Reload home');
-                this.updateData();
-                this.storage.set('reload_home', 0);
-            }
-        });        
-    }
-
     updateData(){
 
-        console.log('update data home');
         // update once modal close
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
@@ -75,10 +87,8 @@ export class HomePage {
 
         this.storage.get('duration').then((v) => {
             if (v){
-                this.duration = v.split(" ~ ");
-                this.tripStart = this.duration[0];
-                this.tripEnd = this.duration[1];
-            }
+                this.decodeDuration(v);        
+          }
             else{
                 this.tripStart = new Date().toISOString().slice(0, 19);
                 this.tripEnd = new Date();
@@ -86,17 +96,11 @@ export class HomePage {
                 this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
             }
 
-            if(new Date() > new Date(this.tripEnd)){
-                this.campaign_ended = 1;
-                this.trip_ended();
-            }
-            else{
-                this.campaign_ended = 0;
-                this.getGreetMsg()            
-            }
+            this.check_ended();
+
         });
         
-        this.calculateBudget();
+        this.calcDbBudget();
 
     }
 
@@ -108,7 +112,16 @@ export class HomePage {
 
         this.n_day = 0;
     }
-
+    check_ended(){
+        if(new Date() > new Date(this.tripEnd)){
+            this.campaign_ended = 1;
+            this.trip_ended();
+        }
+        else{
+            this.campaign_ended = 0;
+            this.getGreetMsg()            
+        }           
+    }
     openSettingModal(){
         let modal = this.modalCtrl.create(SettingPage, {'budget': this.tot_budget, 'currency': this.display_currency});
         modal.onDidDismiss(data => {
@@ -131,60 +144,65 @@ export class HomePage {
             this.greetMsg = 'Opps, we need your input on your trip\'s budget, sir! Go set it up in Setting!';
     }
     
-    calculateBudget(){
-
+    calcDbBudget(){
         // minus expenses
         this.storage.get('expensesList').then((v) => {
-            var startDate = new Date();
-
-            if (new Date(this.tripStart) > startDate){
-                startDate = new Date(this.tripStart);
-            }
-
-            var n_day = 1;
-
-            if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
-
-            console.log(n_day);
-
-            this.budgetTmp = this.tot_budget;
-            this.tot_expenses = 0;
-
-
-            if(v){
-                
-                for (var i=0; i < v.length; i++){
-                    
-                    this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_start, v[i].freq_end));
-                }
-
-                this.display_tot_expenses = Math.abs(this.tot_expenses);
-                this.budgetTmp -= this.display_tot_expenses;
-
-                this.day_budget = (this.budgetTmp / n_day).toFixed(2);
-
-
-                this.n_day = n_day.toFixed(0);
-                if (this.campaign_ended) this.n_day = 0;
-                this.storage.set('n_day', this.n_day);
-            }
-            else if(this.tot_budget) {
-                this.n_day = n_day.toFixed(0);
-                this.storage.set('n_day', this.n_day);
-                this.day_budget = (this.budgetTmp / n_day).toFixed(2);                
-            }
-            else{
-                this.n_day = 0;
-            }
-            this.storage.set('day_budget', this.day_budget);
-            
-            if (this.day_budget > 0){
-                this.day_color = 'secondary';
-            }
-            else{
-                this.day_color = 'danger';
-            }     
+            this.calc(v);
         });
+    }
+
+    get_nday(){
+        var startDate = new Date();
+        if (new Date(this.tripStart) > startDate){
+            startDate = new Date(this.tripStart);
+        }
+
+        var n_day = 1;
+        if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
+        return n_day;
+    }
+
+    calc(v){
+        var n_day = this.get_nday();
+        this.budgetTmp = this.tot_budget;
+        this.tot_expenses = 0;
+        if(v){
+            
+            for (var i=0; i < v.length; i++){
+                this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_start, v[i].freq_end));
+            }
+            this.display_tot_expenses = Math.abs(this.tot_expenses);
+            this.budgetTmp -= this.display_tot_expenses;
+
+            this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+
+            this.n_day = n_day;
+            if (this.campaign_ended) this.n_day = 0;
+            this.storage.set('n_day', this.n_day);
+        }
+        else if(this.tot_budget) {
+            this.n_day = n_day.toFixed(0);
+            this.storage.set('n_day', this.n_day);
+            this.day_budget = (this.budgetTmp / n_day).toFixed(2);                
+        }
+        else{
+            this.n_day = 0;
+        }
+        this.storage.set('day_budget', this.day_budget);
+        
+        if (this.day_budget > 0){
+            this.day_color = 'secondary';
+        }
+        else{
+            this.day_color = 'danger';
+        }     
+
+    }
+
+    decodeDuration(v){
+        this.duration = v.split(" ~ ");
+        this.tripStart = this.duration[0];
+        this.tripEnd = this.duration[1];   
     }
 
     calcFrequency(freq_type, start, end){

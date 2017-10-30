@@ -4,6 +4,7 @@ import { ActionSheetController } from 'ionic-angular'
 import { ModalController } from 'ionic-angular';
 import { ManagePage } from '../manage/manage';
 import { Storage } from '@ionic/storage';
+import { Events } from 'ionic-angular';
 
 @Component({
     selector: 'page-about',
@@ -16,21 +17,18 @@ export class AboutPage {
     freqMap;
     runningId;
 
-    constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage) {
+    constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.display_currency = '$';
         this.expensesList = [];
         this.freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
         this.loadData();
-        this.reload_currency();
-        setInterval(this.reload_currency.bind(this), 1000);
-    }
-    
-    reload_currency(){
-        this.storage.get('currency').then((currency) => {
-            if (currency){
-                if(this.display_currency != currency)
-                    this.display_currency = currency;
-            }
+
+        events.subscribe('update:currency', (c) => {
+            this.display_currency = c;
+        });
+
+        events.subscribe('reload:expenses', (v) => {
+            this.expensesList = v;
         });
     }
 
@@ -47,6 +45,8 @@ export class AboutPage {
                 this.storage.set('expensesList', []);
                 this.expensesList = [];
             }
+
+            this.events.publish('reload:home','expensesList',this.expensesList);
         });
         this.findRunningId();
     }
@@ -69,7 +69,7 @@ export class AboutPage {
                     let index = this.expensesList.indexOf(theItem);
                     this.expensesList.splice(index,1);
                     this.storage.set('expensesList', this.expensesList);
-                    this.storage.set('reload_home', 1);
+                    this.events.publish('reload:home','expensesList',this.expensesList);
                 }
             },
             {
@@ -86,11 +86,6 @@ export class AboutPage {
 
     gotoManage(id, list) {
         let modal = this.modalCtrl.create(ManagePage, {'id': id, 'expensesList':list, 'runningId': this.runningId});
-        modal.onDidDismiss(data => {
-            this.loadData();
-            this.storage.set('reload_home', 1);        
-        });
-
         modal.present();
     }
 

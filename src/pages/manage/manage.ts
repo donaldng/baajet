@@ -3,6 +3,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Events } from 'ionic-angular';
 
 @Component({
     selector: 'page-manage',
@@ -21,7 +22,7 @@ export class ManagePage {
     selected_freq;
     tmpImage;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera ) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events ) {
         this.id = this.params.get('id');
         this.expensesList = this.params.get('expensesList');
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');
@@ -124,7 +125,9 @@ export class ManagePage {
                 }
 
                 this.storage.set('expensesList', this.expensesList);
-                this.dismiss(1);              
+                this.events.publish('reload:expenses', this.expensesList);
+
+                this.dismiss();              
             }
         });    
 
@@ -138,7 +141,7 @@ export class ManagePage {
         this.selected_freq = selectedValue;
     }
 
-    dismiss(status) {
-        this.viewCtrl.dismiss(status);
+    dismiss() {
+        this.viewCtrl.dismiss();
     }
 }
