@@ -52,26 +52,14 @@ export class HomePage {
     }
 
     updateData(){
+
         console.log('update data home');
         // update once modal close
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
                 this.tot_budget = v;
             }
-        });
-
-        this.storage.get('day_budget').then((v) => {
-            if (v && this.day_budget != v){
-                this.day_budget = v;
-
-                if (this.day_budget > 0){
-                    this.day_color = 'secondary';
-                }
-                else{
-                    this.day_color = 'danger';
-                }                
-            }
-        });        
+        });  
 
         this.storage.get('currency').then((v) => {
             if (v && this.display_currency != v){
@@ -107,8 +95,9 @@ export class HomePage {
                 this.getGreetMsg()            
             }
         });
-
+        
         this.calculateBudget();
+
     }
 
     trip_ended(){
@@ -161,6 +150,7 @@ export class HomePage {
             this.budgetTmp = this.tot_budget;
             this.tot_expenses = 0;
 
+
             if(v){
                 
                 for (var i=0; i < v.length; i++){
@@ -173,7 +163,6 @@ export class HomePage {
 
                 this.day_budget = (this.budgetTmp / n_day).toFixed(2);
 
-                this.storage.set('day_budget', this.day_budget);
 
                 this.n_day = n_day.toFixed(0);
                 if (this.campaign_ended) this.n_day = 0;
@@ -187,7 +176,14 @@ export class HomePage {
             else{
                 this.n_day = 0;
             }
-
+            this.storage.set('day_budget', this.day_budget);
+            
+            if (this.day_budget > 0){
+                this.day_color = 'secondary';
+            }
+            else{
+                this.day_color = 'danger';
+            }     
         });
     }
 

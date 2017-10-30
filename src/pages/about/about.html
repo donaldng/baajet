@@ -13,7 +13,7 @@
         <ion-grid>
             <ion-row>
                 <img *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
-                <img *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+                <img *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/pic1.png" />
 
                 <h3>
                     {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
