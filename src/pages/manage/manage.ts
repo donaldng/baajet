@@ -26,7 +26,7 @@ export class ManagePage {
         this.expensesList = this.params.get('expensesList');
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');
 
-        this.tmpImage = 0;
+        this.tmpImage = 'assets/imgs/pic1.png';
         this.selected_freq = 0;
 
         this.storage.get('duration').then((v) => {

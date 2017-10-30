@@ -29,9 +29,6 @@
     <form (ngSubmit)="submitForm()">
         <ion-grid>
             <ion-row>
-                <ion-col col-3 *ngIf="tmpImage != 0">
-                    <img src="{{ tmpImage }}"/>
-                </ion-col>
                 <ion-col >
                     <ion-list >
 
@@ -68,6 +65,10 @@
 
                     </ion-list>
                 </ion-col>
+                <ion-col col-3 *ngIf="tmpImage != 0">
+                    <img src="{{ tmpImage }}"/>
+                </ion-col>
+                
             </ion-row>
         </ion-grid>
         <div padding>
