@@ -19,11 +19,14 @@ export class ManagePage {
     tripStart;
     tripEnd;
     selected_freq;
+    tmpImage;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera ) {
         this.id = this.params.get('id');
         this.expensesList = this.params.get('expensesList');
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');
+
+        this.tmpImage = 0;
         this.selected_freq = 0;
         this.storage.get('duration').then((v) => {
             if (v){
@@ -76,7 +79,7 @@ export class ManagePage {
         this.camera.getPicture(options).then((imageData) => {
             // imageData is either a base64 encoded string or a file URI
             // If it's base64:
-            let base64Image = 'data:image/jpeg;base64,' + imageData;
+            this.tmpImage = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
             // Handle error
         });
