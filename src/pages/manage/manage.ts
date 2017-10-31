@@ -42,8 +42,11 @@ export class ManagePage {
                 tripEnd.setDate(tripEnd.getDate() + 7);
                 this.tripEnd = tripEnd.toISOString().slice(0, 19);
             }
-            this.expenses.freq_start = new Date().toISOString().slice(0, 19);
-            this.expenses.freq_end = this.tripEnd;
+
+            if (this.id == '-1'){
+                this.expenses.freq_start = this.tripStart;
+                this.expenses.freq_end = this.tripEnd;            
+            }
         });
 
         if(this.id == '-1'){
@@ -51,14 +54,15 @@ export class ManagePage {
             this.pageName = "Add expenses";
             this.expenses.freq = 0;
         }
-        else{
+
+        if(this.id != '-1'){
             let index = this.findIndex(this.id);
 
             this.expenses = this.expensesList[index];
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Edit expenses";
-        }
+        }        
     }
 
     findIndex(find_id){

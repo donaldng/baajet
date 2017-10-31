@@ -28,7 +28,8 @@ export class AboutPage {
         });
 
         events.subscribe('reload:expenses', (v) => {
-            this.expensesList = v;
+            this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
+
         });
     }
 
