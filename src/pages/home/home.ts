@@ -26,10 +26,11 @@ export class HomePage {
     campaign_ended;
     greetMsg;
     expensesList;
+    timezone;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
-
+        this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
         this.display_tot_expenses = 0;
         this.day_budget = 0;
