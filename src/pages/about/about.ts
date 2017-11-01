@@ -28,6 +28,7 @@ export class AboutPage {
         });
 
         events.subscribe('reload:expenses', (v) => {
+            this.oriList = v;
             this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
 
         });
@@ -106,7 +107,7 @@ export class AboutPage {
         var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
-        if (interval > 1) return interval + " hours";
+        if (interval > 1 && interval < 24) return interval + " hours";
         
         interval = Math.floor(seconds / 60);
         if (interval > 1) return interval + " minutes";
