@@ -14,7 +14,7 @@ export class ManagePage {
     expensesList;
     expenses;
     pageName;
-    id;
+    selected_id;
     default_placeholder;
     freq;
     tripStart;
@@ -23,8 +23,9 @@ export class ManagePage {
     tmpImage;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events ) {
-        this.id = this.params.get('id');
+        this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
+        
         this.default_placeholder = 'Expenses #' + this.params.get('runningId');
 
         this.tmpImage = 0;
@@ -43,20 +44,20 @@ export class ManagePage {
                 this.tripEnd = tripEnd.toISOString().slice(0, 19);
             }
 
-            if (this.id == '-1'){
+            if (this.selected_id == '-1'){
                 this.expenses.freq_start = this.tripStart;
                 this.expenses.freq_end = this.tripEnd;            
             }
         });
 
-        if(this.id == '-1'){
+        if(this.selected_id == '-1'){
             this.expenses = {name: '', amount: '', freq: ''};
             this.pageName = "Add expenses";
             this.expenses.freq = 0;
         }
 
-        if(this.id != '-1'){
-            let index = this.findIndex(this.id);
+        if(this.selected_id != '-1'){
+            let index = this.findIndex(this.selected_id);
 
             this.expenses = this.expensesList[index];
             this.selected_freq = this.expenses.freq;
@@ -113,28 +114,21 @@ export class ManagePage {
             'image': this.tmpImage
         };
 
-        this.storage.get('expensesList').then((expensesList) => {
-            if (expensesList){
-                this.expensesList = expensesList;
+        if (this.selected_id == "-1"){
+            changes['id'] = Math.round((new Date()).getTime() / 1000);
+            changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
 
-                if (this.id == "-1"){
-                    changes['id'] = Math.round((new Date()).getTime() / 1000);
-                    changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
+            this.expensesList.push(changes);
+        }
+        else{
+            let index = this.findIndex(this.selected_id);
+            this.expensesList[index] = changes;
+        }
 
-                    this.expensesList.push(changes);
-                }
-                else{
-                    let index = this.findIndex(this.id);
-                    this.expensesList[index] = changes;
-                }
+        this.storage.set('expensesList', this.expensesList);
+        this.events.publish('reload:expenses', this.expensesList);
 
-                this.storage.set('expensesList', this.expensesList);
-                this.events.publish('reload:expenses', this.expensesList);
-
-                this.dismiss();              
-            }
-        });    
-
+        this.dismiss();              
     }
     
     removeImage(){

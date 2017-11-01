@@ -7,10 +7,11 @@ import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 
 @Component({
-    selector: 'page-about',
-    templateUrl: 'about.html'
+    selector: 'page-expenses',
+    templateUrl: 'expenses.html'
 })
-export class AboutPage {
+
+export class ExpensesPage {
     expensesList;
     display_currency;
     oriList;
@@ -30,7 +31,9 @@ export class AboutPage {
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
             this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
-
+            for (var i = 0 ; i < this.expensesList.length ; i++ ){
+                this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
+            }            
         });
     }
 
@@ -40,7 +43,7 @@ export class AboutPage {
                 this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
                 this.oriList = expensesList;
                 for (var i = 0 ; i < this.expensesList.length ; i++ ){
-                    this.expensesList[i].datetime = this.timeSince(this.expensesList[i].datetime);
+                    this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                 }
             }
             else{
@@ -53,22 +56,22 @@ export class AboutPage {
         this.findRunningId();
     }
 
-    presentActionSheet(theItem) {
+    presentActionSheet(expenses) {
         const actionSheet = this.actionSheetCtrl.create({
             title: 'Action',
             buttons: [
             {
                 text: 'Edit',
                 handler: () => {
-                    let id = theItem.id;
-                    this.gotoManage(id, this.oriList);
+                    let selected_id = expenses.id;
+                    this.gotoManage(selected_id, this.oriList);
                 }
             },
             {
                 text: 'Delete',
                 role: 'destructive',
                 handler: () => {
-                    let index = this.expensesList.indexOf(theItem);
+                    let index = this.expensesList.indexOf(expenses);
                     this.expensesList.splice(index,1);
                     this.storage.set('expensesList', this.expensesList);
                     this.events.publish('reload:home','expensesList',this.expensesList);
@@ -86,8 +89,8 @@ export class AboutPage {
         actionSheet.present();
     }
 
-    gotoManage(id, list) {
-        let modal = this.modalCtrl.create(ManagePage, {'id': id, 'expensesList':list, 'runningId': this.runningId});
+    gotoManage(selected_id, expensesList) {
+        let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': expensesList, 'runningId': this.runningId});
         modal.present();
     }
 
@@ -104,38 +107,37 @@ export class AboutPage {
 
         var seconds = Math.floor((now - d) / 1000);
 
-        if (seconds < 60) return seconds + " seconds";
-
         var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
-        if (interval > 1 && interval < 24) return interval + " hours";
+        if (interval >= 24) return oridate;
+
+        if (interval > 1) return interval + " hours";
         
         interval = Math.floor(seconds / 60);
-        if (interval > 1 && interval < 60) return interval + " minutes";
+        if (interval > 1) return interval + " minutes";
 
-        return oridate;
+        return seconds + " seconds";
     }
 
 
     findRunningId(){
-        this.storage.get('expensesList').then((l) => {
-            var id = 0;
-            var return_id = 0;
+        var l = this.expensesList;
+        var id = 0;
+        var return_id = 0;
 
-            if (l){
-                for (var i = 0 ; i < l.length; i++ ){
-                    if (l[i].name.indexOf('Expenses #') >= 0){
-                        id = l[i].name.split('#')[1];
+        if (l){
+            for (var i = 0 ; i < l.length; i++ ){
+                if (l[i].name.indexOf('Expenses #') >= 0){
+                    id = l[i].name.split('#')[1];
 
-                        if (!isNaN(id) && id > return_id){
-                            return_id = id;
-                        }
+                    if (!isNaN(id) && id > return_id){
+                        return_id = id;
                     }
                 }
             }
+        }
 
-            this.runningId = Number(return_id) + 1;        
-        });
+        this.runningId = Number(return_id) + 1;        
     }   
 }

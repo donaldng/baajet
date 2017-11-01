@@ -18,7 +18,7 @@
 
                 <p col-6 class="expenses-title">
                     {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
-                    <span class="datetime">{{ expenses.datetime }}</span>
+                    <span class="datetime">{{ expenses.timeago }}</span>
 
                 </p>
 
@@ -28,6 +28,6 @@
     </ion-grid>
 
     <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="gotoManage('-1', [])"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="danger" (click)="gotoManage('-1', expensesList )"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>

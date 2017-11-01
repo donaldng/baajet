@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
+import { ExpensesPage } from '../pages/expenses/expenses';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -19,7 +19,7 @@ import { Camera } from '@ionic-native/camera';
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
+    ExpensesPage,
     ContactPage,
     HomePage,
     TabsPage,
@@ -34,7 +34,7 @@ import { Camera } from '@ionic-native/camera';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
+    ExpensesPage,
     ContactPage,
     HomePage,
     TabsPage,
