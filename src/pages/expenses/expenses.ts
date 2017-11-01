@@ -94,7 +94,7 @@ export class ExpensesPage {
         modal.present();
     }
 
-    checklist(){
+    expenses_found(){
         if (this.expensesList)
             return this.expensesList.length;
         else
