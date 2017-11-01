@@ -104,13 +104,15 @@ export class AboutPage {
 
         var seconds = Math.floor((now - d) / 1000);
 
+        if (seconds < 60) return seconds + " seconds";
+
         var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
         if (interval > 1 && interval < 24) return interval + " hours";
         
         interval = Math.floor(seconds / 60);
-        if (interval > 1) return interval + " minutes";
+        if (interval > 1 and interval < 60) return interval + " minutes";
 
         return oridate;
     }
