@@ -110,12 +110,15 @@ export class ExpensesPage {
         var interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
-        if (interval >= 24) return oridate;
+        if (interval >= 24) 
+            return oridate;
 
-        if (interval > 1) return interval + " hours";
+        if (interval >= 1) 
+            return interval + " hours";
         
         interval = Math.floor(seconds / 60);
-        if (interval > 1) return interval + " minutes";
+        if (interval >= 1) 
+            return interval + " minutes";
 
         return seconds + " seconds";
     }
