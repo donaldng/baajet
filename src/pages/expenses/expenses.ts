@@ -64,7 +64,7 @@ export class ExpensesPage {
                 text: 'Edit',
                 handler: () => {
                     let selected_id = expenses.id;
-                    this.gotoManage(selected_id, this.oriList);
+                    this.gotoManage(selected_id);
                 }
             },
             {
@@ -89,8 +89,8 @@ export class ExpensesPage {
         actionSheet.present();
     }
 
-    gotoManage(selected_id, expensesList) {
-        let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': expensesList, 'runningId': this.runningId});
+    gotoManage(selected_id) {
+        let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.oriList, 'runningId': this.runningId});
         modal.present();
     }
 
@@ -123,6 +123,18 @@ export class ExpensesPage {
         return seconds + " seconds";
     }
 
+    doRefresh(refresher) {
+        console.log('Begin async operation', refresher);
+
+        setTimeout(() => {
+            this.loadData();
+            refresher.complete();
+        }, 1000);
+    }
+
+    aaaa(a){
+        alert(a);
+    }
 
     findRunningId(){
         var l = this.expensesList;

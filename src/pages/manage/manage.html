@@ -1,5 +1,6 @@
 <ion-header>
     <ion-toolbar>
+        
         <ion-buttons start>
             <button ion-button (click)="dismiss()">
                 <span ion-text color="primary" showWhen="ios">Cancel</span>
@@ -12,7 +13,6 @@
         </ion-title>
 
         <ion-buttons end>
-
             <button ion-button (click)="captureImage()" *ngIf="tmpImage == 0">
                 <ion-icon name="camera"></ion-icon>
             </button>
@@ -20,8 +20,8 @@
             <button ion-button (click)="removeImage()" *ngIf="tmpImage != 0">
                 <span ion-text color="danger">Remove</span>
             </button>
+        </ion-buttons>
 
-        </ion-buttons>        
     </ion-toolbar>
 </ion-header>
 

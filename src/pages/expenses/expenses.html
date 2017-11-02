@@ -1,33 +1,48 @@
 <ion-header>
     <ion-navbar>
+
+        <ion-buttons start>
+            <button ion-button (click)="triggerDelete()" color="danger">
+                Remove
+            </button>
+        </ion-buttons>
+
         <ion-title>
             Expenses
         </ion-title>
+
+
+
     </ion-navbar>
 </ion-header>
 
 <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
 
+    <ion-list *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
+        <ion-item-options side="left">
+            <button ion-button color="danger" (click)="delete(expenses)">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-item-options>
 
-    <ion-grid>
-        <ion-row>
-            <ion-item *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)" >
-                <img *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
-                <img *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
-
-                <p col-6 class="expenses-title">
-                    {{ expenses.name }} <span class="freq">{{ freqMap[expenses.freq] }}</span>
-                    <span class="datetime">{{ expenses.timeago }}</span>
-
-                </p>
-
-                <p class="price">{{ display_currency }}{{ expenses.amount }}</p>
-            </ion-item>
-        </ion-row>
-    </ion-grid>
+        <ion-item>            
+            <ion-thumbnail item-start>
+                <img (click)="aaaa('a')" *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
+                <img (click)="aaaa('a')" *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+            </ion-thumbnail>
+            <h2>{{ expenses.name }}</h2>
+            <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
+            <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
+            <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+        </ion-item>
+    </ion-list>
 
     <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="gotoManage('-1', expensesList )"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="danger" (click)="gotoManage('-1')"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>
