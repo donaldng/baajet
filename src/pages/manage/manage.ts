@@ -4,10 +4,6 @@ import { Storage } from '@ionic/storage';
 import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
-import { File } from '@ionic-native/file';
-import { FilePath } from '@ionic-native/file-path';
-
-declare var cordova: any;
 
 @Component({
     selector: 'page-manage',
@@ -27,7 +23,7 @@ export class ManagePage {
     tmpImage;
     lastImage;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform, private file: File, private filePath: FilePath) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         
@@ -85,64 +81,9 @@ export class ManagePage {
                 destinationType: this.camera.DestinationType.FILE_URI
             };
             this.camera.getPicture(options).then((imagePath) => {
-                alert(imagePath);
-
-                if (this.platform.is('android')) {
-                    this.filePath.resolveNativePath(imagePath)
-                    .then(filePath => {
-                        alert('android');
-                        let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                        let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-                        alert('123');
-                    });
-                } else {
-                    var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-                    var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-                    this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-                    alert('456');
-                }
-
-                this.tmpImage = this.pathForImage(this.lastImage);
-                alert(this.tmpImage);
+                this.tmpImage = imagePath;
             }, (err) => {
             });
-    }
-    private createFileName() {
-        var d = new Date(),
-            n = d.getTime(),
-            newFileName =  n + ".png";
-        alert('createFIleName');
-        return newFileName;
-    }
-
-    private presentToast(text) {
-        let toast = this.toastCtrl.create({
-            message: text,
-            duration: 3000,
-            position: 'top'
-        });
-        toast.present();
-    }
-
-    // Always get the accurate path to your apps folder
-    public pathForImage(img) {
-        if (img === null) {
-            return '';
-        } else {
-            alert('pathForImage');
-
-            return cordova.file.dataDirectory + img;
-        }
-    }
-
-    private copyFileToLocalDir(namePath, currentName, newFileName) {
-        this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-            alert('copyFileToLocalDir');
-            this.lastImage = newFileName;
-        }, error => {
-            alert('Error while storing file.');
-        });
     }
 
     captureImage(){
