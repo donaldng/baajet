@@ -78,7 +78,7 @@ export class ManagePage {
     chooseImage(){
             var options = {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-                destinationType: this.camera.DestinationType.FILE_URI
+                destinationType: this.camera.DestinationType.DATA_URL
             };
             this.camera.getPicture(options).then((imagePath) => {
                 this.tmpImage = imagePath;
