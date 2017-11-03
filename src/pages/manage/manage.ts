@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
+
+declare var cordova: any;
 
 @Component({
     selector: 'page-manage',
@@ -22,7 +24,7 @@ export class ManagePage {
     selected_freq;
     tmpImage;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events ) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         
@@ -80,11 +82,56 @@ export class ManagePage {
                 destinationType: this.camera.DestinationType.FILE_URI
             };
             this.camera.getPicture(options).then((imageData) => {
-                alert(imageData);
-                this.tmpImage = 'data:image/jpeg;base64,' + imageData;
+                if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+                    this.filePath.resolveNativePath(imagePath)
+                    .then(filePath => {
+                        let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                        let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                    });
+                } else {
+                    var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+                    var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+                    this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                }
+                this.tmpImage = this.pathForImage(this.lastImage);
+
             }, (err) => {
             });
     }
+    private createFileName() {
+        var d = new Date(),
+        n = d.getTime(),
+        newFileName =  n + ".jpg";
+        return newFileName;
+    }
+
+    private presentToast(text) {
+        let toast = this.toastCtrl.create({
+            message: text,
+            duration: 3000,
+            position: 'top'
+        });
+        toast.present();
+    }
+
+    // Always get the accurate path to your apps folder
+    public pathForImage(img) {
+        if (img === null) {
+            return '';
+        } else {
+            return cordova.file.dataDirectory + img;
+        }
+    }
+
+    private copyFileToLocalDir(namePath, currentName, newFileName) {
+        this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+            this.lastImage = newFileName;
+        }, error => {
+            this.presentToast('Error while storing file.');
+        });
+    }
+
     captureImage(){
         const options: CameraOptions = {
             quality: 100,
@@ -99,7 +146,6 @@ export class ManagePage {
         this.camera.getPicture(options).then((imageData) => {
             // imageData is either a base64 encoded string or a file URI
             // If it's base64:
-            alert(imageData);
             this.tmpImage = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
             // Handle error
@@ -128,8 +174,10 @@ export class ManagePage {
         if (this.selected_id == "-1"){
             changes['id'] = Math.round((new Date()).getTime() / 1000);
             changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
-
-            this.expensesList.push(changes);
+            if (this.expensesList)
+                this.expensesList.push(changes);
+            else
+                this.expensesList = [changes];
         }
         else{
             let index = this.findIndex(this.selected_id);
