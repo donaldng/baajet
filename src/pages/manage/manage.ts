@@ -86,9 +86,11 @@ export class ManagePage {
             };
             this.camera.getPicture(options).then((imagePath) => {
                 alert(imagePath);
+
                 if (this.platform.is('android')) {
                     this.filePath.resolveNativePath(imagePath)
                     .then(filePath => {
+                        alert('android');
                         let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
                         let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
                         this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
@@ -139,7 +141,7 @@ export class ManagePage {
             alert('copyFileToLocalDir');
             this.lastImage = newFileName;
         }, error => {
-            this.presentToast('Error while storing file.');
+            alert('Error while storing file.');
         });
     }
 
