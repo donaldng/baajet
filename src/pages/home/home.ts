@@ -206,6 +206,19 @@ export class HomePage {
         this.tripEnd = this.duration[1];   
     }
 
+    gotoManage(){
+        this.events.publish('gotoManage', {'selected_id': -1});
+    }
+
+    gotoImage(){
+
+    }
+
+    gotoSetting(){
+        let modal = this.modalCtrl.create(SettingPage);
+        modal.present();
+    }
+
     calcFrequency(freq_type, start, end){
         if (freq_type == 0 || freq_type == 1) return 1;
 

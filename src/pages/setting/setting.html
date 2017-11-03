@@ -1,13 +1,26 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+
         <ion-title>
             Setting
         </ion-title>
+
+        <ion-buttons end>
+            <button ion-button (click)="submitForm()">
+                <ion-icon ios="ios-checkmark" md="md-checkmark" color="primary"></ion-icon>
+            </button>
+        </ion-buttons>
+
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <form (ngSubmit)="submitForm()">
+    <form>
         <ion-list>
 
             <ion-item>
@@ -32,10 +45,6 @@
                 </ion-select>
             </ion-item>                      
         </ion-list>
-
-        <div padding>
-            <button ion-button full padding color="primary" type="submit">Save</button>
-        </div>
     </form>
 
 </ion-content>

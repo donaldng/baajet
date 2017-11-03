@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular'
 import { ModalController } from 'ionic-angular';
-import { ManagePage } from '../manage/manage';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 
@@ -90,8 +89,7 @@ export class ExpensesPage {
     }
 
     gotoManage(selected_id) {
-        let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.oriList, 'runningId': this.runningId});
-        modal.present();
+        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList});
     }
 
     expenses_found(){
@@ -130,10 +128,6 @@ export class ExpensesPage {
             this.loadData();
             refresher.complete();
         }, 1000);
-    }
-
-    aaaa(a){
-        alert(a);
     }
 
     findRunningId(){

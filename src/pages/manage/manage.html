@@ -1,10 +1,9 @@
 <ion-header>
     <ion-toolbar>
-        
+
         <ion-buttons start>
             <button ion-button (click)="dismiss()">
-                <span ion-text color="primary" showWhen="ios">Cancel</span>
-                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+                <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
             </button>
         </ion-buttons>
 
@@ -13,6 +12,13 @@
         </ion-title>
 
         <ion-buttons end>
+            <button ion-button (click)="submitForm()">
+                <ion-icon ios="ios-checkmark" md="md-checkmark" color="primary"></ion-icon>
+            </button>
+        </ion-buttons>
+
+<!--
+        <ion-buttons end>
             <button ion-button (click)="captureImage()" *ngIf="tmpImage == 0">
                 <ion-icon name="camera"></ion-icon>
             </button>
@@ -20,13 +26,13 @@
             <button ion-button (click)="removeImage()" *ngIf="tmpImage != 0">
                 <span ion-text color="danger">Remove</span>
             </button>
-        </ion-buttons>
+        </ion-buttons>-->
 
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <form (ngSubmit)="submitForm()">
+    <form>
         <ion-grid>
             <ion-row>
                 <ion-col >
@@ -66,13 +72,19 @@
                     </ion-list>
                 </ion-col>
                 <ion-col col-3 *ngIf="tmpImage != 0">
-                    <img src="{{ tmpImage }}"/>
+                    <img imageViewer src="{{ tmpImage }}"/>
                 </ion-col>
-                
             </ion-row>
         </ion-grid>
-        <div padding>
-            <button ion-button full padding color="primary" type="submit">Save</button>
-        </div>
     </form>
+    <ion-fab bottom right *ngIf="tmpImage == 0">
+        <button ion-fab><ion-icon ios="ios-attach" md="md-attach"></ion-icon></button>
+        <ion-fab-list side="left">
+            <button (click)="chooseImage()" ion-fab><ion-icon ios="ios-image" md="md-image"></ion-icon></button>
+            <button (click)="captureImage()" ion-fab><ion-icon ios="ios-camera" md="md-camera"></ion-icon></button>
+        </ion-fab-list>
+    </ion-fab>  
+    <ion-fab bottom right *ngIf="tmpImage != 0">
+        <button (click)="removeImage()" ion-fab><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>        
+    </ion-fab>          
 </ion-content>

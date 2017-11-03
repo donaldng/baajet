@@ -1,12 +1,6 @@
 <ion-header>
     <ion-navbar>
-
-        <ion-buttons start>
-            <button ion-button (click)="triggerDelete()" color="danger">
-                Remove
-            </button>
-        </ion-buttons>
-
+        
         <ion-title>
             Expenses
         </ion-title>
@@ -32,8 +26,8 @@
 
         <ion-item>            
             <ion-thumbnail item-start>
-                <img (click)="aaaa('a')" *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
-                <img (click)="aaaa('a')" *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+                <img imageViewer *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
+                <img imageViewer *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
             </ion-thumbnail>
             <h2>{{ expenses.name }}</h2>
             <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>

@@ -54,6 +54,14 @@ export class SettingPage {
         toast.present();
     }
 
+    goHome(){
+        this.navCtrl.parent.select(0);
+    }
+    
+    dismiss() {
+        this.viewCtrl.dismiss();
+    }
+
     submitForm() {
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
         var budget = Number(this.budget);
@@ -67,6 +75,6 @@ export class SettingPage {
         this.events.publish('update:currency', this.currency);
 
         this.presentToast();
-        this.navCtrl.parent.select(0);
+        this.dismiss()
     }
 }
