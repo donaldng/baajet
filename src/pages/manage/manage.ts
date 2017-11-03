@@ -25,6 +25,7 @@ export class ManagePage {
     tripEnd;
     selected_freq;
     tmpImage;
+    lastImage;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform, private file: File, private filePath: FilePath) {
         this.selected_id = this.params.get('selected_id');
