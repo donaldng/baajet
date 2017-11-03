@@ -80,6 +80,7 @@ export class ManagePage {
                 destinationType: this.camera.DestinationType.FILE_URI
             };
             this.camera.getPicture(options).then((imageData) => {
+                alert(imageData);
                 this.tmpImage = 'data:image/jpeg;base64,' + imageData;
             }, (err) => {
             });
@@ -98,6 +99,7 @@ export class ManagePage {
         this.camera.getPicture(options).then((imageData) => {
             // imageData is either a base64 encoded string or a file URI
             // If it's base64:
+            alert(imageData);
             this.tmpImage = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
             // Handle error
