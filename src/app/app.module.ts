@@ -17,6 +17,11 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -47,6 +52,9 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
     StatusBar,
     SplashScreen,
     Camera,
+    File,
+    Transfer,
+    FilePath,    
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

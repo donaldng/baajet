@@ -4,6 +4,8 @@ import { Storage } from '@ionic/storage';
 import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
 
 declare var cordova: any;
 
@@ -24,7 +26,7 @@ export class ManagePage {
     selected_freq;
     tmpImage;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform, private file: File, private filePath: FilePath) {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         
@@ -81,8 +83,8 @@ export class ManagePage {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
                 destinationType: this.camera.DestinationType.FILE_URI
             };
-            this.camera.getPicture(options).then((imageData) => {
-                if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+            this.camera.getPicture(options).then((imagePath) => {
+                if (this.platform.is('android')) {
                     this.filePath.resolveNativePath(imagePath)
                     .then(filePath => {
                         let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
@@ -94,8 +96,6 @@ export class ManagePage {
                     var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
                     this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                 }
-                this.tmpImage = this.pathForImage(this.lastImage);
-
             }, (err) => {
             });
     }
@@ -126,7 +126,7 @@ export class ManagePage {
 
     private copyFileToLocalDir(namePath, currentName, newFileName) {
         this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-            this.lastImage = newFileName;
+            this.tmpImage = newFileName;
         }, error => {
             this.presentToast('Error while storing file.');
         });
