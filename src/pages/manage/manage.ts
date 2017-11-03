@@ -81,6 +81,7 @@ export class ManagePage {
             targetHeight: 1000,
             destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.PNG,
+            sourceType: this.camera.SourceType.PHOTOLIBRARY,
             mediaType: this.camera.MediaType.ALLMEDIA,
             correctOrientation: true
         }
