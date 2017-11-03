@@ -2,12 +2,17 @@ page-home {
     
     h2 {
         font-size: 2.25rem;
+        text-align: center;
     }
 
     .extra{
         font-size: 3rem;
         font-weight: bold;
     }
+
+    .days{
+        font-size: 2.2rem;
+    }    
 
     .lbl{
         font-size: 2.1rem;
@@ -20,6 +25,7 @@ page-home {
     }
 
     p{
+        text-align: center;
         font-size: 1.85rem;
     }
 }
