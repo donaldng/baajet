@@ -208,6 +208,7 @@ export class HomePage {
 
     gotoManage(){
         this.events.publish('gotoManage', {'selected_id': -1});
+        this.navCtrl.parent.select(1);
     }
 
     gotoImage(){

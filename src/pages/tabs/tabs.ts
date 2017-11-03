@@ -5,25 +5,32 @@ import { ExpensesPage } from '../expenses/expenses';
 import { ManagePage } from '../manage/manage';
 
 import { Events } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 
 @Component({
-  templateUrl: 'tabs.html'
+    templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = ExpensesPage;
+    tab1Root = HomePage;
+    tab2Root = ExpensesPage;
+    expensesList;
 
-  constructor(public events: Events, public modalCtrl: ModalController) {
+    constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController) {
         events.subscribe('gotoManage', (v) => {
-            var expensesList = v.expensesList;
             var selected_id = v.selected_id;
 
-            let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': expensesList});
+            let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.expensesList});
+            modal.onDidDismiss(data => {
+            });
             modal.present();
 
-        });    
-  }
+        });  
+
+        events.subscribe('reload:expenses', (v) => {
+            this.expensesList = v;     
+        });
+
+    }
 
 }

@@ -85,20 +85,24 @@ export class ManagePage {
                 destinationType: this.camera.DestinationType.FILE_URI
             };
             this.camera.getPicture(options).then((imagePath) => {
+                alert(imagePath);
                 if (this.platform.is('android')) {
                     this.filePath.resolveNativePath(imagePath)
                     .then(filePath => {
                         let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
                         let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
                         this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                        alert('123');
                     });
                 } else {
                     var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
                     var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
                     this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                    alert('456');
                 }
 
                 this.tmpImage = this.pathForImage(this.lastImage);
+                alert(this.tmpImage);
             }, (err) => {
             });
     }
@@ -106,6 +110,7 @@ export class ManagePage {
         var d = new Date(),
         n = d.getTime(),
         newFileName =  n + ".png";
+        alert('createFIleName',newFileName);
         return newFileName;
     }
 
@@ -123,12 +128,15 @@ export class ManagePage {
         if (img === null) {
             return '';
         } else {
+            alert('pathForImage',cordova.file.dataDirectory + img);
+
             return cordova.file.dataDirectory + img;
         }
     }
 
     private copyFileToLocalDir(namePath, currentName, newFileName) {
         this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+            alert('copyFileToLocalDir', newFileName);
             this.lastImage = newFileName;
         }, error => {
             this.presentToast('Error while storing file.');

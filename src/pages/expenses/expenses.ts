@@ -52,7 +52,6 @@ export class ExpensesPage {
 
             this.events.publish('reload:home','expensesList',this.expensesList);
         });
-        this.findRunningId();
     }
 
     presentActionSheet(expenses) {
