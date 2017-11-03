@@ -12,6 +12,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 })
 export class MyApp {
     rootPage:any = TabsPage;
+    expensesList;
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
         platform.ready().then(() => {

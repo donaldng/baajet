@@ -108,9 +108,9 @@ export class ManagePage {
     }
     private createFileName() {
         var d = new Date(),
-        n = d.getTime(),
-        newFileName =  n + ".png";
-        alert('createFIleName',newFileName);
+            n = d.getTime(),
+            newFileName =  n + ".png";
+        alert('createFIleName');
         return newFileName;
     }
 
@@ -128,7 +128,7 @@ export class ManagePage {
         if (img === null) {
             return '';
         } else {
-            alert('pathForImage',cordova.file.dataDirectory + img);
+            alert('pathForImage');
 
             return cordova.file.dataDirectory + img;
         }
@@ -136,7 +136,7 @@ export class ManagePage {
 
     private copyFileToLocalDir(namePath, currentName, newFileName) {
         this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-            alert('copyFileToLocalDir', newFileName);
+            alert('copyFileToLocalDir');
             this.lastImage = newFileName;
         }, error => {
             this.presentToast('Error while storing file.');
