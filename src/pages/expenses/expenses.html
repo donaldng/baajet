@@ -1,40 +1,68 @@
 <ion-header>
     <ion-navbar>
+
+        <ion-buttons start>
+            <button ion-button>
+                <ion-icon ios="ios-remove-circle" md="md-remove-circle"></ion-icon>
+            </button>
+        </ion-buttons>
         
         <ion-title>
             Expenses
         </ion-title>
 
-
+        <ion-buttons end>
+            <button ion-button>
+                <ion-icon ios="ios-share" md="md-share"></ion-icon>
+            </button>
+        </ion-buttons>
 
     </ion-navbar>
 </ion-header>
 
 <ion-content>
+    <ion-segment [(ngModel)]="expenses_type" *ngIf="showSegment()">
+        <ion-segment-button value="onetime" *ngIf="onetime">
+            One time
+        </ion-segment-button>
+        <ion-segment-button value="recurring" *ngIf="recurring">
+            Recurring
+        </ion-segment-button>
+        <ion-segment-button value="reserved" *ngIf="reserved">
+            Reserved
+        </ion-segment-button>
+    </ion-segment>
+        
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
     <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
 
-    <ion-list *ngFor="let expenses of expensesList" (click)="presentActionSheet(expenses)">
-        <ion-item-options side="left">
-            <button ion-button color="danger" (click)="delete(expenses)">
-                <ion-icon name="close-circle"></ion-icon>
-            </button>
-        </ion-item-options>
+    <div [ngSwitch]="expenses_type">
+        <div *ngFor="let expenses of expensesList">
+        <ion-list *ngSwitchCase="getSwitchType(expenses)" (click)="presentActionSheet(expenses)">
 
-        <ion-item>            
-            <ion-thumbnail item-start>
-                <img imageViewer *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
-                <img imageViewer *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
-            </ion-thumbnail>
-            <h2>{{ expenses.name }}</h2>
-            <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
-            <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
-            <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
-        </ion-item>
-    </ion-list>
+            <ion-item-options side="left">
+                <button ion-button color="danger" (click)="delete(expenses)">
+                    <ion-icon name="close-circle"></ion-icon>
+                </button>
+            </ion-item-options>
+
+            <ion-item>            
+                <ion-thumbnail item-start>
+                    <img imageViewer *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
+                    <img imageViewer *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+                </ion-thumbnail>
+                <h2>{{ expenses.name }}</h2>
+                <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
+                <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
+                <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+            </ion-item>
+        </ion-list>
+        </div>
+    </div>
+
 
     <ion-fab right bottom>
         <button ion-fab color="danger" (click)="gotoManage('-1')"><ion-icon name="add"></ion-icon></button>

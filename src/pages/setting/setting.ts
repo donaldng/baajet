@@ -20,6 +20,7 @@ export class SettingPage {
 
     constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController ) {
         this.items = ['$', '¥', '€', '£', '฿'];
+        this.currency = '$';
         this.storage.get('budget').then((v) => {
             if(v) this.budget = v;
         });

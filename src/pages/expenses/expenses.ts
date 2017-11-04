@@ -11,16 +11,19 @@ import { Events } from 'ionic-angular';
 })
 
 export class ExpensesPage {
-    expensesList;
-    display_currency;
+    expensesList = [];
+    display_currency = '$';
     oriList;
-    freqMap;
+    freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
     runningId;
+    lastExpenses = 0;
+    currentHeader;
+    expenses_type = 'onetime';
+    onetime = 0;
+    recurring = 0;
+    reserved = 0;
 
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
-        this.display_currency = '$';
-        this.expensesList = [];
-        this.freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
         this.loadData();
 
         events.subscribe('update:currency', (c) => {
@@ -32,6 +35,7 @@ export class ExpensesPage {
             this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
             for (var i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
+                this.setSegment(this.expensesList[i].freq);
             }            
         });
     }
@@ -43,6 +47,7 @@ export class ExpensesPage {
                 this.oriList = expensesList;
                 for (var i = 0 ; i < this.expensesList.length ; i++ ){
                     this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
+                    this.setSegment(this.expensesList[i].freq);
                 }
             }
             else{
@@ -53,7 +58,16 @@ export class ExpensesPage {
             this.events.publish('reload:home','expensesList',this.expensesList);
         });
     }
-
+    setSegment(freq){
+        if (freq == 0) this.onetime = 1;
+        else if (freq == 1) this.reserved = 1;
+        else this.recurring = 1;
+    }
+    showSegment(){
+        var x = this.onetime + this.reserved + this.recurring;
+        if (x > 1) return true;
+        return false;
+    }
     presentActionSheet(expenses) {
         const actionSheet = this.actionSheetCtrl.create({
             title: 'Action',
@@ -127,6 +141,12 @@ export class ExpensesPage {
             this.loadData();
             refresher.complete();
         }, 1000);
+    }
+
+    getSwitchType(expenses){
+        if (expenses.freq == '0') return 'onetime';
+        if (expenses.freq == '1') return 'reserved';
+        return 'recurring';
     }
 
     findRunningId(){
