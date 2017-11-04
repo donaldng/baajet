@@ -132,6 +132,8 @@ export class ManagePage {
                 this.expensesList.push(changes);
             else
                 this.expensesList = [changes];
+
+            this.events.publish('change_segment', changes.freq);
         }
         else{
             let index = this.findIndex(this.selected_id);

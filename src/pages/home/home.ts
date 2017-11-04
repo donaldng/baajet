@@ -189,6 +189,7 @@ export class HomePage {
         else{
             this.n_day = 0;
         }
+        this.events.publish('total_expenses', this.display_tot_expenses);
         this.storage.set('day_budget', this.day_budget);
         
         if (this.day_budget > 0){

@@ -12,7 +12,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 })
 export class MyApp {
     rootPage:any = TabsPage;
-    expensesList;
+    expensesList = [];
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
         platform.ready().then(() => {
@@ -28,7 +28,6 @@ export class MyApp {
             }
             else{
                 this.storage.set('expensesList', []);
-                this.expensesList = [];
             }
 
             this.events.publish('reload:expenses',this.expensesList);

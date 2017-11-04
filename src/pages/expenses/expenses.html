@@ -20,19 +20,19 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
-    <ion-segment [(ngModel)]="expenses_type" *ngIf="showSegment()">
-        <ion-segment-button value="onetime" *ngIf="onetime">
+<ion-content>    
+    <ion-segment [(ngModel)]="expenses_type" *ngIf="showSegment > 1">
+        <ion-segment-button value="onetime" *ngIf="onetime" (click)="changeSwitchType('onetime')">
             One time
         </ion-segment-button>
-        <ion-segment-button value="recurring" *ngIf="recurring">
+        <ion-segment-button value="recurring" *ngIf="recurring" (click)="changeSwitchType('recurring')">
             Recurring
         </ion-segment-button>
-        <ion-segment-button value="reserved" *ngIf="reserved">
+        <ion-segment-button value="reserved" *ngIf="reserved" (click)="changeSwitchType('reserved')">
             Reserved
         </ion-segment-button>
     </ion-segment>
-        
+
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -41,25 +41,25 @@
 
     <div [ngSwitch]="expenses_type">
         <div *ngFor="let expenses of expensesList">
-        <ion-list *ngSwitchCase="getSwitchType(expenses)" (click)="presentActionSheet(expenses)">
+            <ion-list *ngSwitchCase="getSwitchType(expenses.freq)" (click)="presentActionSheet(expenses)">
 
-            <ion-item-options side="left">
-                <button ion-button color="danger" (click)="delete(expenses)">
-                    <ion-icon name="close-circle"></ion-icon>
-                </button>
-            </ion-item-options>
+                <ion-item-options side="left">
+                    <button ion-button color="danger" (click)="delete(expenses)">
+                        <ion-icon name="close-circle"></ion-icon>
+                    </button>
+                </ion-item-options>
 
-            <ion-item>            
-                <ion-thumbnail item-start>
-                    <img imageViewer *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
-                    <img imageViewer *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
-                </ion-thumbnail>
-                <h2>{{ expenses.name }}</h2>
-                <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
-                <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
-                <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
-            </ion-item>
-        </ion-list>
+                <ion-item>            
+                    <ion-thumbnail item-start>
+                        <img imageViewer *ngIf=" expenses.image != 0 " class="circle-pic" src="{{ expenses.image }}" />
+                        <img imageViewer *ngIf=" expenses.image == 0 " class="circle-pic" src="assets/imgs/default.png" />
+                    </ion-thumbnail>
+                    <h2>{{ expenses.name }}</h2>
+                    <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
+                    <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
+                    <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+                </ion-item>
+            </ion-list>
         </div>
     </div>
 
@@ -67,4 +67,8 @@
     <ion-fab right bottom>
         <button ion-fab color="danger" (click)="gotoManage('-1')"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
+    <ion-footer *ngIf="tot_expenses != 0">
+        <h2>Total: {{ display_currency }}{{ tot_expenses }}</h2>
+    </ion-footer>
 </ion-content>
+

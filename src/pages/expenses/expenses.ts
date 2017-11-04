@@ -22,6 +22,8 @@ export class ExpensesPage {
     onetime = 0;
     recurring = 0;
     reserved = 0;
+    showSegment = 0;
+    tot_expenses = 0;
 
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.loadData();
@@ -30,13 +32,23 @@ export class ExpensesPage {
             this.display_currency = c;
         });
 
+        events.subscribe('change_segment', (v) => {
+            this.expenses_type = this.getSwitchType(v);
+        });
+
+        events.subscribe('total_expenses', (v) => {
+            this.tot_expenses = v.toFixed(2);
+        });        
+
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
             this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
+            this.resetSegment();
             for (var i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                 this.setSegment(this.expensesList[i].freq);
-            }            
+            }
+            this.showSegment = this.getSegmentStatus();               
         });
     }
 
@@ -45,6 +57,7 @@ export class ExpensesPage {
             if (expensesList){
                 this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
                 this.oriList = expensesList;
+                this.resetSegment();
                 for (var i = 0 ; i < this.expensesList.length ; i++ ){
                     this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                     this.setSegment(this.expensesList[i].freq);
@@ -54,19 +67,31 @@ export class ExpensesPage {
                 this.storage.set('expensesList', []);
                 this.expensesList = [];
             }
-
+            this.showSegment = this.getSegmentStatus();
             this.events.publish('reload:home','expensesList',this.expensesList);
         });
     }
     setSegment(freq){
-        if (freq == 0) this.onetime = 1;
-        else if (freq == 1) this.reserved = 1;
-        else this.recurring = 1;
+        if (freq == 0) this.onetime += 1;
+        else if (freq == 1) this.reserved += 1;
+        else this.recurring += 1;
     }
-    showSegment(){
-        var x = this.onetime + this.reserved + this.recurring;
-        if (x > 1) return true;
-        return false;
+    resetSegment(){
+        this.recurring = 0;
+        this.reserved = 0;
+        this.showSegment = 0;        
+    }
+    getSegment(freq){
+        if (freq == 0) return this.onetime;
+        else if (freq == 1) return this.reserved;
+        else return this.recurring;
+    }
+    getSegmentStatus(){
+        var x = 0;
+        if (this.onetime) x += 1;
+        if (this.reserved) x += 1;
+        if (this.recurring) x += 1;
+        return x;
     }
     presentActionSheet(expenses) {
         const actionSheet = this.actionSheetCtrl.create({
@@ -87,6 +112,18 @@ export class ExpensesPage {
                     this.expensesList.splice(index,1);
                     this.storage.set('expensesList', this.expensesList);
                     this.events.publish('reload:home','expensesList',this.expensesList);
+                    this.events.publish('reload:expenses',this.expensesList);
+
+                    if (!this.getSegment(expenses.freq)){
+                        for(var i = 0; i < this.freqMap.length; i++){
+                            if(this.getSegment(i)){
+                                this.expenses_type = this.getSwitchType(i);
+                                break;
+                            }
+                        }
+
+                        this.showSegment = this.getSegmentStatus();
+                    }
                 }
             },
             {
@@ -101,11 +138,16 @@ export class ExpensesPage {
         actionSheet.present();
     }
 
+    changeSwitchType(type){
+        this.expenses_type = type;
+    }
+
     gotoManage(selected_id) {
         this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList});
     }
 
     expenses_found(){
+        console.log('expenses_found');
         if (this.expensesList)
             return this.expensesList.length;
         else
@@ -143,9 +185,10 @@ export class ExpensesPage {
         }, 1000);
     }
 
-    getSwitchType(expenses){
-        if (expenses.freq == '0') return 'onetime';
-        if (expenses.freq == '1') return 'reserved';
+    getSwitchType(freq){
+        console.log(freq);
+        if (freq == '0') return 'onetime';
+        if (freq == '1') return 'reserved';
         return 'recurring';
     }
 

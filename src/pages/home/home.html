@@ -25,7 +25,7 @@
     <ion-grid *ngIf="tot_budget != 0">
         <ion-row>
             <ion-col width-100>
-                <ion-card color="primary" padding>
+                <ion-card color="primary" padding (click)="gotoSetting()">
                     <p class="lbl" *ngIf="campaign_ended == 0">Daily Budget</p>
                     <p class="lbl" *ngIf="campaign_ended == 1">Left Overs</p>
                     <h2>
