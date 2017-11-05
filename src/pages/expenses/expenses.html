@@ -8,7 +8,7 @@
         </ion-buttons>
         
         <ion-title>
-            Expenses
+            Expenses <span *ngIf="tot_expenses != 0">{{ display_currency }}{{ tot_expenses }}</span>
         </ion-title>
 
         <ion-buttons end>
@@ -52,24 +52,18 @@
                 <ion-item>            
                     <ion-thumbnail item-start>
                         <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
-                        <img src="assets/imgs/default.png" imageViewer *ngIf=" expenses.image == 0 " />
+                        <img src="assets/imgs/me.jpg" imageViewer *ngIf=" expenses.image == 0 " />
                     </ion-thumbnail>
                     <h2>{{ expenses.name }}</h2>
                     <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
-                    <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
                     <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
-                    <div class="box"></div>
                 </ion-item>
             </ion-list>
         </div>
     </div>
 
-
     <ion-fab right bottom>
         <button ion-fab color="danger" (click)="gotoManage('-1')"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
-    <ion-footer *ngIf="tot_expenses != 0">
-        <h2>Total: {{ display_currency }}{{ tot_expenses }}</h2>
-    </ion-footer>
 </ion-content>
 

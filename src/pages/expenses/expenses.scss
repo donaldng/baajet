@@ -58,12 +58,19 @@ page-expenses {
         text-align: center;
         font-size: 1.85rem;
     }
-
-    img{
-        margin: 0px 8px 0px;        
-
-        object-fit: cover;
+    
+    ion-thumbnail{
+        max-width: 40px;
+        max-height: 40px;
     }
+
+    img{ 
+        margin: 0px 4px 0px;
+        object-fit: cover;
+        -webkit-border-radius: 10%;
+        border-radius: 10%;
+     }
+
     ion-footer{
         text-align: center; vertical-align: middle;    
     }
