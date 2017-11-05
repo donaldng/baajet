@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
@@ -18,7 +18,7 @@ export class SettingPage {
     tripStart;
     tripEnd;
 
-    constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController ) {
+    constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController, private alertCtrl: AlertController) {
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
         this.storage.get('budget').then((v) => {
@@ -61,6 +61,46 @@ export class SettingPage {
     
     dismiss() {
         this.viewCtrl.dismiss();
+    }
+    
+    reset(){
+        this.storage.clear();
+
+        this.tripStart = new Date().toISOString().slice(0, 19);
+        this.tripEnd = new Date();
+        this.tripEnd.setDate(this.tripEnd.getDate() + 7);
+        this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
+
+        var duration = this.tripStart + ' ~ ' + this.tripEnd;
+
+        this.events.publish('reload:home', 'tot_budget', 0);
+        this.events.publish('reload:home', 'duration', duration);
+        this.events.publish('reload:expenses', []);
+
+        this.dismiss()
+
+    }
+
+    presentConfirm() {
+        let alert = this.alertCtrl.create({
+            title: 'Reset',
+            message: 'Do you want to reset all your current trips information?',
+            buttons: [
+            {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                }
+            },
+            {
+                text: 'Yes',
+                handler: () => {
+                    this.reset();
+                }
+            }
+            ]
+        });
+        alert.present();
     }
 
     submitForm() {

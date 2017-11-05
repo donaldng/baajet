@@ -43,7 +43,11 @@
                 <ion-select [(ngModel)]="currency" name="currency" interface="action-sheet">
                     <ion-option *ngFor="let item of items" value="{{item}}" [selected]="currency == item" >{{item}}</ion-option>
                 </ion-select>
-            </ion-item>                      
+            </ion-item>
+
+            <ion-item>
+                <button ion-button color="danger" clear (click)="presentConfirm()">Reset Button</button>  
+            </ion-item>                
         </ion-list>
     </form>
 

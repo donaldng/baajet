@@ -142,7 +142,7 @@ export class HomePage {
         if(this.tot_budget)
             this.greetMsg = 'Good day, spend your wealth with good health!';
         else
-            this.greetMsg = 'Opps, we need your input on your trip\'s budget, sir! Go set it up in Setting!';
+            this.greetMsg = 'Opps, we gonna need your inputs on trip\'s budget! Go set it up in Setting!';
     }
     
     calcDbBudget(){
