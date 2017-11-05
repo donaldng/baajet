@@ -51,8 +51,8 @@
 
                 <ion-item>            
                     <ion-thumbnail item-start>
-                        <div class="image" style="background-image:url('../{{ expenses.image }}');" imageViewer="{{ expenses.image }}" *ngIf=" expenses.image != 0 "></div>
-                        <div class="image" style="background-image:url('../assets/imgs/default.png');" imageViewer="assets/imgs/default.png" *ngIf=" expenses.image == 0 "></div>
+                        <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
+                        <img src="assets/imgs/default.png" imageViewer *ngIf=" expenses.image == 0 " />
                     </ion-thumbnail>
                     <h2>{{ expenses.name }}</h2>
                     <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
