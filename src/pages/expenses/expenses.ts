@@ -164,16 +164,16 @@ export class ExpensesPage {
 
         interval = Math.floor(seconds / 3600);
         if (interval >= 24) 
-            return oridate;
+            return oridate.split(' ')[0];
 
         if (interval >= 1) 
-            return interval + " hours";
+            return interval + " h";
         
         interval = Math.floor(seconds / 60);
         if (interval >= 1) 
-            return interval + " minutes";
+            return interval + " m";
 
-        return seconds + " seconds";
+        return seconds + " s";
     }
 
     doRefresh(refresher) {

@@ -62,6 +62,12 @@ page-expenses {
     img{ 
         float: left;
         margin: 0px 8px 0px;
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        
      }
 
     .image {

@@ -22,6 +22,7 @@ export class ManagePage {
     selected_freq;
     tmpImage;
     lastImage;
+    thumbnail;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
@@ -80,7 +81,7 @@ export class ManagePage {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
                 destinationType: this.camera.DestinationType.DATA_URL
             };
-            this.camera.getPicture(options).then((imagePath) => {
+            this.camera.getPicture(options).then((imagePath) => {              
                 this.tmpImage = 'data:image/jpeg;base64,' + imagePath;
             }, (err) => {
             });
@@ -98,15 +99,17 @@ export class ManagePage {
         }
 
         this.camera.getPicture(options).then((imageData) => {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
+
             this.tmpImage = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
             // Handle error
         });
 
     }
-
+    setThumbnail(img){
+        alert(img);
+        this.thumbnail = 'data:image/jpeg;base64,' + img;
+    }
     submitForm() {
         var name = this.default_placeholder;
 
@@ -122,7 +125,8 @@ export class ManagePage {
             'freq_start': this.expenses.freq_start,
             'freq_end': this.expenses.freq_end,
             'datetime': this.expenses.datetime,
-            'image': this.tmpImage
+            'image': this.tmpImage,
+            'thumbnail': this.thumbnail
         };
 
         if (this.selected_id == "-1"){
