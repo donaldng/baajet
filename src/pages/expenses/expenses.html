@@ -51,7 +51,7 @@
 
                 <ion-item>            
                     <ion-thumbnail item-start>
-                        <img imageViewer *ngIf=" expenses.image != 0 " src="{{ expenses.thumbnail }}" />
+                        <img imageViewer *ngIf=" expenses.image != 0 " src="{{ expenses.image }}" />
                         <img imageViewer *ngIf=" expenses.image == 0 " src="assets/imgs/default.png" />
                     </ion-thumbnail>
                     <h2>{{ expenses.name }}</h2>
