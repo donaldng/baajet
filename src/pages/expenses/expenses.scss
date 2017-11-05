@@ -59,28 +59,14 @@ page-expenses {
         font-size: 1.85rem;
     }
 
-    img{ 
-        float: left;
-        margin: 0px 8px 0px;
-        object-fit: contain;
-     }
-
-    .image {
-        height: 5vw; 
-        width: 5vw; 
-        border: 0px solid #fff;
-        border-radius: 50%;
-        box-shadow: 0 0 5px gray;
-        display: inline-block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .circle-pic{
-        width:40px;
-        height:40px;
-        -webkit-border-radius: 10%;
-        border-radius: 10%;
+    .image { 
+        position: absolute;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width:80px;
+        height:80px;        
+        margin: 0px 8px 0px;        
     }
 
     ion-footer{

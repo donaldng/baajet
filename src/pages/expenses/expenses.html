@@ -51,13 +51,14 @@
 
                 <ion-item>            
                     <ion-thumbnail item-start>
-                        <img imageViewer *ngIf=" expenses.image != 0 " src="{{ expenses.image }}" />
-                        <img imageViewer *ngIf=" expenses.image == 0 " src="assets/imgs/default.png" />
+                        <div class="image" style="background-image:url('../{{ expenses.image }}');" imageViewer="{{ expenses.image }}" *ngIf=" expenses.image != 0 "></div>
+                        <div class="image" style="background-image:url('../assets/imgs/default.png');" imageViewer="assets/imgs/default.png" *ngIf=" expenses.image == 0 "></div>
                     </ion-thumbnail>
                     <h2>{{ expenses.name }}</h2>
                     <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
                     <!--<button (click)="gotoManage(expenses.id)" ion-button clear item-end>{{ display_currency }}{{ expenses.amount }}</button>-->
                     <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+                    <div class="box"></div>
                 </ion-item>
             </ion-list>
         </div>
