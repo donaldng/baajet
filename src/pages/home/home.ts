@@ -213,7 +213,8 @@ export class HomePage {
     }
 
     gotoImage(){
-
+        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': 1});
+        this.navCtrl.parent.select(1);
     }
 
     gotoSetting(){

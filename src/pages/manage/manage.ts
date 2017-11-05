@@ -23,11 +23,15 @@ export class ManagePage {
     tmpImage;
     lastImage;
     thumbnail;
+    camOn = 0;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
-        
+        this.camOn = this.params.get('camOn');
+
+        if (this.camOn) this.captureImage();
+
         this.default_placeholder = 'Expenses #';
 
         this.tmpImage = 0;
@@ -76,6 +80,7 @@ export class ManagePage {
         }
         return -1;
     }
+
     chooseImage(){
             var options = {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -106,10 +111,12 @@ export class ManagePage {
         });
 
     }
+
     setThumbnail(img){
         alert(img);
         this.thumbnail = 'data:image/jpeg;base64,' + img;
     }
+    
     submitForm() {
         var name = this.default_placeholder;
 

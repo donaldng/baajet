@@ -2,13 +2,13 @@
     <ion-navbar>
 
         <ion-buttons start>
-            <button ion-button>
+            <button ion-button (click)="openAll()">
                 <ion-icon ios="ios-remove-circle" md="md-remove-circle"></ion-icon>
             </button>
         </ion-buttons>
         
         <ion-title>
-            Expenses <span *ngIf="tot_expenses != 0">{{ display_currency }}{{ tot_expenses }}</span>
+            Expenses <span *ngIf="tot_expenses != 0">(Total: {{ display_currency }}{{ tot_expenses }})</span>
         </ion-title>
 
         <ion-buttons end>
@@ -42,17 +42,10 @@
     <div [ngSwitch]="expenses_type">
         <div *ngFor="let expenses of expensesList">
             <ion-list *ngSwitchCase="getSwitchType(expenses.freq)" (click)="presentActionSheet(expenses)">
-
-                <ion-item-options side="left">
-                    <button ion-button color="danger" (click)="delete(expenses)">
-                        <ion-icon name="close-circle"></ion-icon>
-                    </button>
-                </ion-item-options>
-
-                <ion-item>            
+                <ion-item>
                     <ion-thumbnail item-start>
                         <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
-                        <img src="assets/imgs/me.jpg" imageViewer *ngIf=" expenses.image == 0 " />
+                        <img src="assets/imgs/default.png" imageViewer *ngIf=" expenses.image == 0 " />
                     </ion-thumbnail>
                     <h2>{{ expenses.name }}</h2>
                     <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>

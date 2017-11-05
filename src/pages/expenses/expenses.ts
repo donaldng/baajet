@@ -210,5 +210,5 @@ export class ExpensesPage {
         }
 
         this.runningId = Number(return_id) + 1;        
-    }   
+    }  
 }

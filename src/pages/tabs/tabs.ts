@@ -19,8 +19,12 @@ export class TabsPage {
     constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController) {
         events.subscribe('gotoManage', (v) => {
             var selected_id = v.selected_id;
+            var camOn = 0;
 
-            let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.expensesList});
+            if (v.camOn) camOn = v.camOn;
+
+
+            let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.expensesList, 'camOn': camOn});
             modal.onDidDismiss(data => {
             });
             modal.present();
