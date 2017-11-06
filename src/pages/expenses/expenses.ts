@@ -28,6 +28,10 @@ export class ExpensesPage {
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.loadData();
 
+        this.storage.get('currency').then((v) => {
+            if(v) this.display_currency = v;
+        });
+
         events.subscribe('update:currency', (c) => {
             this.display_currency = c;
         });

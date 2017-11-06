@@ -23,6 +23,8 @@ export class ManagePage {
     tmpImage;
     lastImage;
     thumbnail;
+    saveimageFlag = false;
+    editFlag = false;
     camOn = 0;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
@@ -69,7 +71,15 @@ export class ManagePage {
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Edit expenses";
-        }        
+        }
+
+        this.storage.get('saveimageFlag').then((v) => {
+            if(v) this.saveimageFlag = v;
+        });    
+        
+        this.storage.get('editFlag').then((v) => {
+            if(v) this.editFlag = v;
+        });                  
     }
 
     findIndex(find_id){
@@ -97,6 +107,8 @@ export class ManagePage {
             quality: 100,
             targetWidth: 1000,
             targetHeight: 1000,
+            saveToPhotoAlbum: this.saveimageFlag,
+            allowEdit: this.editFlag,
             destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.PNG,
             mediaType: this.camera.MediaType.PICTURE,

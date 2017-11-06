@@ -20,17 +20,6 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
-        });
-
-        this.storage.get('expensesList').then((expensesList) => {
-            if (expensesList){
-                this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
-            }
-            else{
-                this.storage.set('expensesList', []);
-            }
-
-            this.events.publish('reload:expenses',this.expensesList);
-        });    
+        });   
     }
 }

@@ -17,6 +17,8 @@ export class SettingPage {
     duration;
     tripStart;
     tripEnd;
+    saveimageFlag;
+    editFlag;
 
     constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController, private alertCtrl: AlertController) {
         this.items = ['$', '¥', '€', '£', '฿'];
@@ -27,7 +29,6 @@ export class SettingPage {
 
         this.storage.get('currency').then((v) => {
             if(v) this.currency = v;
-
         });
 
         this.storage.get('duration').then((v) => {
@@ -44,6 +45,13 @@ export class SettingPage {
                 this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
             }
         });
+
+        this.storage.get('saveimageFlag').then((v) => {
+            if(v) this.saveimageFlag = v;
+        });    
+        this.storage.get('editFlag').then((v) => {
+            if(v) this.editFlag = v;
+        }); 
     }
 
     presentToast() {
@@ -110,10 +118,14 @@ export class SettingPage {
         this.storage.set('budget', budget);
         this.storage.set('currency', this.currency);
         this.storage.set('duration', duration);
+        this.storage.set('saveimageFlag', this.saveimageFlag);
+        this.storage.set('editFlag', this.editFlag);
 
         this.events.publish('reload:home', 'tot_budget', budget);
         this.events.publish('reload:home', 'duration', duration);
         this.events.publish('update:currency', this.currency);
+        this.events.publish('saveimageFlag', this.saveimageFlag);
+        this.events.publish('editFlag', this.editFlag);
 
         this.presentToast();
         this.dismiss()
