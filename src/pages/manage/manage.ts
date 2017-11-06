@@ -25,7 +25,7 @@ export class ManagePage {
     thumbnail;
     saveimageFlag = false;
     editFlag = false;
-    camOn = 0;
+    camOn = false;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
@@ -76,7 +76,7 @@ export class ManagePage {
         this.storage.get('saveimageFlag').then((v) => {
             if(v) this.saveimageFlag = v;
         });    
-        
+
         this.storage.get('editFlag').then((v) => {
             if(v) this.editFlag = v;
         });                  
@@ -94,6 +94,7 @@ export class ManagePage {
     chooseImage(){
             var options = {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+                allowEdit: this.editFlag,
                 destinationType: this.camera.DestinationType.DATA_URL
             };
             this.camera.getPicture(options).then((imagePath) => {              

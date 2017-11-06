@@ -27,6 +27,7 @@ export class HomePage {
     greetMsg;
     expensesList;
     timezone;
+    newphotoFlag;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
@@ -60,17 +61,26 @@ export class HomePage {
             this.display_currency = c;
         });
 
+        events.subscribe('newphotoFlag', (v) => {
+            this.newphotoFlag = v;
+        });        
+
         this.campaign_ended = 0;
         this.getGreetMsg()
         
     }
 
     updateData(){
-
         // update once modal close
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
                 this.tot_budget = v;
+            }
+        });
+
+        this.storage.get('newphotoFlag').then((v) => {
+            if (v && this.newphotoFlag != v){
+                this.newphotoFlag = v;
             }
         });  
 
@@ -208,7 +218,7 @@ export class HomePage {
     }
 
     gotoManage(){
-        this.events.publish('gotoManage', {'selected_id': -1});
+        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag});
         this.navCtrl.parent.select(1);
     }
 
@@ -224,11 +234,8 @@ export class HomePage {
 
     calcFrequency(freq_type, start, end){
         if (freq_type == 0 || freq_type == 1) return 1;
-
         if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end));
-
         if (freq_type == 3) return this.dayDiff(new Date(start), new Date(end)) / 7;
-
         if (freq_type == 4) return this.dayDiff(new Date(start), new Date(end)) / 30;
     }
 }

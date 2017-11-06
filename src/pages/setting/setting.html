@@ -56,7 +56,11 @@
                 <ion-item>
                     <ion-label>Enable photo editing?</ion-label>
                     <ion-toggle [(ngModel)]="editFlag" name="editFlag" checked="false"></ion-toggle>
-                </ion-item>                
+                </ion-item>
+                <ion-item>
+                    <ion-label>Always capture new photo?</ion-label>
+                    <ion-toggle [(ngModel)]="newphotoFlag" name="newphotoFlag" checked="false"></ion-toggle>
+                </ion-item>                             
             </ion-item-group>            
             <ion-item-group>
                 <ion-item-divider color="light">Reset</ion-item-divider>

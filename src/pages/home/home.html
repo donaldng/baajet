@@ -36,8 +36,12 @@
                 </ion-card>
             </ion-col>
         </ion-row>
+
     </ion-grid>
     <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="gotoManage()"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="danger" (click)="gotoManage()">
+            <ion-icon *ngIf="!newphotoFlag" name="add"></ion-icon>
+            <ion-icon *ngIf="newphotoFlag" ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
     </ion-fab>    
 </ion-content>

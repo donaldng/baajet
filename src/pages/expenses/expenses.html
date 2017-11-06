@@ -57,7 +57,10 @@
     </div>
 
     <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="gotoManage('-1')"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="danger" (click)="gotoManage('-1')">
+            <ion-icon *ngIf="!newphotoFlag" name="add"></ion-icon>
+            <ion-icon *ngIf="newphotoFlag" ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
     </ion-fab>
 </ion-content>
 

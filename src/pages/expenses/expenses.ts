@@ -24,6 +24,7 @@ export class ExpensesPage {
     reserved = 0;
     showSegment = 0;
     tot_expenses = 0;
+    newphotoFlag;
 
     constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.loadData();
@@ -42,7 +43,11 @@ export class ExpensesPage {
 
         events.subscribe('total_expenses', (v) => {
             this.tot_expenses = v.toFixed(2);
-        });        
+        });
+
+        events.subscribe('newphotoFlag', (v) => {
+            this.newphotoFlag = v;
+        });       
 
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
@@ -74,6 +79,11 @@ export class ExpensesPage {
             this.showSegment = this.getSegmentStatus();
             this.events.publish('reload:home','expensesList',this.expensesList);
         });
+
+        this.storage.get('newphotoFlag').then((v) => {
+            this.newphotoFlag = v;
+        });
+
     }
     setSegment(freq){
         if (freq == 0) this.onetime += 1;
@@ -147,7 +157,7 @@ export class ExpensesPage {
     }
 
     gotoManage(selected_id) {
-        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList});
+        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag});
     }
 
     expenses_found(){
