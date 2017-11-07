@@ -46,15 +46,25 @@
                                 <ion-option value="4">Monthly</ion-option>
                             </ion-select>
                         </ion-item>
+                        
+                        <ion-item *ngIf="selected_freq == 0">
+                            <ion-label stacked color="primary">Spending it today?</ion-label>
+                            <ion-toggle [(ngModel)]="expenses.todays" name="todays" checked="true"></ion-toggle>
+                        </ion-item>
 
-                        <ion-item *ngIf="selected_freq != 0 && selected_freq != 1">
-                          <ion-label color="primary" stacked>Start since?</ion-label>
-                          <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_start" name="freq_start"></ion-datetime>
+                        <ion-item *ngIf="selected_freq == 0 && expenses.todays == false">
+                            <ion-label color="primary" stacked>But when?</ion-label>
+                            <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="todays_b" name="todays_b"></ion-datetime>
                         </ion-item>
 
                         <ion-item *ngIf="selected_freq != 0 && selected_freq != 1">
-                          <ion-label color="primary" stacked>Until when?</ion-label>
-                          <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_end" name="freq_end"></ion-datetime>
+                            <ion-label color="primary" stacked>Start since?</ion-label>
+                            <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_start" name="freq_start"></ion-datetime>
+                        </ion-item>
+
+                        <ion-item *ngIf="selected_freq != 0 && selected_freq != 1">
+                            <ion-label color="primary" stacked>Until when?</ion-label>
+                            <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_end" name="freq_end"></ion-datetime>
                         </ion-item>   
 
                     </ion-list>

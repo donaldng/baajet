@@ -19,25 +19,38 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content class="outer-content">
+    <ion-list *ngIf="tot_budget != 0">
+        <ion-item-group>
+
+            <ion-list-header color="light">
+                <span *ngIf="campaign_ended == 0">Trip's budget for {{ n_day }} days</span>
+                <span *ngIf="campaign_ended == 1">Left overs</span>
+                <ion-badge color="primary" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
+            </ion-list-header>        
+            <ion-item>
+                <ion-range min="0" max="{{ tot_budget }}" [(ngModel)]="tot_remaining" color="primary">
+                    <ion-icon range-left small color="primary" ios="ios-alert" md="md-alert"></ion-icon>
+                    <ion-icon range-right color="primary" ios="ios-happy" md="md-happy"></ion-icon>
+                </ion-range>
+            </ion-item>
+        </ion-item-group>
+        <ion-item-group *ngIf="campaign_ended == 0">
+            <ion-list-header color="light">
+                Daily budget
+                <ion-badge color="danger" item-end *ngIf="day_expenses != 0">{{ display_currency }}{{ day_expenses }}</ion-badge>
+                <ion-badge color="secondary" item-end>{{ display_currency }}{{ day_budget }}</ion-badge>
+            </ion-list-header>           
+            <ion-item>
+                <ion-range min="0" max="{{ day_budget }}" [(ngModel)]="day_remaining" color="secondary">
+                    <ion-icon range-left small color="secondary" ios="ios-alert" md="md-alert"></ion-icon>
+                    <ion-icon range-right color="secondary" ios="ios-cash" md="md-cash"></ion-icon>
+                </ion-range>
+            </ion-item>
+        </ion-item-group>    
+    </ion-list>        
     <p padding>{{ greetMsg }}</p>
 
-    <ion-grid *ngIf="tot_budget != 0">
-        <ion-row>
-            <ion-col width-100>
-                <ion-card color="primary" padding (click)="gotoSetting()">
-                    <p class="lbl" *ngIf="campaign_ended == 0">Daily Budget</p>
-                    <p class="lbl" *ngIf="campaign_ended == 1">Left Overs</p>
-                    <h2>
-                        <span class="currency">{{ display_currency }}</span>
-                        <span class="extra">{{ day_budget }}</span>
-                        <span class="days">x {{ n_day }} days</span>
-                    </h2>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-
-    </ion-grid>
     <ion-fab right bottom>
         <button ion-fab color="danger" (click)="gotoManage()">
             <ion-icon *ngIf="!newphotoFlag" name="add"></ion-icon>

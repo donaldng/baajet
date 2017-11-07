@@ -26,6 +26,7 @@ export class ManagePage {
     saveimageFlag = false;
     editFlag = false;
     camOn = false;
+    todays_b;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
@@ -38,6 +39,10 @@ export class ManagePage {
 
         this.tmpImage = 0;
         this.selected_freq = 0;
+
+        var todays_b = new Date();
+        todays_b.setDate(todays_b.getDate() + 1);
+        this.todays_b = todays_b.toISOString().slice(0, 19);
 
         this.storage.get('duration').then((v) => {
             if (v){
@@ -62,6 +67,7 @@ export class ManagePage {
             this.expenses = {name: '', amount: '', freq: ''};
             this.pageName = "Add expenses";
             this.expenses.freq = 0;
+            this.expenses.todays = true;
         }
 
         if(this.selected_id != '-1'){
@@ -71,6 +77,7 @@ export class ManagePage {
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Edit expenses";
+            if (this.selected_freq == 0) this.todays_b = this.expenses.freq_start;
         }
 
         this.storage.get('saveimageFlag').then((v) => {
@@ -133,9 +140,15 @@ export class ManagePage {
     submitForm() {
         var name = this.default_placeholder;
 
-        if (this.expenses.name.trim() != "") name = this.expenses.name.trim(); 
-        if (this.expenses.freq_start.trim()  == "") this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
-        if (this.expenses.freq_end.trim()  == "") this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+        if (this.expenses.name.trim() != "") name = this.expenses.name.trim();
+
+        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
+        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+        
+        if (this.expenses.freq == 0 && this.expenses.todays){
+            this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
+            this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+        }
 
         var changes = {
             'id': this.expenses.id,
@@ -146,7 +159,8 @@ export class ManagePage {
             'freq_end': this.expenses.freq_end,
             'datetime': this.expenses.datetime,
             'image': this.tmpImage,
-            'thumbnail': this.thumbnail
+            'thumbnail': this.thumbnail,
+            'todays': this.expenses.todays
         };
 
         if (this.selected_id == "-1"){

@@ -22,18 +22,20 @@ export class HomePage {
     duration;
     day_color;
     tot_expenses;
-    display_tot_expenses;
     campaign_ended;
     greetMsg;
     expensesList;
     timezone;
     newphotoFlag;
+    tot_remaining = 0;
+    day_remaining = 0;
+    day_expenses = 0;
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
-        this.display_tot_expenses = 0;
+        this.tot_expenses = 0;
         this.day_budget = 0;
         this.tot_budget = 0;
 
@@ -177,15 +179,29 @@ export class HomePage {
         var n_day = this.get_nday();
         this.budgetTmp = this.tot_budget;
         this.tot_expenses = 0;
+        this.day_expenses = 0;
         if(v){
             
             for (var i=0; i < v.length; i++){
+                if(v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ') && v[i].freq_end.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ')){
+                    // Do not account day expenses into daily budget calculation
+                    // Unless it's a over spent, then we deduct overspent amount from daily budget
+                    this.day_expenses += Number(v[i].amount);
+                    continue;
+                }
                 this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_start, v[i].freq_end));
             }
-            this.display_tot_expenses = Math.abs(this.tot_expenses);
-            this.budgetTmp -= this.display_tot_expenses;
+            this.tot_expenses = Math.abs(this.tot_expenses);
+            this.budgetTmp -= this.tot_expenses;
 
             this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+
+            // If we over spent the day budget, then lessen day budget.
+            if(this.day_budget < this.day_expenses){
+                var overspent = this.day_expenses - this.day_budget;
+                this.day_budget -= Number(overspent/n_day);
+                this.day_budget = this.day_budget.toFixed(2);
+            }
 
             this.n_day = n_day;
             if (this.campaign_ended) this.n_day = 0;
@@ -199,7 +215,14 @@ export class HomePage {
         else{
             this.n_day = 0;
         }
-        this.events.publish('total_expenses', this.display_tot_expenses);
+
+        // Exclude day_expenses from day_budget calculation
+        // But include it back to tot_expenses after
+        // Since we don't want to affect day_budget every time we spent money
+
+        this.tot_expenses += this.day_expenses;
+
+        this.events.publish('total_expenses', this.tot_expenses);
         this.storage.set('day_budget', this.day_budget);
         
         if (this.day_budget > 0){
@@ -207,8 +230,10 @@ export class HomePage {
         }
         else{
             this.day_color = 'danger';
-        }     
+        }
 
+        this.tot_remaining = this.tot_budget - this.tot_expenses;
+        this.day_remaining = this.day_budget - this.day_expenses;
     }
 
     decodeDuration(v){

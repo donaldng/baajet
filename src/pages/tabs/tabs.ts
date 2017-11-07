@@ -6,6 +6,7 @@ import { ManagePage } from '../manage/manage';
 
 import { Events } from 'ionic-angular';
 import { ModalController, NavController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
     templateUrl: 'tabs.html'
@@ -14,20 +15,31 @@ export class TabsPage {
 
     tab1Root = HomePage;
     tab2Root = ExpensesPage;
-    expensesList;
+    expensesList = [];
+    camOn = 0;
+    selected_id;
 
-    constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController) {
+    constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
+        
+        events.subscribe('reload:home', (k, v) => {
+            if (k == 'expensesList') this.expensesList = v;
+        });
+
         events.subscribe('gotoManage', (v) => {
-            var selected_id = v.selected_id;
-            var camOn = 0;
+            this.selected_id = v.selected_id;
+            this.camOn = 0;
 
-            if (v.camOn) camOn = v.camOn;
+            if (v.camOn) this.camOn = v.camOn;
 
-
-            let modal = this.modalCtrl.create(ManagePage, {'selected_id': selected_id, 'expensesList': this.expensesList, 'camOn': camOn});
-            modal.onDidDismiss(data => {
-            });
-            modal.present();
+            if (this.selected_id == -1 && this.expensesList.length == 0){
+                this.storage.get('expensesList').then((expensesList) => {
+                    this.expensesList = expensesList;
+                    this.runModal();
+                });
+            }
+            else{
+                this.runModal();
+            }
 
         });  
 
@@ -35,6 +47,13 @@ export class TabsPage {
             this.expensesList = v;     
         });
 
+    }
+
+    runModal(){
+        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn});
+        modal.onDidDismiss(data => {
+        });
+        modal.present();        
     }
 
 }
