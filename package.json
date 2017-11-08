@@ -20,6 +20,7 @@
     "@angular/http": "4.4.4",
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
+    "@ionic-native/admob-free": "^4.3.3",
     "@ionic-native/camera": "^4.3.3",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/crop": "^4.3.3",
@@ -30,8 +31,10 @@
     "@ionic-native/status-bar": "4.3.2",
     "@ionic-native/transfer": "^3.14.0",
     "@ionic/storage": "2.0.1",
+    "cordova-admob-sdk": "^0.11.1",
     "cordova-android": "~6.3.0",
     "cordova-ios": "~4.5.2",
+    "cordova-plugin-admob-free": "^0.11.0",
     "cordova-plugin-camera": "^2.4.1",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-crop": "^0.4.0",
@@ -41,6 +44,7 @@
     "cordova-plugin-media-capture": "^1.4.3",
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-whitelist": "^1.3.1",
+    "cordova-promise-polyfill": "0.0.2",
     "ionic-angular": "3.8.0",
     "ionic-img-viewer": "^2.7.3",
     "ionic-plugin-keyboard": "^2.2.1",
@@ -64,7 +68,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-crop": {}
+      "cordova-plugin-crop": {},
+      "cordova-plugin-admob-free": {}
     },
     "platforms": [
       "ios",

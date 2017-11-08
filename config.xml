@@ -88,4 +88,5 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <allow-navigation href="http://192.168.43.170:8100" />
+    <plugin name="cordova-plugin-admob-free" spec="^0.11.0" />
 </widget>

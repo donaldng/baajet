@@ -26,13 +26,14 @@
             <ion-list-header color="light">
                 <span *ngIf="campaign_ended == 0">Trip's budget for {{ n_day }} days</span>
                 <span *ngIf="campaign_ended == 1">Left overs</span>
-                <ion-badge color="primary" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
+                <ion-badge color="{{ tot_color }}" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
             </ion-list-header>        
             <ion-item>
-                <ion-range min="0" max="{{ tot_budget }}" [(ngModel)]="tot_remaining" color="primary">
-                    <ion-icon range-left small color="primary" ios="ios-alert" md="md-alert"></ion-icon>
-                    <ion-icon range-right color="primary" ios="ios-happy" md="md-happy"></ion-icon>
-                </ion-range>
+                <ion-icon item-start small color="{{ tot_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
+                <div id="progressbar">
+                    <div id="tot_bar"></div>
+                </div>                 
+                <ion-icon item-end color="{{ tot_color }}" ios="ios-happy" md="md-happy"></ion-icon>
             </ion-item>
         </ion-item-group>
         <ion-item-group *ngIf="campaign_ended == 0">
@@ -41,14 +42,15 @@
                 <ion-badge color="{{ day_color }}" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
             </ion-list-header>           
             <ion-item>
-                <ion-range min="0" max="{{ day_budget }}" [(ngModel)]="day_remaining" color="{{ day_color }}">
-                    <ion-icon range-left small color="{{ day_color }}" ios="ios-alert" md="md-alert"></ion-icon>
-                    <ion-icon range-right color="{{ day_color }}" ios="ios-cash" md="md-cash"></ion-icon>
-                </ion-range>
+                <ion-icon item-start small color="{{ day_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
+                <div id="progressbar2">
+                    <div id="day_bar"></div>
+                </div>                    
+                <ion-icon item-end color="{{ day_color }}" ios="ios-cash" md="md-cash"></ion-icon>
             </ion-item>
         </ion-item-group>    
-    </ion-list>        
-
+    </ion-list>           
+  
     <ion-item>
             <img src="assets/imgs/me.jpg" item-start />
             <p class="bubble" item-start>{{ greetMsg }}</p>

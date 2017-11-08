@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { ModalController } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 @Component({
     selector: 'page-home',
@@ -30,8 +31,9 @@ export class HomePage {
     day_remaining;
     day_expenses;
     day_color = 'primary';
+    tot_color = 'primary';
 
-    constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
+    constructor(public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
@@ -71,6 +73,17 @@ export class HomePage {
         this.campaign_ended = 0;
         this.getGreetMsg();
         
+
+        let bannerConfig: AdMobFreeBannerConfig = {
+            isTesting: true,
+            autoShow: true,
+            id: 'ca-app-pub-8912779457218327~7658077602'
+        };
+
+        admob.banner.config(bannerConfig);
+
+        admob.banner.prepare().then(() => {
+        }).catch(e => console.log(e));        
     }
 
     updateData(){
@@ -232,8 +245,28 @@ export class HomePage {
         this.day_remaining = this.day_budget - this.day_expenses;
         this.day_remaining = this.day_remaining.toFixed(2);
 
-        if(this.day_remaining / this.day_budget <= 0.15) this.day_color = "danger";
-        else this.day_color = "primary";
+        if(this.day_remaining / this.day_budget <= 0.15){
+            this.day_color = "danger";
+            document.getElementById("day_bar").style.backgroundColor='#f53d3d';
+
+        } 
+        else{
+            this.day_color = "primary";
+            document.getElementById("day_bar").style.backgroundColor='#488aff';
+        }
+
+        if(this.tot_remaining / this.tot_budget <= 0.15){
+            this.tot_color = "danger";
+            document.getElementById("tot_bar").style.backgroundColor='#f53d3d';
+
+        } 
+        else{
+            this.tot_color = "primary";
+            document.getElementById("tot_bar").style.backgroundColor='#488aff';
+        }
+
+        document.getElementById("tot_bar").style.width= (this.tot_remaining/this.tot_budget*100) + '%';
+        document.getElementById("day_bar").style.width= (this.day_remaining/this.day_budget*100) + '%';
 
         this.getGreetMsg();
 
