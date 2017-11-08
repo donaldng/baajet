@@ -73,25 +73,26 @@ export class HomePage {
         this.campaign_ended = 0;
         this.getGreetMsg();
         
+        platform.ready().then(() => {
         
-        let adId;
-        if(platform.is('android')) {
-            adId = 'ca-app-pub-8912779457218327~4932552355';
-        } else if (platform.is('ios')) {
-            adId = 'ca-app-pub-8912779457218327~7658077602';
-        }
+            let adId;
+            if(platform.is('android')) {
+                adId = 'ca-app-pub-8912779457218327~4932552355';
+            } else if (platform.is('ios')) {
+                adId = 'ca-app-pub-8912779457218327~7658077602';
+            }
 
-        let bannerConfig: AdMobFreeBannerConfig = {
-            isTesting: true,
-            autoShow: true,
-            id: adId
-        };
+            let bannerConfig: AdMobFreeBannerConfig = {
+                isTesting: true,
+                autoShow: true,
+                id: adId
+            };
 
-        admob.banner.config(bannerConfig);
+            admob.banner.config(bannerConfig);
 
-        admob.banner.prepare().then(() => {
-        }).catch(e => alert(e));        
-            
+            admob.banner.prepare().then(() => {
+            }).catch(e => alert(e));        
+        });
     }
 
     updateData(){
