@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { ModalController } from 'ionic-angular';
+import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
@@ -33,7 +33,7 @@ export class HomePage {
     day_color = 'primary';
     tot_color = 'primary';
 
-    constructor(public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
+    constructor(public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
@@ -73,17 +73,25 @@ export class HomePage {
         this.campaign_ended = 0;
         this.getGreetMsg();
         
+        
+        let adId;
+        if(platform.is('android')) {
+            adId = 'ca-app-pub-8912779457218327~4932552355';
+        } else if (platform.is('ios')) {
+            adId = 'ca-app-pub-8912779457218327~7658077602';
+        }
 
         let bannerConfig: AdMobFreeBannerConfig = {
             isTesting: true,
             autoShow: true,
-            id: 'ca-app-pub-8912779457218327~7658077602'
+            id: adId
         };
 
         admob.banner.config(bannerConfig);
 
         admob.banner.prepare().then(() => {
-        }).catch(e => console.log(e));        
+        }).catch(e => alert(e));        
+            
     }
 
     updateData(){
