@@ -91,6 +91,7 @@ export class ExpensesPage {
         else this.recurring += 1;
     }
     resetSegment(){
+        this.onetime = 0;
         this.recurring = 0;
         this.reserved = 0;
         this.showSegment = 0;        

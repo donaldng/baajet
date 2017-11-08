@@ -24,13 +24,13 @@
 <ion-content>    
     <ion-segment [(ngModel)]="expenses_type" *ngIf="showSegment > 1">
         <ion-segment-button value="onetime" *ngIf="onetime" (click)="changeSwitchType('onetime')">
-            One time
+            One time ({{ onetime }})
         </ion-segment-button>
         <ion-segment-button value="recurring" *ngIf="recurring" (click)="changeSwitchType('recurring')">
-            Recurring
+            Recurring ({{ recurring }})
         </ion-segment-button>
         <ion-segment-button value="reserved" *ngIf="reserved" (click)="changeSwitchType('reserved')">
-            Reserved
+            Reserved ({{ reserved }})
         </ion-segment-button>
     </ion-segment>
 

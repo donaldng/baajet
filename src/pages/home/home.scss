@@ -28,5 +28,25 @@ page-home {
         text-align: center;
         font-size: 1.85rem;
     }
+
+    img {
+        border-radius: 25px;
+        object-fit: cover;
+        width: 50px !important;
+        height: 50px !important;
+        text-align: right;
+        margin-right: 8px !important;
+        padding-right: 0px !important;
+    }
+
+    .bubble{
+        margin-top: 10px !important;
+        text-align: left;
+        border-radius: 15px;
+        background-color: #2980b9;
+        color: #fff;
+        padding: 10px 10px 10px;
+        font-size: 1.5rem;
+    }
  
 }

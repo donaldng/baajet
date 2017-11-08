@@ -20,16 +20,16 @@ export class HomePage {
     tripStart;
     n_day;
     duration;
-    day_color;
     tot_expenses;
     campaign_ended;
     greetMsg;
     expensesList;
     timezone;
     newphotoFlag;
-    tot_remaining = 0;
-    day_remaining = 0;
-    day_expenses = 0;
+    tot_remaining;
+    day_remaining;
+    day_expenses;
+    day_color = 'primary';
 
     constructor(public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events) {
         //this.storage.clear();
@@ -38,8 +38,9 @@ export class HomePage {
         this.tot_expenses = 0;
         this.day_budget = 0;
         this.tot_budget = 0;
-
-        this.day_color = 'secondary';
+        this.tot_remaining = 0;
+        this.day_remaining = 0;
+        this.day_expenses = 0;
         this.updateData();
 
         events.subscribe('reload:home', (k, v) => {
@@ -68,7 +69,7 @@ export class HomePage {
         });        
 
         this.campaign_ended = 0;
-        this.getGreetMsg()
+        this.getGreetMsg();
         
     }
 
@@ -132,7 +133,7 @@ export class HomePage {
         }
         else{
             this.campaign_ended = 0;
-            this.getGreetMsg()            
+            this.getGreetMsg();   
         }           
     }
     openSettingModal(){
@@ -155,6 +156,8 @@ export class HomePage {
             this.greetMsg = 'Good day, spend your wealth with good health!';
         else
             this.greetMsg = 'Opps, we gonna need your inputs on trip\'s budget! Go set it up in Setting!';
+
+        if(this.day_color == "danger") this.greetMsg = 'Oh no, your budget is running low!';
     }
     
     calcDbBudget(){
@@ -225,15 +228,15 @@ export class HomePage {
         this.events.publish('total_expenses', this.tot_expenses);
         this.storage.set('day_budget', this.day_budget);
         
-        if (this.day_budget > 0){
-            this.day_color = 'secondary';
-        }
-        else{
-            this.day_color = 'danger';
-        }
-
         this.tot_remaining = this.tot_budget - this.tot_expenses;
         this.day_remaining = this.day_budget - this.day_expenses;
+        this.day_remaining = this.day_remaining.toFixed(2);
+
+        if(this.day_remaining / this.day_budget <= 0.15) this.day_color = "danger";
+        else this.day_color = "primary";
+
+        this.getGreetMsg();
+
     }
 
     decodeDuration(v){
