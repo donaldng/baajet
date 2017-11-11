@@ -273,11 +273,9 @@ export class ExpensesPage {
         this.runningId = Number(return_id) + 1;        
     }  
 
-    getDefaultThumbnail(expenses){
+    getDefaultThumbnail(name, type){
         
-        var name = expenses.name;
-        var type = expenses.freq;
-
+        if(type==1) return "assets/imgs/icons/reserved.png";
         if(type > 1) return "assets/imgs/icons/recurring.png";
 
         if (name == "General") return "assets/imgs/icons/general.png";
