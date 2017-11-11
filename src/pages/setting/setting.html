@@ -46,26 +46,22 @@
                         <ion-option *ngFor="let item of items" value="{{item}}" [selected]="currency == item" >{{item}}</ion-option>
                     </ion-select>
                 </ion-item>
-            </ion-item-group>  
+            </ion-item-group>
             <ion-item-group>
                 <ion-item-divider color="light">Photo</ion-item-divider>
                 <ion-item>
-                    <ion-label>Save image to device?</ion-label>
-                    <ion-toggle [(ngModel)]="saveimageFlag" name="saveimageFlag" checked="false"></ion-toggle>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Enable photo editing?</ion-label>
-                    <ion-toggle [(ngModel)]="editFlag" name="editFlag" checked="false"></ion-toggle>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Always capture new photo?</ion-label>
+                    <ion-label>Enable quick snap option</ion-label>
                     <ion-toggle [(ngModel)]="newphotoFlag" name="newphotoFlag" checked="false"></ion-toggle>
-                </ion-item>                             
-            </ion-item-group>            
+                </ion-item>                   
+                <ion-item>
+                    <ion-label>Save photos in device?</ion-label>
+                    <ion-toggle [(ngModel)]="saveimageFlag" name="saveimageFlag" checked="false"></ion-toggle>
+                </ion-item>                          
+            </ion-item-group>    
             <ion-item-group>
                 <ion-item-divider color="light">Reset</ion-item-divider>
                     <ion-item>
-                        <button ion-button color="danger" clear (click)="presentConfirm()">
+                        <button ion-button color="danger" (click)="presentConfirm()" full block>
                             <ion-icon ios="ios-alert" md="md-alert"></ion-icon>&nbsp;Reset Button
                         </button>  
                     </ion-item>              

@@ -18,18 +18,30 @@ export class TabsPage {
     expensesList = [];
     camOn = 0;
     selected_id;
+    tot_budget = 0;
+    init_price = 0;
 
     constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
-        
+        this.storage.get('budget').then((v) => {
+            if (v && this.tot_budget != v){
+                this.tot_budget = v;
+            }
+        });
+                
         events.subscribe('reload:home', (k, v) => {
             if (k == 'expensesList') this.expensesList = v;
+            else if(k == "tot_budget"){
+                this.tot_budget = v;
+            }
         });
 
         events.subscribe('gotoManage', (v) => {
             this.selected_id = v.selected_id;
             this.camOn = 0;
+            this.init_price = 0;
 
             if (v.camOn) this.camOn = v.camOn;
+            if (v.init_price) this.init_price = v.init_price;
 
             if (this.selected_id == -1 && this.expensesList.length == 0){
                 this.storage.get('expensesList').then((expensesList) => {
@@ -50,7 +62,7 @@ export class TabsPage {
     }
 
     runModal(){
-        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn});
+        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn, 'init_price': this.init_price});
         modal.onDidDismiss(data => {
         });
         modal.present();        

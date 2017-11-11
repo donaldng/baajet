@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular'
 import { ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -24,9 +24,19 @@ export class ExpensesPage {
     reserved = 0;
     showSegment = 0;
     tot_expenses = 0;
+    tot_budget = 0;
     newphotoFlag;
+    init_price;
 
-    constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+    constructor(private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+        this.init_price = 0;
+
+        this.storage.get('budget').then((v) => {
+            if (v && this.tot_budget != v){
+                this.tot_budget = v;
+            }
+        });
+                
         this.loadData();
 
         this.storage.get('currency').then((v) => {
@@ -48,6 +58,12 @@ export class ExpensesPage {
         events.subscribe('newphotoFlag', (v) => {
             this.newphotoFlag = v;
         });       
+
+        events.subscribe('reload:home', (k, v) => {
+            if(k == "tot_budget"){
+                this.tot_budget = v;
+            }
+        });
 
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
@@ -108,6 +124,7 @@ export class ExpensesPage {
         if (this.recurring) x += 1;
         return x;
     }
+
     presentActionSheet(expenses) {
         const actionSheet = this.actionSheetCtrl.create({
             title: 'Action',
@@ -158,7 +175,7 @@ export class ExpensesPage {
     }
 
     gotoManage(selected_id) {
-        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag});
+        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag, 'init_price': this.init_price});
     }
 
     expenses_found(){
@@ -205,6 +222,35 @@ export class ExpensesPage {
         if (freq == '0') return 'onetime';
         if (freq == '1') return 'reserved';
         return 'recurring';
+    }
+
+    quickAdd(){
+        let prompt = this.alertCtrl.create({
+            title: 'Add expenses',
+            message: "How much is the expenses?",
+            inputs: [
+            {
+                name: 'price',
+                placeholder: '',
+                type: 'number'
+            },
+            ],
+            buttons: [
+            {
+                text: 'Cancel',
+                handler: data => {
+                }
+            },
+            {
+                text: 'Go',
+                handler: data => {
+                    this.init_price = data.price;
+                    this.gotoManage('-1');
+                }
+            }
+            ]
+        });
+        prompt.present();
     }
 
     findRunningId(){

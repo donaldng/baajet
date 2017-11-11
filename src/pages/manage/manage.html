@@ -28,7 +28,9 @@
 
                         <ion-item>
                             <ion-label color="primary" stacked>What's that?</ion-label>
-                            <ion-input class="black-placeholder" type="text" value="{{ expenses.name }}" [(ngModel)]="expenses.name" name="name" placeholder="{{ default_placeholder }}"></ion-input>
+                            <ion-select [(ngModel)]="expenses.name" name="name" interface="action-sheet">
+                                <ion-option *ngFor="let item of expenses_cat" value="{{ item }}" [selected]="expenses.name == item" >{{item}}</ion-option>
+                            </ion-select>                            
                         </ion-item>
 
                         <ion-item>
@@ -76,13 +78,15 @@
         </ion-grid>
     </form>
     <ion-fab bottom right *ngIf="tmpImage == 0">
-        <button ion-fab><ion-icon ios="ios-attach" md="md-attach"></ion-icon></button>
+        <button ion-fab><ion-icon ios="ios-image" md="md-image"></ion-icon></button>
+        <!--
         <ion-fab-list side="left">
             <button (click)="chooseImage()" ion-fab><ion-icon ios="ios-image" md="md-image"></ion-icon></button>
             <button (click)="captureImage()" ion-fab><ion-icon ios="ios-camera" md="md-camera"></ion-icon></button>
         </ion-fab-list>
+        -->
     </ion-fab>  
     <ion-fab bottom right *ngIf="tmpImage != 0">
-        <button (click)="removeImage()" ion-fab color="danger"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>        
+        <button (click)="removeImage()" ion-fab color="danger"><ion-icon ios="ios-close" md="md-close"></ion-icon></button>        
     </ion-fab>          
 </ion-content>

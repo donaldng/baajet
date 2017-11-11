@@ -1,15 +1,16 @@
 <ion-header>
     <ion-navbar>
+        <!--
         <ion-buttons start>
-            <button ion-button (click)="gotoImage()">
+            <button *ngIf="tot_budget" ion-button (click)="gotoImage()">
                 <ion-icon name="camera"></ion-icon>
             </button>
-        </ion-buttons>
+        </ion-buttons>-->
 
         <ion-title>Dashboard</ion-title>
 
         <ion-buttons end>
-            <button ion-button (click)="gotoSetting()">
+            <button ion-button color="secondary" (click)="gotoSetting()">
                 <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
             </button>
         </ion-buttons>
@@ -21,32 +22,29 @@
 
 <ion-content>
     <ion-list *ngIf="tot_budget != 0">
-        <ion-item-group>
-
+        <ion-item-group (click)="gotoSetting()">
             <ion-list-header color="light">
                 <span *ngIf="campaign_ended == 0">Trip's budget for {{ n_day }} days</span>
                 <span *ngIf="campaign_ended == 1">Left overs</span>
-                <ion-badge color="{{ tot_color }}" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
+                <ion-badge color="primary" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
             </ion-list-header>        
             <ion-item>
                 <ion-icon item-start small color="{{ tot_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
                 <div id="progressbar">
                     <div id="tot_bar"></div>
                 </div>                 
-                <ion-icon item-end color="{{ tot_color }}" ios="ios-happy" md="md-happy"></ion-icon>
             </ion-item>
         </ion-item-group>
-        <ion-item-group *ngIf="campaign_ended == 0">
+        <ion-item-group *ngIf="campaign_ended == 0" (click)="navCtrl.parent.select(1);">
             <ion-list-header color="light">
                 Daily budget
-                <ion-badge color="{{ day_color }}" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
+                <ion-badge color="primary" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
             </ion-list-header>           
             <ion-item>
                 <ion-icon item-start small color="{{ day_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
                 <div id="progressbar2">
                     <div id="day_bar"></div>
                 </div>                    
-                <ion-icon item-end color="{{ day_color }}" ios="ios-cash" md="md-cash"></ion-icon>
             </ion-item>
         </ion-item-group>    
     </ion-list>           
@@ -56,10 +54,19 @@
             <p class="bubble" item-start>{{ greetMsg }}</p>
     </ion-item>
 
-    <ion-fab right bottom>
-        <button ion-fab color="danger" (click)="gotoManage()">
-            <ion-icon *ngIf="!newphotoFlag" name="add"></ion-icon>
-            <ion-icon *ngIf="newphotoFlag" ios="ios-camera" md="md-camera"></ion-icon>
+    <ion-item *ngIf="!tot_budget">
+        <button ion-button color="secondary" (click)="gotoSetting()" padding block large>
+            <ion-icon ios="ios-settings" md="md-settings"></ion-icon>&nbsp;Setup trip's budget
+        </button> 
+    </ion-item>    
+
+    <ion-fab right bottom *ngIf="tot_budget">
+        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd()">
+            <ion-icon name="add"></ion-icon>
         </button>
+        <button *ngIf="newphotoFlag" ion-fab color="danger" (click)="gotoImage()">
+            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
+
     </ion-fab>    
 </ion-content>

@@ -27,12 +27,14 @@ export class ManagePage {
     editFlag = false;
     camOn = false;
     todays_b;
+    init_price;
+    expenses_cat;
 
     constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
-
+        this.init_price = this.params.get('init_price');
         if (this.camOn) this.captureImage();
 
         this.default_placeholder = 'Expenses #';
@@ -64,9 +66,9 @@ export class ManagePage {
         });
 
         if(this.selected_id == '-1'){
-            this.expenses = {name: '', amount: '', freq: ''};
+            this.expenses = {name: 'General expenses', amount: '', freq: 0};
+            if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add expenses";
-            this.expenses.freq = 0;
             this.expenses.todays = true;
         }
 
@@ -86,7 +88,9 @@ export class ManagePage {
 
         this.storage.get('editFlag').then((v) => {
             if(v) this.editFlag = v;
-        });                  
+        });          
+
+        this.expenses_cat = ['General expenses', 'Food & beverage', 'Transportation', 'Shopping', 'Entertainment', 'Souvenir', 'Other'];        
     }
 
     findIndex(find_id){

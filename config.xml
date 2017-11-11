@@ -89,4 +89,5 @@
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <allow-navigation href="http://192.168.43.170:8100" />
     <plugin name="cordova-plugin-admob-free" spec="^0.11.0" />
+    <allow-navigation href="http://192.168.182.249:8100" />
 </widget>

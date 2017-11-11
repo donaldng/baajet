@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
@@ -11,6 +11,7 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
     templateUrl: 'home.html'
 })
 export class HomePage {
+
     items;
     selectedItem;
     display_currency;
@@ -32,8 +33,10 @@ export class HomePage {
     day_expenses;
     day_color = 'primary';
     tot_color = 'primary';
-
-    constructor(public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    tot_bar;
+    day_bar;
+    
+    constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
@@ -91,8 +94,10 @@ export class HomePage {
             admob.banner.config(bannerConfig);
 
             admob.banner.prepare().then(() => {
-            }).catch(e => alert(e));        
+            }).catch(e => console.log(e));        
         });
+
+
     }
 
     updateData(){
@@ -177,7 +182,7 @@ export class HomePage {
         if(this.tot_budget)
             this.greetMsg = 'Good day, spend your wealth with good health!';
         else
-            this.greetMsg = 'Opps, we gonna need your inputs on trip\'s budget! Go set it up in Setting!';
+            this.greetMsg = 'Look like you haven\'t setup your trip schedule yet, that\'s not good!';
 
         if(this.day_color == "danger") this.greetMsg = 'Oh no, your budget is running low!';
     }
@@ -205,8 +210,11 @@ export class HomePage {
         this.budgetTmp = this.tot_budget;
         this.tot_expenses = 0;
         this.day_expenses = 0;
+
+        this.tot_bar = document.getElementById('tot_bar');
+        this.day_bar = document.getElementById('day_bar');
+
         if(v){
-            
             for (var i=0; i < v.length; i++){
                 if(v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ') && v[i].freq_end.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ')){
                     // Do not account day expenses into daily budget calculation
@@ -256,26 +264,31 @@ export class HomePage {
 
         if(this.day_remaining / this.day_budget <= 0.15){
             this.day_color = "danger";
-            document.getElementById("day_bar").style.backgroundColor='#f53d3d';
-
+            if(this.day_bar) this.day_bar.style.backgroundColor='#f53d3d';
         } 
         else{
-            this.day_color = "primary";
-            document.getElementById("day_bar").style.backgroundColor='#488aff';
+            this.day_color = "secondary";
+            if(this.day_bar) this.day_bar.style.backgroundColor='#3FC380';
         }
 
         if(this.tot_remaining / this.tot_budget <= 0.15){
             this.tot_color = "danger";
-            document.getElementById("tot_bar").style.backgroundColor='#f53d3d';
+            if(this.tot_bar) this.tot_bar.style.backgroundColor='#f53d3d';
 
         } 
         else{
-            this.tot_color = "primary";
-            document.getElementById("tot_bar").style.backgroundColor='#488aff';
+            this.tot_color = "secondary";
+            if(this.tot_bar) this.tot_bar.style.backgroundColor='#3FC380';
         }
 
-        document.getElementById("tot_bar").style.width= (this.tot_remaining/this.tot_budget*100) + '%';
-        document.getElementById("day_bar").style.width= (this.day_remaining/this.day_budget*100) + '%';
+        let tot_perc = 0;
+        if (this.tot_remaining > 0) tot_perc = this.tot_remaining/this.tot_budget*100;
+
+        let day_perc = 0;
+        if (this.day_remaining > 0) day_perc = this.day_remaining/this.day_budget*100;
+
+        if(this.tot_bar) this.tot_bar.style.width = (tot_perc) + '%';
+        if(this.day_bar) this.day_bar.style.width = (day_perc) + '%';
 
         this.getGreetMsg();
 
@@ -287,14 +300,42 @@ export class HomePage {
         this.tripEnd = this.duration[1];   
     }
 
-    gotoManage(){
-        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag});
-        this.navCtrl.parent.select(1);
+    quickAdd(){
+        let prompt = this.alertCtrl.create({
+            title: 'Add expenses',
+            message: "How much is the expenses?",
+            inputs: [
+            {
+                name: 'price',
+                placeholder: '',
+                type: 'number'
+            },
+            ],
+            buttons: [
+            {
+                text: 'Cancel',
+                handler: data => {
+                }
+            },
+            {
+                text: 'Go',
+                handler: data => {
+                    this.gotoManage(data.price);
+                }
+            }
+            ]
+        });
+        prompt.present();
+    }
+    
+    gotoManage(init_price){
+        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price});
+        //this.navCtrl.parent.select(1);
     }
 
     gotoImage(){
         this.events.publish('gotoManage', {'selected_id': -1, 'camOn': 1});
-        this.navCtrl.parent.select(1);
+        //this.navCtrl.parent.select(1);
     }
 
     gotoSetting(){
