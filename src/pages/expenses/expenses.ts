@@ -272,4 +272,22 @@ export class ExpensesPage {
 
         this.runningId = Number(return_id) + 1;        
     }  
+
+    getDefaultThumbnail(expenses){
+        
+        var name = expenses.name;
+        var type = expenses.freq;
+
+        if(type > 1) return "assets/imgs/icons/recurring.png";
+
+        if (name == "General") return "assets/imgs/icons/general.png";
+        if (name == "Food") return "assets/imgs/icons/food.png";
+        if (name == "Transport") return "assets/imgs/icons/transport.png";
+        if (name == "Shopping") return "assets/imgs/icons/buy.png";
+        if (name == "Relax") return "assets/imgs/icons/relax.png";
+        if (name == "Souvenir") return "assets/imgs/icons/souvenir.png";
+        if (name == "Other") return "assets/imgs/icons/other.png";
+        
+        return 0;
+    }    
 }

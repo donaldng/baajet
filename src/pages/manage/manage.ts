@@ -66,7 +66,7 @@ export class ManagePage {
         });
 
         if(this.selected_id == '-1'){
-            this.expenses = {name: 'General expenses', amount: '', freq: 0};
+            this.expenses = {name: 'General', amount: '', freq: 0};
             if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add expenses";
             this.expenses.todays = true;
@@ -90,7 +90,8 @@ export class ManagePage {
             if(v) this.editFlag = v;
         });          
 
-        this.expenses_cat = ['General expenses', 'Food & beverage', 'Transportation', 'Shopping', 'Entertainment', 'Souvenir', 'Other'];        
+        this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
+
     }
 
     findIndex(find_id){
