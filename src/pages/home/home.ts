@@ -308,8 +308,7 @@ export class HomePage {
             {
                 name: 'price',
                 placeholder: '',
-                type: 'number',
-                focus: 'focus'
+                type: 'number'
             },
             ],
             buttons: [
