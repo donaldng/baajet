@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
+import { ImageViewerController } from 'ionic-img-viewer';
 
 @Component({
     selector: 'page-manage',
@@ -29,8 +30,11 @@ export class ManagePage {
     todays_b;
     init_price;
     expenses_cat;
+    _imageViewerCtrl: ImageViewerController;
 
-    constructor( public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+        this._imageViewerCtrl = imageViewerCtrl;
+
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
@@ -206,6 +210,63 @@ export class ManagePage {
 
     onSelectChange(selectedValue: any){
         this.selected_freq = selectedValue;
+    }
+
+    imageOptions(myImage){
+        const actionSheet = this.actionSheetCtrl.create({
+            title: 'Action',
+            buttons: [
+            {
+                text: 'View Photo',
+                handler: () => {
+                    const imageViewer = this._imageViewerCtrl.create(myImage);
+                    imageViewer.present();                    
+                }
+            },
+            {
+                text: 'Remove Photo',
+                handler: () => {
+                    this.removeImage();
+                }
+            },
+            {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                }
+            }
+            ]
+        });
+
+        actionSheet.present();
+    }
+
+    addMedia() {
+        const actionSheet = this.actionSheetCtrl.create({
+            title: 'Action',
+            buttons: [
+            {
+                text: 'Take Photo',
+                handler: () => {
+                    this.captureImage();
+                }
+            },
+            {
+                text: 'Photo Gallery',
+                handler: () => {
+                    this.chooseImage();
+                }
+            },
+            {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                }
+            }
+            ]
+        });
+
+        actionSheet.present();
     }
 
     dismiss() {

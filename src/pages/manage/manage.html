@@ -21,55 +21,62 @@
 
 <ion-content>
     <form>
-        <ion-list >
-            <ion-thumbnail>
-                <img src="assets/imgs/me.jpg" imageViewer *ngIf=" this.tmpImage != 0 " />                    
-                <img src="assets/imgs/default.png" imageViewer *ngIf=" this.tmpImage == 0 " />                    
-            </ion-thumbnail>
-            <ion-item>
-                <ion-label color="primary" stacked>What's that?</ion-label>
-                <ion-select [(ngModel)]="expenses.name" name="name" interface="action-sheet">
-                    <ion-option *ngFor="let item of expenses_cat" value="{{ item }}" [selected]="expenses.name == item" >{{item}}</ion-option>
-                </ion-select>                            
-            </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
 
-            <ion-item>
-                <ion-label color="primary" stacked>How much?</ion-label>
-                <ion-input type="number" value="{{ expenses.amount }}" [(ngModel)]="expenses.amount" name="amount" placeholder="0.00"></ion-input>
-            </ion-item>
+                <ion-list >
+                    <ion-item no-lines>
+                        <ion-label color="primary" stacked>What's that?</ion-label>
+                        <ion-select [(ngModel)]="expenses.name" name="name" interface="action-sheet">
+                            <ion-option *ngFor="let item of expenses_cat" value="{{ item }}" [selected]="expenses.name == item" >{{item}}</ion-option>
+                        </ion-select>
+                    </ion-item>
 
-            <ion-item>
-                <ion-label color="primary" stacked>How frequent?</ion-label>
-                <ion-select [(ngModel)]="expenses.freq" name="freq" (ionChange)="onSelectChange($event);" interface="action-sheet">
-                    <ion-option value="0">One time</ion-option>
-                    <ion-option value="1">Reserved fund</ion-option>
-                    <ion-option value="2">Daily</ion-option>
-                    <ion-option value="3">Weekly</ion-option>
-                    <ion-option value="4">Monthly</ion-option>
-                </ion-select>
-            </ion-item>
-            
-            <ion-item *ngIf="selected_freq == 0">
-                <ion-label stacked color="primary">Spending it today?</ion-label>
-                <ion-toggle [(ngModel)]="expenses.todays" name="todays" checked="true"></ion-toggle>
-            </ion-item>
+                    <ion-item no-lines>
+                        <ion-label color="primary" stacked>How much?</ion-label>
+                        <ion-input type="number" value="{{ expenses.amount }}" [(ngModel)]="expenses.amount" name="amount" placeholder="0.00"></ion-input>
+                    </ion-item>
 
-            <ion-item *ngIf="selected_freq == 0 && expenses.todays == false">
-                <ion-label color="primary" stacked>But when?</ion-label>
-                <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="todays_b" name="todays_b"></ion-datetime>
-            </ion-item>
+                    <ion-item no-lines>
+                        <ion-label color="primary" stacked>How frequent?</ion-label>
+                        <ion-select [(ngModel)]="expenses.freq" name="freq" (ionChange)="onSelectChange($event);" interface="action-sheet">
+                            <ion-option value="0">One time</ion-option>
+                            <ion-option value="1">Reserved fund</ion-option>
+                            <ion-option value="2">Daily</ion-option>
+                            <ion-option value="3">Weekly</ion-option>
+                            <ion-option value="4">Monthly</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    
+                    <ion-item no-lines *ngIf="selected_freq == 0">
+                        <ion-label stacked color="primary">Spending it today?</ion-label>
+                        <ion-toggle [(ngModel)]="expenses.todays" name="todays" checked="true"></ion-toggle>
+                    </ion-item>
 
-            <ion-item *ngIf="selected_freq != 0 && selected_freq != 1">
-                <ion-label color="primary" stacked>Start since?</ion-label>
-                <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_start" name="freq_start"></ion-datetime>
-            </ion-item>
+                    <ion-item no-lines *ngIf="selected_freq == 0 && expenses.todays == false">
+                        <ion-label color="primary" stacked>But when?</ion-label>
+                        <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="todays_b" name="todays_b"></ion-datetime>
+                    </ion-item>
 
-            <ion-item *ngIf="selected_freq != 0 && selected_freq != 1">
-                <ion-label color="primary" stacked>Until when?</ion-label>
-                <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_end" name="freq_end"></ion-datetime>
-            </ion-item>   
+                    <ion-item no-lines *ngIf="selected_freq != 0 && selected_freq != 1">
+                        <ion-label color="primary" stacked>Start since?</ion-label>
+                        <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_start" name="freq_start"></ion-datetime>
+                    </ion-item>
 
-        </ion-list>
+                    <ion-item no-lines *ngIf="selected_freq != 0 && selected_freq != 1">
+                        <ion-label color="primary" stacked>Until when?</ion-label>
+                        <ion-datetime displayFormat="DD MMM" min="{{ tripStart }}" max="{{ tripEnd }}" [(ngModel)]="expenses.freq_end" name="freq_end"></ion-datetime>
+                    </ion-item>   
+
+                </ion-list>
+            </ion-col>         
+            <ion-col col-3>
+                <img src="assets/imgs/icons/add-image.png" (click)="addMedia();" *ngIf=" tmpImage == 0 " />   
+                <img src="{{ tmpImage }}" #myImage (click)="imageOptions(myImage);" *ngIf=" tmpImage != 0 " />                    
+            </ion-col>
+        </ion-row>
+    </ion-grid>
     </form>
     <ion-fab color="primary" bottom right (click)="submitForm()">
         <button ion-fab><ion-icon ios="ios-checkmark" md="md-checkmark" ></ion-icon></button>
