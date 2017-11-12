@@ -308,7 +308,8 @@ export class HomePage {
             {
                 name: 'price',
                 placeholder: '',
-                type: 'number'
+                type: 'number',
+                focus: 'focus'
             },
             ],
             buttons: [
@@ -325,7 +326,11 @@ export class HomePage {
             }
             ]
         });
-        prompt.present();
+        prompt.present().then(() => {
+            const firstInput: any = document.querySelector('ion-alert input');
+            firstInput.focus();
+            return;
+        });
     }
     
     gotoManage(init_price){

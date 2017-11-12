@@ -10,7 +10,7 @@
         <ion-title>Dashboard</ion-title>
 
         <ion-buttons end>
-            <button ion-button color="secondary" (click)="gotoSetting()">
+            <button ion-button color="primary" (click)="gotoSetting()">
                 <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
             </button>
         </ion-buttons>
@@ -49,13 +49,13 @@
         </ion-item-group>    
     </ion-list>           
   
-    <ion-item>
+    <ion-item no-lines>
             <img src="assets/imgs/icons/sheep.png" item-start />
             <p class="bubble" item-start>{{ greetMsg }}</p>
     </ion-item>
 
-    <ion-item *ngIf="!tot_budget">
-        <button ion-button color="secondary" (click)="gotoSetting()" padding block large>
+    <ion-item *ngIf="!tot_budget" no-lines>
+        <button ion-button color="primary" (click)="gotoSetting()" padding block large>
             <ion-icon ios="ios-settings" md="md-settings"></ion-icon>&nbsp;Setup trip's budget
         </button> 
     </ion-item>    

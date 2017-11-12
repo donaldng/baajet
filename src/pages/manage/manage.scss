@@ -1,26 +1,35 @@
 page-manage {
     .black-placeholder{
         .text-input::-moz-placeholder {
-          color: black;
+            color: black;
         }
 
         .text-input:-ms-input-placeholder {
-          color: black;
+            color: black;
         }
 
         .text-input::-webkit-input-placeholder {
-          text-indent: 0;
-          color: black;
+            text-indent: 0;
+            color: black;
         }    
     }
 
-    ion-title{
+    ion-thumbnail{
+        width: 50px !important;
+        height: 50px !important;
+        text-align: center;
+        border-radius: 25px;
+        object-fit: cover;
+        margin-right: 8px !important;
+        padding-right: 0px !important;        
     }
 
     img{
-      width: 100% !important;
-      height: auto;
-      text-align: center;
+        width: 50px !important;
+        height: 50px !important;
+        text-align: center;
+        border-radius: 25px;
+        object-fit: cover;
     }
 
 }

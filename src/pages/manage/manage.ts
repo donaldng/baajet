@@ -78,7 +78,7 @@ export class ManagePage {
             this.expenses = this.expensesList[index];
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
-            this.pageName = "Edit expenses";
+            this.pageName = "Manage expenses";
             if (this.selected_freq == 0) this.todays_b = this.expenses.freq_start;
         }
 
@@ -189,6 +189,17 @@ export class ManagePage {
         this.dismiss();              
     }
     
+    deleteRecord(expenses){
+        let index = this.expensesList.indexOf(expenses);
+        this.expensesList.splice(index,1);
+        this.storage.set('expensesList', this.expensesList);
+        this.events.publish('reload:home','expensesList',this.expensesList);
+        this.events.publish('reload:expenses',this.expensesList);
+        this.events.publish('refreshSegment', expenses);
+
+        this.dismiss();
+    }
+
     removeImage(){
         this.tmpImage = 0;
     }

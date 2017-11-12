@@ -55,6 +55,10 @@ export class ExpensesPage {
             this.tot_expenses = v.toFixed(2);
         });
 
+        events.subscribe('refreshSegment', (expenses) => {
+            this.refreshSegment(expenses);
+        });        
+
         events.subscribe('newphotoFlag', (v) => {
             this.newphotoFlag = v;
         });       
@@ -178,6 +182,19 @@ export class ExpensesPage {
         this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag, 'init_price': this.init_price});
     }
 
+    refreshSegment(expenses){
+        if (!this.getSegment(expenses.freq)){
+            for(var i = 0; i < this.freqMap.length; i++){
+                if(this.getSegment(i)){
+                    this.expenses_type = this.getSwitchType(i);
+                    break;
+                }
+            }
+
+            this.showSegment = this.getSegmentStatus();
+        }        
+    }
+
     expenses_found(){
         console.log('expenses_found');
         if (this.expensesList)
@@ -250,7 +267,11 @@ export class ExpensesPage {
             }
             ]
         });
-        prompt.present();
+        prompt.present().then(() => {
+            const firstInput: any = document.querySelector('ion-alert input');
+            firstInput.focus();
+            return;
+        });        
     }
 
     findRunningId(){
