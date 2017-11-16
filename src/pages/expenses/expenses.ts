@@ -196,7 +196,6 @@ export class ExpensesPage {
     }
 
     expenses_found(){
-        console.log('expenses_found');
         if (this.expensesList)
             return this.expensesList.length;
         else
@@ -235,7 +234,6 @@ export class ExpensesPage {
     }
 
     getSwitchType(freq){
-        console.log(freq);
         if (freq == '0') return 'onetime';
         if (freq == '1') return 'reserved';
         return 'recurring';

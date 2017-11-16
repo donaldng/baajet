@@ -32,6 +32,7 @@ export class ManagePage {
     expenses_cat;
     _imageViewerCtrl: ImageViewerController;
 
+
     constructor(imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
 
@@ -46,9 +47,7 @@ export class ManagePage {
         this.tmpImage = 0;
         this.selected_freq = 0;
 
-        var todays_b = new Date();
-        todays_b.setDate(todays_b.getDate() + 1);
-        this.todays_b = todays_b.toISOString().slice(0, 19);
+        this.set_todays_b();
 
         this.storage.get('duration').then((v) => {
             if (v){
@@ -75,15 +74,24 @@ export class ManagePage {
             this.pageName = "Add expenses";
             this.expenses.todays = true;
         }
-
-        if(this.selected_id != '-1'){
+        else{
             let index = this.findIndex(this.selected_id);
 
             this.expenses = this.expensesList[index];
+
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Manage expenses";
-            if (this.selected_freq == 0) this.todays_b = this.expenses.freq_start;
+            if (this.selected_freq == 0){
+                this.todays_b = this.expenses.freq_start.replace(" ", "T");
+                var inputDate = new Date(this.todays_b);
+                var todaysDate = new Date();
+                this.expenses.todays = false;
+                if(inputDate.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)) {
+                    this.expenses.todays = true;
+                }
+            }
+
         }
 
         this.storage.get('saveimageFlag').then((v) => {
@@ -145,6 +153,12 @@ export class ManagePage {
         alert(img);
         this.thumbnail = 'data:image/jpeg;base64,' + img;
     }
+
+    set_todays_b(){
+        var todays_b = new Date();
+        todays_b.setDate(todays_b.getDate() + 1);
+        this.todays_b = todays_b.toISOString().slice(0, 19);
+    }
     
     submitForm() {
         var name = this.default_placeholder;
@@ -154,9 +168,15 @@ export class ManagePage {
         if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
         if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
         
-        if (this.expenses.freq == 0 && this.expenses.todays){
-            this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
-            this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+        if (this.expenses.freq == 0){
+            if(this.expenses.todays){
+                this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
+                this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+            }
+            else{
+                this.expenses.freq_start = this.todays_b.replace('T',' ');
+                this.expenses.freq_end = this.todays_b.replace('T',' ');
+            }
         }
 
         var changes = {

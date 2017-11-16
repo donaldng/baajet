@@ -24,7 +24,6 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-
                 <ion-list >
                     <ion-item no-lines>
                         <ion-label color="primary" stacked>What's that?</ion-label>
@@ -51,7 +50,7 @@
                     
                     <ion-item no-lines *ngIf="selected_freq == 0">
                         <ion-label stacked color="primary">Spending it today?</ion-label>
-                        <ion-toggle [(ngModel)]="expenses.todays" name="todays" checked="true"></ion-toggle>
+                        <ion-toggle [(ngModel)]="expenses.todays" name="todays" checked="true" (click)="set_todays_b()"></ion-toggle>
                     </ion-item>
 
                     <ion-item no-lines *ngIf="selected_freq == 0 && expenses.todays == false">
