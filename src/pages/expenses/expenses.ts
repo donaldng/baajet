@@ -37,10 +37,8 @@ export class ExpensesPage {
                 this.tot_budget = v;
             }
         });
-        this.status += "loadData";
 
         this.loadData();
-        this.status += "Finish loading Data";
 
         this.storage.get('currency').then((v) => {
             if(v) this.display_currency = v;
@@ -82,7 +80,6 @@ export class ExpensesPage {
             }
             this.showSegment = this.getSegmentStatus();               
         });
-        this.status += "DOne constructor";
 
     }
 
@@ -110,7 +107,6 @@ export class ExpensesPage {
         this.storage.get('newphotoFlag').then((v) => {
             this.newphotoFlag = v;
         });
-        this.status += "finish load data";
 
 
     }
