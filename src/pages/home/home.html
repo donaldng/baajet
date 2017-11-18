@@ -54,7 +54,7 @@
             </ion-list-header> 
             <ion-grid>
                 <ion-row>
-                    <ion-col (click)="claimX(expenses)" col-4 *ngFor="let expenses of reserveList" text-center>
+                    <ion-col (click)="quickAdd(expenses)" col-4 *ngFor="let expenses of reserveList" text-center>
                         <img src="{{ expenses.image }}" *ngIf=" expenses.image != 0 " />
                         <img src="{{ getDefaultThumbnail(expenses.name, expenses.freq) }}" *ngIf=" expenses.image == 0 " />
                         <br/>
@@ -84,7 +84,7 @@
     </ion-item>
 
     <ion-fab right bottom *ngIf="tot_budget">
-        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd()">
+        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd(0)">
             <ion-icon name="add"></ion-icon>
         </button>
         <button *ngIf="newphotoFlag" ion-fab color="danger" (click)="gotoImage()">

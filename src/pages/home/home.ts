@@ -5,7 +5,6 @@ import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
-import { ClaimService } from '../../service/claim'
 
 @Component({
     selector: 'page-home',
@@ -40,9 +39,9 @@ export class HomePage {
     seemore_reserved;
     baaThumbnail;
     
-    constructor(public claim: ClaimService, private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
-
+        this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
         this.tot_expenses = 0;
@@ -313,15 +312,26 @@ export class HomePage {
         this.tripEnd = this.duration[1];   
     }
 
-    quickAdd(){
+    quickAdd(claim){
+        let title = 'Add expenses';
+        let placeholder = '';
+        let value = '';
+
+        if (claim){
+            title = "Claim reserved fund";
+            placeholder = claim.amount;
+            value = claim.amount;
+        }
+
         let prompt = this.alertCtrl.create({
             title: 'Add expenses',
             message: "How much is the expenses?",
             inputs: [
             {
                 name: 'price',
-                placeholder: '',
-                type: 'number'
+                placeholder: placeholder,
+                type: 'number',
+                value: value
             },
             ],
             buttons: [
@@ -333,7 +343,13 @@ export class HomePage {
             {
                 text: 'Go',
                 handler: data => {
-                    this.gotoManage(data.price);
+                    if(!claim){
+                        this.gotoManage(data.price);
+                    }
+                    else{
+                        // If claim direct add one
+                        this.claimExpenses(claim, data.price);
+                    }                    
                 }
             }
             ]
@@ -344,7 +360,7 @@ export class HomePage {
             return;
         });
     }
-    
+
     getReservedAmount(expensesList){
         if(!expensesList){
             this.storage.get('expensesList').then((v) => {
@@ -451,9 +467,9 @@ export class HomePage {
 
 
         // Claim's should not be included into today's expenses, neither for future's, so leave it to the past.
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        yesterday = yesterday.toISOString().slice(0, 19).replace('T',' ');
+        var x = new Date();
+        x.setDate(x.getDate() - 1);
+        var yesterday = x.toISOString().slice(0, 19).replace('T',' ');
 
         // Add new expenses
         var newExpenses = {
@@ -490,57 +506,7 @@ export class HomePage {
             }
         }
         return -1;
-    }
-
-    claimX(claim){
-        let title = 'Add expenses';
-        let placeholder = '';
-        let value = '';
-
-        if (claim){
-            title = "Claim reserved fund";
-            placeholder = claim.amount;
-            value = claim.amount;
-        }
-
-        let prompt = this.alertCtrl.create({
-            title: title,
-            message: "How much is the expenses?",
-            inputs: [
-            {
-                name: 'price',
-                placeholder: placeholder,
-                type: 'number',
-                value: value
-            },
-            ],
-            buttons: [
-            {
-                text: 'Cancel',
-                handler: data => {
-                }
-            },
-            {
-                text: 'Go',
-                handler: data => {
-                    if(!claim){
-                        this.init_price = data.price;
-                        this.gotoManage('-1');
-                    }
-                    else{
-                        // If claim direct add one
-                        this.claimExpenses(claim, data.price);
-                    }
-                }
-            }
-            ]
-        });
-        prompt.present().then(() => {
-            const firstInput: any = document.querySelector('ion-alert input');
-            firstInput.focus();
-            return;
-        });        
-    }    
+    }  
 
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
