@@ -37,7 +37,7 @@
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-
+    {{ status }}
     <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
 
     <div [ngSwitch]="expenses_type">
