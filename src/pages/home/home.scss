@@ -86,5 +86,9 @@ page-home {
     ion-item{
         margin-bottom: 15px !important;
     }
+
+    p.seemore{
+        color: color($colors, primary);
+    }
  
 }

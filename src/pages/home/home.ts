@@ -38,6 +38,7 @@ export class HomePage {
     reserveList;
     seemore_reserved;
     baaThumbnail;
+    seemore_ok;
     
     constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
@@ -51,6 +52,7 @@ export class HomePage {
         this.day_remaining = 0;
         this.day_expenses = 0;
         this.seemore_reserved = 0;
+        this.seemore_ok = 0;
 
         this.updateData();
 
@@ -390,10 +392,15 @@ export class HomePage {
 
         let resv_length = this.reserveList.length;
         this.reserveList = this.reserveList.sort(function(a, b) {  return b.id - a.id; });
-        this.reserveList = this.reserveList.slice(0, 6);
 
-        if (resv_length > 6){
-            this.seemore_reserved = 1;
+        if(!this.seemore_ok){
+            this.reserveList = this.reserveList.slice(0, 6);
+            if (resv_length > 6){
+                this.seemore_reserved = 1;
+            }            
+        }
+        else{
+            this.seemore_reserved = 0;
         }
     }
 
@@ -410,11 +417,6 @@ export class HomePage {
     gotoSetting(){
         let modal = this.modalCtrl.create(SettingPage);
         modal.present();
-    }
-
-    openReservedTab(){
-        this.events.publish('change_segment', 1);
-        alert('publish ady');
     }
 
     calcFrequency(freq_type, start, end){
@@ -510,5 +512,10 @@ export class HomePage {
 
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    seemore(){
+        this.seemore_ok = 1;
+        this.processReserved(this.expensesList);        
     }
 }

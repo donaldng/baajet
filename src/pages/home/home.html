@@ -63,8 +63,8 @@
                         <ion-badge color="light" item-end>{{ display_currency }}{{ expenses.amount }}</ion-badge>
                     </ion-col>
                 </ion-row>
-                    <ion-item *ngIf="seemore_reserved" no-lines (click)="navCtrl.parent.select(1);">
-                        <p color="primary" item-end>see more...</p>
+                    <ion-item *ngIf="seemore_reserved" no-lines (click)="seemore()">
+                        <p class="seemore" item-end>show more...</p>
                     </ion-item>
                     
             </ion-grid>
