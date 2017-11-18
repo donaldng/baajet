@@ -70,7 +70,7 @@
 
                 </ion-list>
             </ion-col>         
-            <ion-col col-3>
+            <ion-col col-3 *ngIf="enablePhotoFlag">
                 <img src="assets/imgs/icons/add-image.png" (click)="addMedia();" *ngIf=" tmpImage == 0 " />   
                 <img src="{{ tmpImage }}" #myImage (click)="imageOptions(myImage);" *ngIf=" tmpImage != 0 " />                    
             </ion-col>

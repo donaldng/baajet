@@ -31,11 +31,11 @@ export class ManagePage {
     init_price;
     expenses_cat;
     _imageViewerCtrl: ImageViewerController;
-
+    enablePhotoFlag;
 
     constructor(imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
-
+        this.enablePhotoFlag = 0;
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
@@ -101,6 +101,10 @@ export class ManagePage {
         this.storage.get('editFlag').then((v) => {
             if(v) this.editFlag = v;
         });          
+
+        this.storage.get('enablePhotoFlag').then((v) => {
+            if(v) this.enablePhotoFlag = v;
+        });   
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
 

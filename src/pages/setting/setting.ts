@@ -20,6 +20,7 @@ export class SettingPage {
     saveimageFlag;
     editFlag;
     newphotoFlag;
+    enablePhotoFlag;
 
     constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController, private alertCtrl: AlertController) {
         this.items = ['$', '¥', '€', '£', '฿'];
@@ -55,7 +56,10 @@ export class SettingPage {
         }); 
         this.storage.get('newphotoFlag').then((v) => {
             if(v) this.newphotoFlag = v;
-        });         
+        });       
+        this.storage.get('enablePhotoFlag').then((v) => {
+            if(v) this.enablePhotoFlag = v;
+        });  
     }
 
     presentToast() {
@@ -125,6 +129,7 @@ export class SettingPage {
         this.storage.set('saveimageFlag', this.saveimageFlag);
         this.storage.set('editFlag', this.editFlag);
         this.storage.set('newphotoFlag', this.newphotoFlag);
+        this.storage.set('enablePhotoFlag', this.enablePhotoFlag);
 
         this.events.publish('reload:home', 'tot_budget', budget);
         this.events.publish('reload:home', 'duration', duration);
@@ -132,6 +137,7 @@ export class SettingPage {
         this.events.publish('saveimageFlag', this.saveimageFlag);
         this.events.publish('editFlag', this.editFlag);
         this.events.publish('newphotoFlag', this.newphotoFlag);
+        this.events.publish('enablePhotoFlag', this.enablePhotoFlag);
 
         this.presentToast();
         this.dismiss()
