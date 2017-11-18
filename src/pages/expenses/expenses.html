@@ -42,7 +42,7 @@
 
     <div [ngSwitch]="expenses_type">
         <div *ngFor="let expenses of expensesList">
-            <ion-list *ngSwitchCase="getSwitchType(expenses.freq)" (click)="gotoManage(expenses.id)">
+            <ion-list *ngSwitchCase="getSwitchType(expenses.freq)" (click)="notReserved(expenses)">
                 <ion-item>
                     <ion-thumbnail item-start>
                         <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
@@ -57,7 +57,7 @@
     </div>
 
     <ion-fab right bottom *ngIf="tot_budget">
-        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd()">
+        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd(0)">
             <ion-icon name="add"></ion-icon>
         </button>
         <button *ngIf="newphotoFlag" ion-fab color="danger" (click)="gotoManage('-1')">
