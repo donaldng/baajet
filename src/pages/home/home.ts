@@ -11,7 +11,6 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
     templateUrl: 'home.html'
 })
 export class HomePage {
-
     items;
     selectedItem;
     display_currency;
@@ -35,6 +34,7 @@ export class HomePage {
     tot_color = 'primary';
     tot_bar;
     day_bar;
+    reserved_amount;
     
     constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
@@ -46,7 +46,9 @@ export class HomePage {
         this.tot_remaining = 0;
         this.day_remaining = 0;
         this.day_expenses = 0;
+
         this.updateData();
+        this.getReservedAmount();
 
         events.subscribe('reload:home', (k, v) => {
             if (k == "expensesList")
@@ -291,6 +293,7 @@ export class HomePage {
         if(this.day_bar) this.day_bar.style.width = (day_perc) + '%';
 
         this.getGreetMsg();
+        this.getReservedAmount();
 
     }
 
@@ -332,6 +335,23 @@ export class HomePage {
         });
     }
     
+    getReservedAmount(){
+        this.storage.get('expensesList').then((v) => {
+            this.processReserved(v);
+        });
+    }
+
+    processReserved(expensesList){
+        this.reserved_amount = 0;
+
+        for (var i = 0, len = expensesList.length; i < len; i++) {
+            // if is reserved
+            if (expensesList[i].freq == 1){
+                this.reserved_amount += Number(expensesList[i].amount);
+            }
+        }
+    }
+
     gotoManage(init_price){
         this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price});
         //this.navCtrl.parent.select(1);
@@ -345,6 +365,11 @@ export class HomePage {
     gotoSetting(){
         let modal = this.modalCtrl.create(SettingPage);
         modal.present();
+    }
+
+    openReservedTab(){
+        this.events.publish('change_segment', 1);
+        alert('publish ady');
     }
 
     calcFrequency(freq_type, start, end){

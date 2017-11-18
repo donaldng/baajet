@@ -47,6 +47,12 @@
                 </div>                    
             </ion-item>
         </ion-item-group>
+        <ion-item-group *ngIf="reserved_amount != 0" (click)="navCtrl.parent.select(1);" >
+            <ion-list-header color="light">
+                Reserved Fund
+                <ion-badge color="primary" item-end>{{ display_currency }}{{ reserved_amount }}</ion-badge>
+            </ion-list-header> 
+        </ion-item-group>           
     </ion-list>           
 
     <ion-item *ngIf="!tot_budget" no-lines>
