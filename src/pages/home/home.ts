@@ -268,7 +268,7 @@ export class HomePage {
         } 
         else{
             this.day_color = "secondary";
-            if(this.day_bar) this.day_bar.style.backgroundColor='#3FC380';
+            if(this.day_bar) this.day_bar.style.backgroundColor='#02d1a4';
         }
 
         if(this.tot_remaining / this.tot_budget <= 0.15){
@@ -278,7 +278,7 @@ export class HomePage {
         } 
         else{
             this.tot_color = "secondary";
-            if(this.tot_bar) this.tot_bar.style.backgroundColor='#3FC380';
+            if(this.tot_bar) this.tot_bar.style.backgroundColor='#02d1a4';
         }
 
         let tot_perc = 0;

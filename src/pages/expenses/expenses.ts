@@ -294,7 +294,7 @@ export class ExpensesPage {
 
     getDefaultThumbnail(name, type){
         
-        if(type==1) return "assets/imgs/icons/reserved.png";
+        if(type==1 && name=="General") return "assets/imgs/icons/reserved.png";
         if(type > 1) return "assets/imgs/icons/recurring.png";
 
         if (name == "General") return "assets/imgs/icons/general.png";
