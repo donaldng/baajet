@@ -348,26 +348,6 @@ export class ExpensesPage {
         return -1;
     }
 
-    findRunningId(){
-        var l = this.expensesList;
-        var id = 0;
-        var return_id = 0;
-
-        if (l){
-            for (var i = 0 ; i < l.length; i++ ){
-                if (l[i].name.indexOf('Expenses #') >= 0){
-                    id = l[i].name.split('#')[1];
-
-                    if (!isNaN(id) && id > return_id){
-                        return_id = id;
-                    }
-                }
-            }
-        }
-
-        this.runningId = Number(return_id) + 1;        
-    }  
-
     notReserved(expenses){
         if(expenses.freq != 1){
             this.gotoManage(expenses.id);
@@ -415,6 +395,7 @@ export class ExpensesPage {
         if (name == "Food") return "assets/imgs/icons/food.png";
         if (name == "Transport") return "assets/imgs/icons/transport.png";
         if (name == "Shopping") return "assets/imgs/icons/buy.png";
+        if (name == "Stay") return "assets/imgs/icons/stay.png";
         if (name == "Relax") return "assets/imgs/icons/relax.png";
         if (name == "Souvenir") return "assets/imgs/icons/souvenir.png";
         if (name == "Other") return "assets/imgs/icons/other.png";

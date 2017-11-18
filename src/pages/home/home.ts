@@ -5,6 +5,7 @@ import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { ClaimService } from '../../service/claim'
 
 @Component({
     selector: 'page-home',
@@ -35,9 +36,13 @@ export class HomePage {
     tot_bar;
     day_bar;
     reserved_amount;
+    reserveList;
+    seemore_reserved;
+    baaThumbnail;
     
-    constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public claim: ClaimService, private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
+
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
         this.tot_expenses = 0;
@@ -46,13 +51,18 @@ export class HomePage {
         this.tot_remaining = 0;
         this.day_remaining = 0;
         this.day_expenses = 0;
+        this.seemore_reserved = 0;
 
         this.updateData();
-        this.getReservedAmount();
+
+        if(!this.baaThumbnail) this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,5) + ".png";
 
         events.subscribe('reload:home', (k, v) => {
-            if (k == "expensesList")
-                this.calc(v);                
+            if (k == "expensesList"){
+                this.calc(v);
+                this.expensesList = v;
+                this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,5) + ".png";
+            }
             else if(k == "tot_budget"){
                 this.tot_budget = v;
                 this.calcDbBudget();
@@ -64,7 +74,7 @@ export class HomePage {
         });
 
         events.subscribe('reload:expenses', (v) => {
-            this.calc(v);                
+            this.calc(v);
         });
 
         events.subscribe('update:currency', (c) => {
@@ -293,7 +303,7 @@ export class HomePage {
         if(this.day_bar) this.day_bar.style.width = (day_perc) + '%';
 
         this.getGreetMsg();
-        this.getReservedAmount();
+        this.getReservedAmount(v);
 
     }
 
@@ -335,20 +345,39 @@ export class HomePage {
         });
     }
     
-    getReservedAmount(){
-        this.storage.get('expensesList').then((v) => {
-            this.processReserved(v);
-        });
+    getReservedAmount(expensesList){
+        if(!expensesList){
+            this.storage.get('expensesList').then((v) => {
+                this.processReserved(v);
+                this.expensesList = v;
+            });
+        }
+        else{
+            this.expensesList = expensesList;
+            this.processReserved(expensesList);
+        }
     }
 
     processReserved(expensesList){
         this.reserved_amount = 0;
+        this.reserveList = [];
+
+        if(!expensesList) return;
 
         for (var i = 0, len = expensesList.length; i < len; i++) {
             // if is reserved
             if (expensesList[i].freq == 1){
                 this.reserved_amount += Number(expensesList[i].amount);
+                this.reserveList.push(expensesList[i]);
             }
+        }
+
+        let resv_length = this.reserveList.length;
+        this.reserveList = this.reserveList.sort(function(a, b) {  return b.id - a.id; });
+        this.reserveList = this.reserveList.slice(0, 6);
+
+        if (resv_length > 6){
+            this.seemore_reserved = 1;
         }
     }
 
@@ -377,5 +406,143 @@ export class HomePage {
         if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end));
         if (freq_type == 3) return this.dayDiff(new Date(start), new Date(end)) / 7;
         if (freq_type == 4) return this.dayDiff(new Date(start), new Date(end)) / 30;
+    }
+
+    // DUPLICATED
+    getDefaultThumbnail(name, type){
+        
+        if(type==1 && name=="General") return "assets/imgs/icons/reserved.png";
+        if(type > 1) return "assets/imgs/icons/recurring.png";
+
+        if (name == "General") return "assets/imgs/icons/general.png";
+        if (name == "Food") return "assets/imgs/icons/food.png";
+        if (name == "Transport") return "assets/imgs/icons/transport.png";
+        if (name == "Shopping") return "assets/imgs/icons/buy.png";
+        if (name == "Stay") return "assets/imgs/icons/stay.png";
+        if (name == "Relax") return "assets/imgs/icons/relax.png";
+        if (name == "Souvenir") return "assets/imgs/icons/souvenir.png";
+        if (name == "Other") return "assets/imgs/icons/other.png";
+        
+        return 0;
+    }    
+
+    claimExpenses(expenses, price){
+        let index = this.findIndex(expenses.id);
+
+        // Validate
+        if (price > expenses.amount){
+            alert('You cannot claim more than your reserved fund, my good sir!');
+            return;
+        }
+        else if (price < 0){
+            alert('I cannot process negative number, baaaaa...');
+            return;
+        }
+
+        // Remove amount from claim
+        expenses.amount = expenses.amount - price;
+        this.expensesList[index] = expenses;
+
+        let tmpImage = 0;
+        if (typeof expenses.tmpImage != 'undefined') tmpImage = expenses.tmpImage;
+
+        let thumbnail = 0;
+        if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
+
+
+        // Claim's should not be included into today's expenses, neither for future's, so leave it to the past.
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday = yesterday.toISOString().slice(0, 19).replace('T',' ');
+
+        // Add new expenses
+        var newExpenses = {
+            'id': Math.round((new Date()).getTime() / 1000),
+            'name': expenses.name,
+            'amount': Number(price),
+            'freq': 0,
+            'freq_start': yesterday,
+            'freq_end': yesterday,
+            'datetime': yesterday,
+            'image': tmpImage,
+            'thumbnail': thumbnail,
+            'todays': true
+        };
+        this.expensesList.push(newExpenses);
+
+        // Delete claim if depleted
+        if (expenses.amount <= 0){
+            let index = this.expensesList.indexOf(expenses);
+            this.expensesList.splice(index,1);
+        }
+
+        this.events.publish('reload:home', 'expensesList', this.expensesList);
+        this.events.publish('change_segment', newExpenses.freq);
+        this.storage.set('expensesList', this.expensesList);
+        this.events.publish('reload:expenses', this.expensesList);
+    }
+
+    findIndex(find_id){
+        if(!this.expensesList) return;
+        for (var i = 0, len = this.expensesList.length; i < len; i++) {
+            if (this.expensesList[i].id == find_id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    claimX(claim){
+        let title = 'Add expenses';
+        let placeholder = '';
+        let value = '';
+
+        if (claim){
+            title = "Claim reserved fund";
+            placeholder = claim.amount;
+            value = claim.amount;
+        }
+
+        let prompt = this.alertCtrl.create({
+            title: title,
+            message: "How much is the expenses?",
+            inputs: [
+            {
+                name: 'price',
+                placeholder: placeholder,
+                type: 'number',
+                value: value
+            },
+            ],
+            buttons: [
+            {
+                text: 'Cancel',
+                handler: data => {
+                }
+            },
+            {
+                text: 'Go',
+                handler: data => {
+                    if(!claim){
+                        this.init_price = data.price;
+                        this.gotoManage('-1');
+                    }
+                    else{
+                        // If claim direct add one
+                        this.claimExpenses(claim, data.price);
+                    }
+                }
+            }
+            ]
+        });
+        prompt.present().then(() => {
+            const firstInput: any = document.querySelector('ion-alert input');
+            firstInput.focus();
+            return;
+        });        
+    }    
+
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }

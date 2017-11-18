@@ -47,11 +47,28 @@
                 </div>                    
             </ion-item>
         </ion-item-group>
-        <ion-item-group *ngIf="reserved_amount != 0" (click)="navCtrl.parent.select(1);" >
+        <ion-item-group *ngIf="reserved_amount != 0" >
             <ion-list-header color="light">
                 Reserved Fund
                 <ion-badge color="primary" item-end>{{ display_currency }}{{ reserved_amount }}</ion-badge>
             </ion-list-header> 
+            <ion-grid>
+                <ion-row>
+                    <ion-col (click)="claimX(expenses)" col-4 *ngFor="let expenses of reserveList" text-center>
+                        <img src="{{ expenses.image }}" *ngIf=" expenses.image != 0 " />
+                        <img src="{{ getDefaultThumbnail(expenses.name, expenses.freq) }}" *ngIf=" expenses.image == 0 " />
+                        <br/>
+                        {{ expenses.name }}
+                        <br/>
+                        <ion-badge color="light" item-end>{{ display_currency }}{{ expenses.amount }}</ion-badge>
+                    </ion-col>
+                </ion-row>
+                    <ion-item *ngIf="seemore_reserved" no-lines (click)="navCtrl.parent.select(1);">
+                        <p color="primary" item-end>see more...</p>
+                    </ion-item>
+                    
+            </ion-grid>
+
         </ion-item-group>           
     </ion-list>           
 
@@ -62,7 +79,7 @@
     </ion-item>
   
     <ion-item no-lines>
-            <img src="assets/imgs/thumbnail.png" item-start />
+            <img class="thumbnail" src="{{ baaThumbnail }}" item-start />
             <p class="bubble" item-start>{{ greetMsg }}</p>
     </ion-item>
 
