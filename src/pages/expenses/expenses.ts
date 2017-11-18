@@ -27,11 +27,9 @@ export class ExpensesPage {
     tot_budget = 0;
     newphotoFlag;
     init_price;
-    status;
 
     constructor(private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
-        this.status = "";
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
                 this.tot_budget = v;
@@ -85,8 +83,9 @@ export class ExpensesPage {
 
     loadData(){
         this.storage.get('expensesList').then((expensesList) => {
-            this.status += "getExpenseslist from Storage";
-
+            // this part is the slowest......
+            // see if can preload.
+            
             if (expensesList){
                 this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
                 this.oriList = expensesList;
