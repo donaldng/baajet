@@ -22,4 +22,15 @@ page-manage {
         object-fit: cover;
     }
 
+    .thumbnailOption{
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .selected_tn{
+        border: 3px solid #488aff;
+        padding: 5px;
+        border-radius: 5px;
+
+    }
 }

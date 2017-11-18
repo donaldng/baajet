@@ -5,6 +5,7 @@ import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
 import { ImageViewerController } from 'ionic-img-viewer';
+import { ImageService } from '../../service/image';
 
 @Component({
     selector: 'page-manage',
@@ -32,16 +33,18 @@ export class ManagePage {
     expenses_cat;
     _imageViewerCtrl: ImageViewerController;
     enablePhotoFlag;
+    imageList;
+    selected_tn;
 
-    constructor(imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
+        this.selected_tn = 0;
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
         this.init_price = this.params.get('init_price');
         if (this.camOn) this.captureImage();
-
         this.default_placeholder = 'Expenses #';
 
         this.tmpImage = 0;
@@ -107,6 +110,7 @@ export class ManagePage {
         });   
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
+        this.generateImageList(this.expenses.name);
 
     }
 
@@ -291,6 +295,10 @@ export class ManagePage {
         });
 
         actionSheet.present();
+    }
+
+    generateImageList(name){
+        this.imageList = this.imgLib.generateImageList(name);
     }
 
     dismiss() {

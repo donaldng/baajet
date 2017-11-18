@@ -5,6 +5,7 @@ import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { ImageService } from '../../service/image';
 
 @Component({
     selector: 'page-home',
@@ -40,8 +41,9 @@ export class HomePage {
     baaThumbnail;
     seemore_ok;
     
-    constructor(private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public imgLib: ImageService, private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
         //this.storage.clear();
+
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
@@ -426,24 +428,6 @@ export class HomePage {
         if (freq_type == 4) return this.dayDiff(new Date(start), new Date(end)) / 30;
     }
 
-    // DUPLICATED
-    getDefaultThumbnail(name, type){
-        
-        if(type==1 && name=="General") return "assets/imgs/icons/reserved.png";
-        if(type > 1) return "assets/imgs/icons/recurring.png";
-
-        if (name == "General") return "assets/imgs/icons/general.png";
-        if (name == "Food") return "assets/imgs/icons/food.png";
-        if (name == "Transport") return "assets/imgs/icons/transport.png";
-        if (name == "Shopping") return "assets/imgs/icons/buy.png";
-        if (name == "Stay") return "assets/imgs/icons/stay.png";
-        if (name == "Relax") return "assets/imgs/icons/relax.png";
-        if (name == "Souvenir") return "assets/imgs/icons/souvenir.png";
-        if (name == "Other") return "assets/imgs/icons/other.png";
-        
-        return 0;
-    }    
-
     claimExpenses(expenses, price){
         let index = this.findIndex(expenses.id);
 
@@ -519,6 +503,10 @@ export class HomePage {
         }
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    getDefaultThumbnail(x, y){
+        return this.imgLib.getDefaultThumbnail(x , y);
     }
 
     seemore(){

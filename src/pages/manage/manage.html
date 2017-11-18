@@ -26,13 +26,6 @@
             <ion-col>
                 <ion-list >
                     <ion-item no-lines>
-                        <ion-label color="primary" stacked>What's that?</ion-label>
-                        <ion-select [(ngModel)]="expenses.name" name="name" interface="action-sheet">
-                            <ion-option *ngFor="let item of expenses_cat" value="{{ item }}" [selected]="expenses.name == item" >{{item}}</ion-option>
-                        </ion-select>
-                    </ion-item>
-
-                    <ion-item no-lines>
                         <ion-label color="primary" stacked>How much?</ion-label>
                         <ion-input type="number" value="{{ expenses.amount }}" [(ngModel)]="expenses.amount" name="amount" placeholder="0.00"></ion-input>
                     </ion-item>
@@ -47,6 +40,23 @@
                             <ion-option value="4">Monthly</ion-option>
                         </ion-select>
                     </ion-item>
+                    
+                    <ion-item no-lines>
+                        <ion-label color="primary" stacked>What's that?</ion-label>
+                        <ion-select [(ngModel)]="expenses.name" name="name" interface="action-sheet" (ionChange)="generateImageList(expenses.name)">
+                            <ion-option *ngFor="let item of expenses_cat" value="{{ item }}" [selected]="expenses.name == item" >{{item}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-4 *ngFor="let image of imageList; let idx = index" [class.selected_tn]="selected_tn == idx" text-center>
+                                <img (click)="selected_tn = idx"
+                                class="thumbnailOption" 
+                                src="{{ image.src }}" />
+                            </ion-col>
+                        </ion-row>                            
+                    </ion-grid>
                     
                     <ion-item no-lines *ngIf="selected_freq == 0">
                         <ion-label stacked color="primary">Spending it today?</ion-label>

@@ -17,6 +17,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AdMobFree } from '@ionic-native/admob-free';
+import { ImageService } from '../service/image';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { AdMobFree } from '@ionic-native/admob-free';
     SplashScreen,
     Camera,
     AdMobFree,
+    ImageService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
