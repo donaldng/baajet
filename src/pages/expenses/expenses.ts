@@ -47,6 +47,10 @@ export class ExpensesPage {
             this.display_currency = c;
         });
 
+        events.subscribe('reset:expenses', () => {
+            this.loadData();
+        });        
+
         events.subscribe('change_segment', (v) => {
             this.expenses_type = this.getSwitchType(v);
         });

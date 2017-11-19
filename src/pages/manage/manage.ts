@@ -116,7 +116,6 @@ export class ManagePage {
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
         this.generateImageList(this.expenses.name);
-
     }
 
     openMenu() {
@@ -318,6 +317,7 @@ export class ManagePage {
     }
 
     dismiss() {
+        this.events.publish('reset:expenses');
         this.viewCtrl.dismiss();
     }
 }
