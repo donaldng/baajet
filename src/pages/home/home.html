@@ -24,8 +24,8 @@
     <ion-list *ngIf="tot_budget != 0">
         <ion-item-group (click)="gotoSetting()">
             <ion-list-header color="light">
-                <span *ngIf="campaign_ended == 0">Trip's budget for {{ n_day }} days</span>
-                <span *ngIf="campaign_ended == 1">Left overs</span>
+                <span *ngIf="campaign_ended == 0">Total Budget x {{ n_day }} days</span>
+                <span *ngIf="campaign_ended == 1">Left Overs</span>
                 <ion-badge color="primary" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
             </ion-list-header>        
             <ion-item>
@@ -37,7 +37,7 @@
         </ion-item-group>
         <ion-item-group *ngIf="campaign_ended == 0" (click)="navCtrl.parent.select(1);">
             <ion-list-header color="light">
-                Daily budget
+                Daily Budget
                 <ion-badge color="primary" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
             </ion-list-header>           
             <ion-item>
@@ -49,14 +49,14 @@
         </ion-item-group>
         <ion-item-group *ngIf="reserved_amount != 0" >
             <ion-list-header color="light">
-                Reserved Fund
+                Reserved Funds
                 <ion-badge color="primary" item-end>{{ display_currency }}{{ reserved_amount }}</ion-badge>
             </ion-list-header> 
             <ion-grid>
                 <ion-row>
                     <ion-col (click)="quickAdd(expenses)" col-4 *ngFor="let expenses of reserveList" text-center>
                         <img src="{{ expenses.image }}" *ngIf=" expenses.image != 0 " />
-                        <img src="{{ getDefaultThumbnail(expenses.name, expenses.freq) }}" *ngIf=" expenses.image == 0 " />
+                        <img src="{{ expenses.thumbnail }}" *ngIf=" expenses.image == 0 " />
                         <br/>
                         {{ expenses.name }}
                         <br/>

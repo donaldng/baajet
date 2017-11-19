@@ -158,7 +158,6 @@ export class ManagePage {
     }
 
     setThumbnail(img){
-        alert(img);
         this.thumbnail = 'data:image/jpeg;base64,' + img;
     }
 
@@ -187,6 +186,13 @@ export class ManagePage {
             }
         }
 
+        var thumbnail = "assets/imgs/icons/"+name.toLowerCase()+"/" + name.toLowerCase() + "-" + (this.selected_tn + 1) + ".png";
+        var image = 0;
+
+        if(this.tmpImage && this.tmpImage!=0 && typeof this.tmpImage != 'undefined'){
+            image = this.tmpImage;
+        }
+
         var changes = {
             'id': this.expenses.id,
             'name':name,
@@ -195,8 +201,8 @@ export class ManagePage {
             'freq_start': this.expenses.freq_start,
             'freq_end': this.expenses.freq_end,
             'datetime': this.expenses.datetime,
-            'image': this.tmpImage,
-            'thumbnail': this.thumbnail,
+            'image': image,
+            'thumbnail': thumbnail,
             'todays': this.expenses.todays
         };
 

@@ -27,16 +27,16 @@ export class ImageService {
         name = name.toLowerCase();
         switch(name) {
             case "general":
-                img_size = 3;
+                img_size = 6;
                 break;
             default:
-                img_size = 1;
+                img_size = 6;
         }
 
-        if(img_size == 1) imageList.push({src: "assets/imgs/icons/" + name + ".png"});
+        if(img_size == 1) imageList.push({src: "assets/imgs/icons/+" + name + "/" + name + ".png"});
         else{
             for(var i = 1; i < img_size + 1 ; i++){
-                imageList.push({src: "assets/imgs/icons/" + name + "-" + i + ".png"});
+                imageList.push({src: "assets/imgs/icons/" + name + "/" + name + "-" + i + ".png"});
             }
         }
 

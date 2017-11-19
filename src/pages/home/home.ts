@@ -322,14 +322,14 @@ export class HomePage {
         let value = '';
 
         if (claim){
-            title = "Claim reserved fund";
+            title = "Use fund";
             placeholder = claim.amount;
             value = claim.amount;
         }
 
         let prompt = this.alertCtrl.create({
-            title: 'Add expenses',
-            message: "How much is the expenses?",
+            title: title,
+            message: "How much are you spending?",
             inputs: [
             {
                 name: 'price',
