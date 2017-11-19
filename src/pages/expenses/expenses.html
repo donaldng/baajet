@@ -40,19 +40,17 @@
     <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
 
     <div [ngSwitch]="expenses_type">
-        <div *ngFor="let expenses of expensesList">
-            <ion-list *ngSwitchCase="getSwitchType(expenses.freq)" (click)="notReserved(expenses)">
-                <ion-item>
-                    <ion-thumbnail item-start>
-                        <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
-                        <img src="{{ expenses.thumbnail }}" imageViewer *ngIf=" expenses.image == 0 " />
-                    </ion-thumbnail>
-                    <h2>{{ expenses.name }}</h2>
-                    <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
-                    <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
-                </ion-item>
-            </ion-list>
-        </div>
+        <ion-list *ngFor="let expenses of expensesList;">
+            <ion-item *ngSwitchCase="getSwitchType(expenses.freq)" (click)="notReserved(expenses)">
+                <ion-thumbnail item-start>
+                    <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
+                    <img src="{{ expenses.thumbnail }}" imageViewer *ngIf=" expenses.image == 0 " />
+                </ion-thumbnail>
+                <h2>{{ expenses.name }}</h2>
+                <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
+                <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+            </ion-item>
+        </ion-list>
     </div>
 
     <ion-fab right bottom *ngIf="tot_budget">

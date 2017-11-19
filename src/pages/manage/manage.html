@@ -48,7 +48,7 @@
                         </ion-select>
                     </ion-item>
 
-                    <ion-grid>
+                    <ion-grid *ngIf="tmpImage == 0">
                         <ion-row>
                             <ion-col col-4 *ngFor="let image of imageList; let idx = index" [class.selected_tn]="selected_tn == idx" text-center>
                                 <img (click)="selected_tn = idx"

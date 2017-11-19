@@ -81,7 +81,15 @@ export class ExpensesPage {
         });
 
     }
+    isDiffDay(expenses, idx){
+        if (idx == 0) return true;
 
+        var prev = this.expensesList[idx - 1].datetime;
+
+        if (expenses.datetime.slice(0,10) != prev.slice(0,10)) return true;
+
+        return false;
+    }
     loadData(){
         this.storage.get('expensesList').then((expensesList) => {
             // this part is the slowest......
@@ -227,6 +235,25 @@ export class ExpensesPage {
             return interval + " m";
 
         return seconds + " s";
+    }
+
+    daySince(oridate){
+        var now = +new Date();
+        var d = +new Date(oridate.replace(" ","T"));
+
+        var seconds = Math.floor((now - d) / 1000);
+
+        var interval = Math.floor(seconds / 31536000);
+
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 24){
+            var day = Number(interval/24);
+
+            if(day == 1) return 'Yesterday';
+            return '' + day + ' days ago';
+        }
+
+        return "Today";    
     }
 
     doRefresh(refresher) {

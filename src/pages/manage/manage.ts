@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, ActionSheetController } from 'ionic-angular';
+import { NavParams, ViewController, ActionSheetController, MenuController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -36,7 +36,7 @@ export class ManagePage {
     imageList;
     selected_tn;
 
-    constructor(public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
         this.selected_tn = 0;
@@ -90,6 +90,11 @@ export class ManagePage {
                 var inputDate = new Date(this.todays_b);
                 var todaysDate = new Date();
                 this.expenses.todays = false;
+
+                if(this.expenses.thumbnail){
+                    this.selected_tn = this.expenses.thumbnail.slice(-5).charAt(0) - 1;
+                }
+
                 if(inputDate.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)) {
                     this.expenses.todays = true;
                 }
@@ -112,6 +117,10 @@ export class ManagePage {
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
         this.generateImageList(this.expenses.name);
 
+    }
+
+    openMenu() {
+        this.menuCtrl.open();
     }
 
     findIndex(find_id){
