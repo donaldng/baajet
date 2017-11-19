@@ -338,11 +338,15 @@ export class ExpensesPage {
         expenses.amount = expenses.amount - price;
         this.expensesList[index] = expenses;
 
-        let tmpImage = 0;
-        if (typeof expenses.tmpImage != 'undefined') tmpImage = expenses.tmpImage;
+        let image = 0;
+        if (typeof expenses.image != 'undefined') image = expenses.image;
 
         let thumbnail = 0;
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
+
+        var x = new Date();
+        var today = x.toISOString().slice(0, 19).replace('T',' ');
+
 
         // Add new expenses
         var newExpenses = {
@@ -350,12 +354,13 @@ export class ExpensesPage {
             'name': expenses.name,
             'amount': Number(price),
             'freq': 0,
-            'freq_start': new Date().toISOString().slice(0, 19).replace('T',' '),
-            'freq_end': new Date().toISOString().slice(0, 19).replace('T',' '),
-            'datetime': new Date().toISOString().slice(0, 19).replace('T',' '),
-            'image': tmpImage,
+            'freq_start': today,
+            'freq_end': today,
+            'datetime': today,
+            'image': image,
             'thumbnail': thumbnail,
-            'todays': true
+            'todays': true,
+            'fromReserved': 1
         };
         this.expensesList.push(newExpenses);
 

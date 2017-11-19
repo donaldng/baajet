@@ -2,7 +2,37 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ImageService {
-    constructor() {}
+    imageCat;
+
+    constructor() {
+
+        this.imageCat = {
+            'general': [
+                'cash','bigcash','credit_card','online_purchase','bitcoin','invoice'
+            ],
+            'food': [
+                '','','','','',''
+            ],
+            'transport': [
+                '','','','','',''
+            ],
+            'shopping': [
+                '','','','','',''
+            ],
+            'stay': [
+                '','','','','',''
+            ],
+            'relax': [
+                '','','','','',''
+            ],
+            'souvenir': [
+                '','','','','',''
+            ],
+            'other': [
+                '','','','','',''
+            ],
+        };
+    }
 
     getDefaultThumbnail(name, type){
         
@@ -25,20 +55,17 @@ export class ImageService {
         var imageList = [];
         var img_size = 1;
         name = name.toLowerCase();
-        switch(name) {
-            case "general":
-                img_size = 6;
-                break;
-            default:
-                img_size = 6;
-        }
 
-        if(img_size == 1) imageList.push({src: "assets/imgs/icons/+" + name + "/" + name + ".png"});
-        else{
-            for(var i = 1; i < img_size + 1 ; i++){
-                imageList.push({src: "assets/imgs/icons/" + name + "/" + name + "-" + i + ".png"});
-            }
-        }
+        img_size = this.imageCat[name].length;
+
+        /*
+        for(var i = 0; i < img_size ; i++){
+            imageList.push({src: "assets/imgs/icons/" + name + "/" + this.imageCat[name][i] + ".png"});
+        }*/
+
+        for(var i = 1; i < img_size + 1 ; i++){
+            imageList.push({src: "assets/imgs/icons/" + name + "/" + name + "-" + i + ".png"});
+        }        
 
         return imageList;
     }

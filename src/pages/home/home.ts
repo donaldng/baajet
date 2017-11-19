@@ -231,7 +231,7 @@ export class HomePage {
 
         if(v){
             for (var i=0; i < v.length; i++){
-                if(v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ') && v[i].freq_end.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ')){
+                if(v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ') && v[i].freq_end.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ')){
                     // Do not account day expenses into daily budget calculation
                     // Unless it's a over spent, then we deduct overspent amount from daily budget
                     this.day_expenses += Number(v[i].amount);
@@ -445,17 +445,14 @@ export class HomePage {
         expenses.amount = expenses.amount - price;
         this.expensesList[index] = expenses;
 
-        let tmpImage = 0;
-        if (typeof expenses.tmpImage != 'undefined') tmpImage = expenses.tmpImage;
+        let image = 0;
+        if (typeof expenses.image != 'undefined') image = expenses.image;
 
         let thumbnail = 0;
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
-
-        // Claim's should not be included into today's expenses, neither for future's, so leave it to the past.
         var x = new Date();
-        x.setDate(x.getDate() - 1);
-        var yesterday = x.toISOString().slice(0, 19).replace('T',' ');
+        var today = x.toISOString().slice(0, 19).replace('T',' ');
 
         // Add new expenses
         var newExpenses = {
@@ -463,12 +460,13 @@ export class HomePage {
             'name': expenses.name,
             'amount': Number(price),
             'freq': 0,
-            'freq_start': yesterday,
-            'freq_end': yesterday,
-            'datetime': yesterday,
-            'image': tmpImage,
+            'freq_start': today,
+            'freq_end': today,
+            'datetime': today,
+            'image': image,
             'thumbnail': thumbnail,
-            'todays': true
+            'todays': true,
+            'fromReserved': 1
         };
         this.expensesList.push(newExpenses);
 
@@ -509,7 +507,7 @@ export class HomePage {
             }
         }
 
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+        return n;
     }
 
     getDefaultThumbnail(x, y){

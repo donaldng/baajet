@@ -212,7 +212,8 @@ export class ManagePage {
             'datetime': this.expenses.datetime,
             'image': image,
             'thumbnail': thumbnail,
-            'todays': this.expenses.todays
+            'todays': this.expenses.todays,
+            'fromReserved': 0
         };
 
         if (this.selected_id == "-1"){
