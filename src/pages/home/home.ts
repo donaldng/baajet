@@ -58,13 +58,13 @@ export class HomePage {
 
         this.updateData();
 
-        if(!this.baaThumbnail) this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,7) + ".png";
+        if(!this.baaThumbnail) this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
 
         events.subscribe('reload:home', (k, v) => {
             if (k == "expensesList"){
                 this.calc(v);
                 this.expensesList = v;
-                this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,7) + ".png";
+                this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
             }
             else if(k == "tot_budget"){
                 this.tot_budget = v;
@@ -500,6 +500,13 @@ export class HomePage {
         if (n == 5) {
             // rare thumbnail
             n = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        else if (n == 8){
+            // Extra rare
+            n = Math.floor(Math.random() * (max - min + 1)) + min;
+            if(n == 8){
+                n = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
         }
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
