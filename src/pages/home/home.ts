@@ -514,6 +514,18 @@ export class HomePage {
         return this.imgLib.getDefaultThumbnail(x , y);
     }
 
+    getThumbnailName(name, src){
+        var list = this.imgLib.generateImageList(name);
+        
+        for (var i = 0; i < list.length; i++){
+            if(list[i].src == src){
+                return list[i].name;
+                break;
+            }
+        }
+        return 0;
+    }
+
     seemore(){
         this.seemore_ok = 1;
         this.processReserved(this.expensesList);        

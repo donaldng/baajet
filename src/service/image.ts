@@ -8,28 +8,28 @@ export class ImageService {
 
         this.imageCat = {
             'general': [
-                'cash','bigcash','credit_card','online_purchase','bitcoin','invoice'
+                'dollar','bigcash','credit_card','online_purchase','bitcoin','invoice'
             ],
             'food': [
-                '','','','','',''
+                'rice','noodle','meat','salad','pizza','breads'
             ],
             'transport': [
-                '','','','','',''
+                'scooter','taxi','bus','train','airplane','cruise'
             ],
             'shopping': [
-                '','','','','',''
+                'cloth','bag','shoes','watch','assesories','luxuries'
             ],
             'stay': [
-                '','','','','',''
+                'house','apartment','city','camp','cabin','castle'
             ],
             'relax': [
-                '','','','','',''
+                'coffee','beer','bar','theater','karaoke','disco'
             ],
             'souvenir': [
-                '','','','','',''
+                'typical','toy','doll','assesories','gift','package'
             ],
             'other': [
-                '','','','','',''
+                'cash','cash_bag','credit_card','online','bitcoin','invoice'
             ],
         };
     }
@@ -58,15 +58,21 @@ export class ImageService {
 
         img_size = this.imageCat[name].length;
 
-        /*
+        
         for(var i = 0; i < img_size ; i++){
-            imageList.push({src: "assets/imgs/icons/" + name + "/" + this.imageCat[name][i] + ".png"});
-        }*/
+            var img_name = this.capitalizeFirstLetter(this.imageCat[name][i].replace('_', ' '));
 
-        for(var i = 1; i < img_size + 1 ; i++){
-            imageList.push({src: "assets/imgs/icons/" + name + "/" + name + "-" + i + ".png"});
-        }        
+            imageList.push({
+                name: img_name,
+                src: "assets/imgs/icons/" + name + "/" + this.imageCat[name][i] + ".png"
+            });
+        }
 
         return imageList;
     }
+
+    capitalizeFirstLetter(string) {
+       return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+ 
 }

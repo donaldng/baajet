@@ -28,9 +28,11 @@ export class ExpensesPage {
     tot_budget = 0;
     newphotoFlag;
     init_price;
+    imageList;
 
     constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
+
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
                 this.tot_budget = v;
@@ -425,6 +427,18 @@ export class ExpensesPage {
         });
 
         actionSheet.present();
+    }
+
+    getThumbnailName(name, src){
+        var list = this.imgLib.generateImageList(name);
+        
+        for (var i = 0; i < list.length; i++){
+            if(list[i].src == src){
+                return list[i].name;
+                break;
+            }
+        }
+        return 0;
     }
 
     getDefaultThumbnail(x, y){

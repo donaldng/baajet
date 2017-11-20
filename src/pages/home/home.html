@@ -58,7 +58,7 @@
                         <img src="{{ expenses.image }}" *ngIf=" expenses.image != 0 " />
                         <img src="{{ expenses.thumbnail }}" *ngIf=" expenses.image == 0 " />
                         <br/>
-                        {{ expenses.name }}
+                        {{ getThumbnailName(expenses.name, expenses.thumbnail) }}
                         <br/>
                         <ion-badge color="light" item-end>{{ display_currency }}{{ expenses.amount }}</ion-badge>
                     </ion-col>

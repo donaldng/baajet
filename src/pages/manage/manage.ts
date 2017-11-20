@@ -91,10 +91,6 @@ export class ManagePage {
                 var todaysDate = new Date();
                 this.expenses.todays = false;
 
-                if(this.expenses.thumbnail){
-                    this.selected_tn = this.expenses.thumbnail.slice(-5).charAt(0) - 1;
-                }
-
                 if(inputDate.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)) {
                     this.expenses.todays = true;
                 }
@@ -116,6 +112,28 @@ export class ManagePage {
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
         this.generateImageList(this.expenses.name);
+
+        if(this.expenses.thumbnail && this.imageList){
+            for(var i = 0; i < this.imageList.length ; i++){
+                if(this.imageList[i].src == this.expenses.thumbnail){
+                    this.selected_tn = i;
+                    break;
+                }
+            }
+            
+        }        
+    }
+
+    getThumbnailIndex(name, src){
+        var list = this.imgLib.generateImageList(name);
+        
+        for (var i = 0; i < list.length; i++){
+            if(list[i].src == src){
+                return list[i].name;
+                break;
+            }
+        }
+        return 0;
     }
 
     openMenu() {
@@ -165,10 +183,6 @@ export class ManagePage {
 
     }
 
-    setThumbnail(img){
-        this.thumbnail = 'data:image/jpeg;base64,' + img;
-    }
-
     set_todays_b(){
         var todays_b = new Date();
         todays_b.setDate(todays_b.getDate() + 1);
@@ -194,8 +208,10 @@ export class ManagePage {
             }
         }
 
-        var thumbnail = "assets/imgs/icons/"+name.toLowerCase()+"/" + name.toLowerCase() + "-" + (this.selected_tn + 1) + ".png";
         var image = 0;
+
+        this.thumbnail = this.imageList[this.selected_tn].src;
+
 
         if(this.tmpImage && this.tmpImage!=0 && typeof this.tmpImage != 'undefined'){
             image = this.tmpImage;
@@ -210,7 +226,7 @@ export class ManagePage {
             'freq_end': this.expenses.freq_end,
             'datetime': this.expenses.datetime,
             'image': image,
-            'thumbnail': thumbnail,
+            'thumbnail': this.thumbnail,
             'todays': this.expenses.todays,
             'fromReserved': 0
         };
