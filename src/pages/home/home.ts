@@ -520,7 +520,6 @@ export class HomePage {
         for (var i = 0; i < list.length; i++){
             if(list[i].src == src){
                 return list[i].name;
-                break;
             }
         }
         return 0;

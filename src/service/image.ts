@@ -8,13 +8,13 @@ export class ImageService {
 
         this.imageCat = {
             'general': [
-                'dollar','bigcash','credit_card','online_purchase','bitcoin','invoice'
+                'dollar','rice','taxi','shopping','ticket','groceries'
             ],
             'food': [
-                'rice','noodle','meat','salad','pizza','breads'
+                'noodle','meat','salad','pizza','breads','dessert'
             ],
             'transport': [
-                'scooter','taxi','bus','train','airplane','cruise'
+                'bus','scooter','train','airplane','cruise', 'bike'
             ],
             'shopping': [
                 'cloth','bag','shoes','watch','assesories','luxuries'
