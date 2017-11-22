@@ -1,1 +1,25 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+
+
+    <ion-toolbar padding>
+        <ion-title>History</ion-title>
+    </ion-toolbar>
+
+    <ion-content>
+        <ion-list>
+          <ion-list-header>
+            Action
+          </ion-list-header>            
+            <button menuClose ion-item detail-none>Show All</button>
+
+            <button menuClose ion-item *ngFor="let d of dates" detail-none>
+                {{ d }}
+            </button>
+        </ion-list>
+    </ion-content>
+
+
+</ion-menu>
+
+
+<ion-nav [root]="rootPage" #content></ion-nav>

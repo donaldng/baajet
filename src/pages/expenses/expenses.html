@@ -1,12 +1,10 @@
 <ion-header>
     <ion-navbar>
-        <!--
-        <ion-buttons start>
-            <button ion-button (click)="openAll()">
-                <ion-icon ios="ios-remove-circle" md="md-remove-circle"></ion-icon>
+        <!--<ion-buttons start>
+            <button ion-button icon-only menuToggle>
+                <ion-icon name="menu"></ion-icon>
             </button>
-        </ion-buttons>
-        -->
+        </ion-buttons>-->
         <ion-title>
             <span *ngIf="tot_expenses != 0">Total {{ display_currency }}{{ tot_expenses }}</span>
             <span *ngIf="tot_expenses == 0">Expenses</span>
@@ -40,16 +38,21 @@
     <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
 
     <div [ngSwitch]="expenses_type">
-        <ion-list *ngFor="let expenses of expensesList;">
-            <ion-item *ngSwitchCase="getSwitchType(expenses.freq)" (click)="notReserved(expenses)">
-                <ion-thumbnail item-start>
-                    <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
-                    <img src="{{ expenses.thumbnail }}" imageViewer *ngIf=" expenses.image == 0 " />
-                </ion-thumbnail>
-                <h2>{{ getThumbnailName(expenses.name, expenses.thumbnail) }}</h2>
-                <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
-                <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
-            </ion-item>
+        <ion-list *ngFor="let expenses of expensesList; let idx=index;">
+            <div *ngSwitchCase="getSwitchType(expenses.freq)">
+                <ion-list-header *ngIf="previousDiff(expenses, idx)">
+                    {{ daySince(expenses.datetime) }}
+                </ion-list-header>            
+                <ion-item (click)="notReserved(expenses)" no-lines>
+                    <ion-thumbnail item-start>
+                        <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
+                        <img src="{{ expenses.thumbnail }}" imageViewer *ngIf=" expenses.image == 0 " />
+                    </ion-thumbnail>
+                    <h2>{{ getThumbnailName(expenses.name, expenses.thumbnail) }}</h2>
+                    <p>{{ freqMap[expenses.freq] }} • {{ expenses.timeago }}</p>
+                    <h2 class="money" item-end>{{ display_currency }}{{ expenses.amount }}</h2>
+                </ion-item>
+            </div>
         </ion-list>
     </div>
 

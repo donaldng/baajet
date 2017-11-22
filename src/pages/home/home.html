@@ -78,7 +78,7 @@
         </button> 
     </ion-item>
   
-    <ion-item no-lines>
+    <ion-item no-lines *ngIf="!tot_budget" >
             <img class="thumbnail" src="{{ baaThumbnail }}" item-start />
             <p class="bubble" item-start>{{ greetMsg }}</p>
     </ion-item>

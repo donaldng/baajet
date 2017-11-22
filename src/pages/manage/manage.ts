@@ -34,12 +34,14 @@ export class ManagePage {
     _imageViewerCtrl: ImageViewerController;
     enablePhotoFlag;
     imageList;
+    submitted;
     selected_tn;
 
     constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
         this.selected_tn = 0;
+        this.submitted = 0;
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
@@ -248,6 +250,8 @@ export class ManagePage {
         this.storage.set('expensesList', this.expensesList);
         this.events.publish('reload:expenses', this.expensesList);
 
+        this.submitted = 1;
+
         this.dismiss();              
     }
     
@@ -332,7 +336,7 @@ export class ManagePage {
     }
 
     dismiss() {
-        this.events.publish('reset:expenses');
+        if (!this.submitted) this.events.publish('reset:expenses');
         this.viewCtrl.dismiss();
     }
 }

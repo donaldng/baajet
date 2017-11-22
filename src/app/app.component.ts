@@ -11,7 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 })
 export class MyApp {
     rootPage:any = TabsPage;
-    expensesList = [];
+    dates;
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
         platform.ready().then(() => {
@@ -19,7 +19,10 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
-        });   
+        });
 
+        events.subscribe('history:dates', (v) => {
+            this.dates = v;
+        });
     }
 }

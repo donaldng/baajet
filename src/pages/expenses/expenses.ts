@@ -77,7 +77,7 @@ export class ExpensesPage {
 
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
-            this.expensesList = v.sort(function(a, b) {  return b.id - a.id; });
+            this.expensesList = v.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
             this.resetSegment();
             for (var i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
@@ -87,12 +87,12 @@ export class ExpensesPage {
         });
 
     }
-    isDiffDay(expenses, idx){
+    previousDiff(expenses, idx){
         if (idx == 0) return true;
 
-        var prev = this.expensesList[idx - 1].datetime;
+        var prevDate = this.expensesList[idx - 1].datetime;
 
-        if (expenses.datetime.slice(0,10) != prev.slice(0,10)) return true;
+        if (expenses.datetime.slice(0,10) != prevDate.slice(0,10)) return true;
 
         return false;
     }
@@ -100,14 +100,15 @@ export class ExpensesPage {
         this.storage.get('expensesList').then((expensesList) => {
             // this part is the slowest......
             // see if can preload.
-            
+            let available_dates = [];
             if (expensesList){
-                this.expensesList = expensesList.sort(function(a, b) {  return b.id - a.id; });
+                this.expensesList = expensesList.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
                 this.oriList = expensesList;
                 this.resetSegment();
                 for (var i = 0 ; i < this.expensesList.length ; i++ ){
                     this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                     this.setSegment(this.expensesList[i].freq);
+                    available_dates.push(this.daySince(this.expensesList[i].datetime));
                 }
             }
             else{
@@ -116,6 +117,7 @@ export class ExpensesPage {
             }
             this.showSegment = this.getSegmentStatus();
             this.events.publish('reload:home','expensesList',this.expensesList);
+            this.events.publish('history:dates', available_dates);             
         });
 
         this.storage.get('newphotoFlag').then((v) => {
@@ -253,7 +255,7 @@ export class ExpensesPage {
 
         interval = Math.floor(seconds / 3600);
         if (interval >= 24){
-            var day = Number(interval/24);
+            var day = Math.floor(interval/24);
 
             if(day == 1) return 'Yesterday';
             return '' + day + ' days ago';

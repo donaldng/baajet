@@ -10,7 +10,7 @@ page-expenses {
 
     ion-item{
         .label-md{
-            margin: 10px 8px 10px 0;
+            margin: 5px 8px 5px 0;
         }
 
         .expenses-title{
@@ -57,11 +57,6 @@ page-expenses {
     .emptyMsg{
         text-align: center;
         font-size: 1.85rem;
-    }
-    
-    ion-thumbnail{
-        max-width: 40px;
-        max-height: 40px;
     }
 
     img{ 
