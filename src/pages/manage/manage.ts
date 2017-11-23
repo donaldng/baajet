@@ -83,7 +83,6 @@ export class ManagePage {
             let index = this.findIndex(this.selected_id);
 
             this.expenses = this.expensesList[index];
-
             this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Manage expenses";

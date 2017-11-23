@@ -93,7 +93,7 @@ export class ExpensesPage {
             this.showSegment = this.getSegmentStatus();               
         });
 
-        this.loadData();
+        //this.loadData();
 
     }
     previousDiff(expenses, idx){
@@ -109,11 +109,7 @@ export class ExpensesPage {
 
     loadData(){
         this.storage.get('expensesList').then((expensesList) => {
-            this.processExpensesList(expensesList);
-
-            this.showSegment = this.getSegmentStatus();
-            this.events.publish('reload:home','expensesList',this.expensesList);
-                        
+            this.processExpensesList(expensesList);                        
         });
 
         this.storage.get('newphotoFlag').then((v) => {
@@ -140,6 +136,9 @@ export class ExpensesPage {
             this.storage.set('expensesList', []);
             this.expensesList = [];
         }
+
+        this.showSegment = this.getSegmentStatus();
+        this.events.publish('reload:home', 'expensesList', this.oriList);
     }
 
     setSegment(freq){
@@ -276,8 +275,6 @@ export class ExpensesPage {
     }
 
     doRefresh(refresher) {
-        console.log('Begin async operation', refresher);
-
         setTimeout(() => {
             this.loadData();
             refresher.complete();

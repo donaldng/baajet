@@ -42,16 +42,7 @@ export class TabsPage {
 
             if (v.camOn) this.camOn = v.camOn;
             if (v.init_price) this.init_price = v.init_price;
-
-            if (this.selected_id == -1 && this.expensesList.length == 0){
-                this.storage.get('expensesList').then((expensesList) => {
-                    this.expensesList = expensesList;
-                    this.runModal();
-                });
-            }
-            else{
-                this.runModal();
-            }
+            this.runModal();
 
         });  
 

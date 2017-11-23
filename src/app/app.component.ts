@@ -23,15 +23,14 @@ export class MyApp {
             splashScreen.hide();
         });
 
-        events.subscribe('filter:dates', (v) => {
-            this.dates = v.filter( function( item, index, inputArray ) {
-                            return inputArray.indexOf(item) == index;
-                        });;
+        events.subscribe('history:dates', (v) => {
+            this.dates = v;
         });
 
         events.subscribe('request:expensesList', () => {
             events.publish('return:expensesList', this.expensesList);
-        });
+        });        
+
     }
 
     preloadData(){
