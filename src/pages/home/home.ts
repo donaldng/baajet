@@ -32,7 +32,9 @@ export class HomePage {
     day_remaining;
     day_expenses;
     day_color = 'primary';
+    day_color_label = 'primary';
     tot_color = 'primary';
+    tot_color_label = 'primary';
     tot_bar;
     day_bar;
     reserved_amount;
@@ -277,22 +279,26 @@ export class HomePage {
         this.day_remaining = this.day_budget - this.day_expenses;
         this.day_remaining = this.day_remaining.toFixed(2);
 
-        if(this.day_remaining / this.day_budget <= 0.15){
+        if(this.day_remaining / this.day_budget <= 0.15 || this.day_remaining <= 0){
             this.day_color = "danger";
+            this.day_color_label = "danger";
             if(this.day_bar) this.day_bar.style.backgroundColor='#f53d3d';
         } 
         else{
             this.day_color = "secondary";
+            this.day_color_label = "light";
             if(this.day_bar) this.day_bar.style.backgroundColor='#02d1a4';
         }
 
         if(this.tot_remaining / this.tot_budget <= 0.15){
             this.tot_color = "danger";
+            this.tot_color_label = "danger";
             if(this.tot_bar) this.tot_bar.style.backgroundColor='#f53d3d';
 
         } 
         else{
             this.tot_color = "secondary";
+            this.tot_color_label = "light";
             if(this.tot_bar) this.tot_bar.style.backgroundColor='#02d1a4';
         }
 

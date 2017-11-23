@@ -262,7 +262,7 @@ export class ManagePage {
         this.events.publish('reload:home','expensesList',this.expensesList);
         this.events.publish('reload:expenses',this.expensesList);
         this.events.publish('refreshSegment', expenses);
-
+        this.submitted = 1;
         this.dismiss();
     }
 

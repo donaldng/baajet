@@ -1,10 +1,10 @@
 <ion-header>
     <ion-navbar>
-        <!--<ion-buttons start>
-            <button ion-button icon-only menuToggle>
+        <ion-buttons start>
+            <button color="dark" ion-button icon-only menuToggle>
                 <ion-icon name="menu"></ion-icon>
             </button>
-        </ion-buttons>-->
+        </ion-buttons>
         <ion-title>
             <span *ngIf="tot_expenses != 0">Total {{ display_currency }}{{ tot_expenses }}</span>
             <span *ngIf="tot_expenses == 0">Expenses</span>

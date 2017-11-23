@@ -2,14 +2,11 @@
 
 
     <ion-toolbar padding>
-        <ion-title>History</ion-title>
+        <ion-title>Filter</ion-title>
     </ion-toolbar>
 
     <ion-content>
-        <ion-list>
-          <ion-list-header>
-            Action
-          </ion-list-header>            
+        <ion-list>     
             <button menuClose ion-item detail-none>Show All</button>
 
             <button menuClose ion-item *ngFor="let d of dates" detail-none>

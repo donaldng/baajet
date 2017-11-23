@@ -9,8 +9,8 @@
 
         <ion-title>Dashboard</ion-title>
 
-        <ion-buttons end>
-            <button ion-button color="primary" (click)="gotoSetting()">
+        <ion-buttons start>
+            <button ion-button color="dark" (click)="gotoSetting()">
                 <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
             </button>
         </ion-buttons>
@@ -26,7 +26,7 @@
             <ion-list-header color="light">
                 <span *ngIf="campaign_ended == 0">Total Budget x {{ n_day }} days</span>
                 <span *ngIf="campaign_ended == 1">Left Overs</span>
-                <ion-badge color="primary" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
+                <ion-badge color="{{ tot_color_label }}" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
             </ion-list-header>        
             <ion-item>
                 <ion-icon item-start small color="{{ tot_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
@@ -38,7 +38,7 @@
         <ion-item-group *ngIf="campaign_ended == 0" (click)="navCtrl.parent.select(1);">
             <ion-list-header color="light">
                 Daily Budget
-                <ion-badge color="primary" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
+                <ion-badge color="{{ day_color_label }}" item-end>{{ display_currency }}{{ day_remaining }}</ion-badge>
             </ion-list-header>           
             <ion-item>
                 <ion-icon item-start small color="{{ day_color }}" ios="ios-alert" md="md-alert" class="ion-icon"></ion-icon>
@@ -50,7 +50,7 @@
         <ion-item-group *ngIf="reserved_amount != 0" >
             <ion-list-header color="light">
                 Reserved Funds
-                <ion-badge color="primary" item-end>{{ display_currency }}{{ reserved_amount }}</ion-badge>
+                <ion-badge color="light" item-end>{{ display_currency }}{{ reserved_amount }}</ion-badge>
             </ion-list-header> 
             <ion-grid>
                 <ion-row>

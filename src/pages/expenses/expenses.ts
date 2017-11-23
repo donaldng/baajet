@@ -39,8 +39,6 @@ export class ExpensesPage {
             }
         });
 
-        this.loadData();
-
         this.storage.get('currency').then((v) => {
             if(v) this.display_currency = v;
         });
@@ -75,6 +73,15 @@ export class ExpensesPage {
             }
         });
 
+        events.subscribe('return:expensesList', (expensesList) => {
+            if(expensesList){
+                this.expensesList = expensesList;
+                this.processExpensesList(expensesList);
+            }
+        });
+
+        events.publish('request:expensesList');
+
         events.subscribe('reload:expenses', (v) => {
             this.oriList = v;
             this.expensesList = v.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
@@ -86,46 +93,55 @@ export class ExpensesPage {
             this.showSegment = this.getSegmentStatus();               
         });
 
+        this.loadData();
+
     }
     previousDiff(expenses, idx){
         if (idx == 0) return true;
 
         var prevDate = this.expensesList[idx - 1].datetime;
+        var prevFreq = this.expensesList[idx - 1].freq;
 
-        if (expenses.datetime.slice(0,10) != prevDate.slice(0,10)) return true;
+        if (expenses.datetime.slice(0,10) != prevDate.slice(0,10) || prevFreq != expenses.freq) return true;
 
         return false;
     }
+
     loadData(){
         this.storage.get('expensesList').then((expensesList) => {
-            // this part is the slowest......
-            // see if can preload.
-            let available_dates = [];
-            if (expensesList){
-                this.expensesList = expensesList.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
-                this.oriList = expensesList;
-                this.resetSegment();
-                for (var i = 0 ; i < this.expensesList.length ; i++ ){
-                    this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
-                    this.setSegment(this.expensesList[i].freq);
-                    available_dates.push(this.daySince(this.expensesList[i].datetime));
-                }
-            }
-            else{
-                this.storage.set('expensesList', []);
-                this.expensesList = [];
-            }
+            this.processExpensesList(expensesList);
+
             this.showSegment = this.getSegmentStatus();
             this.events.publish('reload:home','expensesList',this.expensesList);
-            this.events.publish('history:dates', available_dates);             
+                        
         });
 
         this.storage.get('newphotoFlag').then((v) => {
             this.newphotoFlag = v;
         });
-
-
     }
+
+    processExpensesList(expensesList){
+        let available_dates = [];
+
+        if (expensesList){
+            this.expensesList = expensesList.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
+            this.oriList = expensesList;
+            this.resetSegment();
+            for (var i = 0 ; i < this.expensesList.length ; i++ ){
+                this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
+                this.setSegment(this.expensesList[i].freq);
+                available_dates.push(this.daySince(this.expensesList[i].datetime));
+            }
+
+            this.events.publish('filter:dates', available_dates); 
+        }
+        else{
+            this.storage.set('expensesList', []);
+            this.expensesList = [];
+        }
+    }
+
     setSegment(freq){
         if (freq == 0) this.onetime += 1;
         else if (freq == 1) this.reserved += 1;
@@ -246,17 +262,12 @@ export class ExpensesPage {
     }
 
     daySince(oridate){
-        var now = +new Date();
-        var d = +new Date(oridate.replace(" ","T"));
+        var now = new Date().getDate();
+        var d = new Date(oridate.replace(" ","T")).getDate();
 
-        var seconds = Math.floor((now - d) / 1000);
+        var day = now - d;
 
-        var interval = Math.floor(seconds / 31536000);
-
-        interval = Math.floor(seconds / 3600);
-        if (interval >= 24){
-            var day = Math.floor(interval/24);
-
+        if (day > 0){
             if(day == 1) return 'Yesterday';
             return '' + day + ' days ago';
         }
