@@ -215,9 +215,23 @@ export class ExpensesPage {
     }
 
     gotoManage(selected_id) {
-        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag, 'init_price': this.init_price});
+        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag, 'init_price': this.init_price, 'segment': this.expenses_type});
     }
+    getFreqText(expenses){
+        if (expenses.freq == 2){
+            var days = expenses.freq_amt;
+            var text = "";
 
+            if (days != 1){
+                text = "" + days + " ";
+            }
+
+            return "Every " + text + "days";
+        }
+
+        return this.freqMap[expenses.freq];
+
+    }
     refreshSegment(expenses){
         if (!this.getSegment(expenses.freq)){
             for(var i = 0; i < this.freqMap.length; i++){

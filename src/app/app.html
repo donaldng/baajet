@@ -2,13 +2,18 @@
 
 
     <ion-toolbar padding>
+        <ion-buttons start menuClose>
+            <button color="dark" ion-button icon-only menuToggle>
+                <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+
         <ion-title>Filter</ion-title>
     </ion-toolbar>
 
     <ion-content>
-        <ion-list>     
-            <button menuClose ion-item detail-none>Show All</button>
-
+        <ion-list>  
+            Show All   
             <button menuClose ion-item *ngFor="let d of dates" detail-none>
                 {{ d }}
             </button>

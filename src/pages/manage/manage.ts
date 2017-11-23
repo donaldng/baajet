@@ -21,7 +21,6 @@ export class ManagePage {
     freq;
     tripStart;
     tripEnd;
-    selected_freq;
     tmpImage;
     lastImage;
     thumbnail;
@@ -36,6 +35,7 @@ export class ManagePage {
     imageList;
     submitted;
     selected_tn;
+    recur_text;
 
     constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
@@ -45,12 +45,13 @@ export class ManagePage {
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
+        this.segment = this.params.get('segment');
         this.init_price = this.params.get('init_price');
         if (this.camOn) this.captureImage();
         this.default_placeholder = 'Expenses #';
+        this.recur_text = "Every days?";
 
         this.tmpImage = 0;
-        this.selected_freq = 0;
 
         this.set_todays_b();
 
@@ -74,19 +75,20 @@ export class ManagePage {
         });
 
         if(this.selected_id == '-1'){
-            this.expenses = {name: 'General', amount: '', freq: 0};
+            this.expenses = {name: 'General', amount: '', freq: this.segment, freq_amt: "1" };
             if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add expenses";
             this.expenses.todays = true;
+
         }
         else{
             let index = this.findIndex(this.selected_id);
 
             this.expenses = this.expensesList[index];
-            this.selected_freq = this.expenses.freq;
             this.tmpImage = this.expenses.image;
             this.pageName = "Manage expenses";
-            if (this.selected_freq == 0){
+            if (this.expenses.freq == 0){
+                this.expenses.freq = "0";
                 this.todays_b = this.expenses.freq_start.replace(" ", "T");
                 var inputDate = new Date(this.todays_b);
                 var todaysDate = new Date();
@@ -124,7 +126,9 @@ export class ManagePage {
             
         }        
     }
-
+    updateRecurTxt(){
+        this.recur_text = "Every " + this.expenses.freq_amt + " days?"
+    }
     getThumbnailIndex(name, src){
         var list = this.imgLib.generateImageList(name);
         
@@ -222,6 +226,7 @@ export class ManagePage {
             'name':name,
             'amount': Number(this.expenses.amount),
             'freq': this.expenses.freq,
+            'freq_amt': this.expenses.freq_amt,
             'freq_start': this.expenses.freq_start,
             'freq_end': this.expenses.freq_end,
             'datetime': this.expenses.datetime,
@@ -267,10 +272,6 @@ export class ManagePage {
 
     removeImage(){
         this.tmpImage = 0;
-    }
-
-    onSelectChange(selectedValue: any){
-        this.selected_freq = selectedValue;
     }
 
     imageOptions(myImage){

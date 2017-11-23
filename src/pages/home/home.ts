@@ -239,7 +239,7 @@ export class HomePage {
                     this.day_expenses += Number(v[i].amount);
                     continue;
                 }
-                this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_start, v[i].freq_end));
+                this.tot_expenses -= Number(v[i].amount) * Number(this.calcFrequency(v[i].freq, v[i].freq_amt, v[i].freq_start, v[i].freq_end));
             }
             this.tot_expenses = Math.abs(this.tot_expenses);
             this.budgetTmp -= this.tot_expenses;
@@ -427,11 +427,9 @@ export class HomePage {
         modal.present();
     }
 
-    calcFrequency(freq_type, start, end){
+    calcFrequency(freq_type, freq_amount, start, end){
         if (freq_type == 0 || freq_type == 1) return 1;
-        if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end));
-        if (freq_type == 3) return this.dayDiff(new Date(start), new Date(end)) / 7;
-        if (freq_type == 4) return this.dayDiff(new Date(start), new Date(end)) / 30;
+        if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end)) / freq_amount;
     }
 
     claimExpenses(expenses, price){

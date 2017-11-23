@@ -20,6 +20,7 @@ export class TabsPage {
     selected_id;
     tot_budget = 0;
     init_price = 0;
+    segment;
 
     constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
         this.storage.get('budget').then((v) => {
@@ -38,10 +39,16 @@ export class TabsPage {
         events.subscribe('gotoManage', (v) => {
             this.selected_id = v.selected_id;
             this.camOn = 0;
+            this.segment = 0;
             this.init_price = 0;
 
             if (v.camOn) this.camOn = v.camOn;
             if (v.init_price) this.init_price = v.init_price;
+            if (v.segment){
+                if(v.segment == "onetime") this.segment = "0";
+                else if(v.segment == "reserved") this.segment = "1";
+                else this.segment = "2";
+            }
             this.runModal();
 
         });  
@@ -53,7 +60,7 @@ export class TabsPage {
     }
 
     runModal(){
-        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn, 'init_price': this.init_price});
+        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn, 'init_price': this.init_price, 'segment': this.segment});
         modal.onDidDismiss(data => {
         });
         modal.present();        
