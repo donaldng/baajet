@@ -274,7 +274,6 @@ export class ManagePage {
         this.storage.set('expensesList', this.expensesList);
         this.events.publish('reload:home','expensesList',this.expensesList);
         this.events.publish('reload:expenses',this.expensesList);
-        this.events.publish('refreshSegment', expenses);
         this.submitted = 1;
         this.dismiss();
     }
@@ -298,6 +297,8 @@ export class ManagePage {
                 text: 'Remove Photo',
                 handler: () => {
                     this.removeImage();
+                    this.generateImageList(this.expenses.name);
+                    this.selected_tn = 0;
                 }
             },
             {
@@ -353,9 +354,12 @@ export class ManagePage {
         }
     }
 
-    clickIcon(idx){
+    clickIcon(idx, thisImage){
         if (this.enablePhotoFlag && this.imageList[idx].name == 'Add Media'){
             this.addMedia();
+        }
+        else if(this.selected_tn==5 && this.imageList[idx].name == 'Photo'){
+            this.imageOptions(thisImage);
         }
         else{
             this.selected_tn = idx;
