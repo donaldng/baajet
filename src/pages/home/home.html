@@ -55,8 +55,7 @@
             <ion-grid>
                 <ion-row>
                     <ion-col (click)="quickAdd(expenses)" col-4 *ngFor="let expenses of reserveList" text-center>
-                        <img src="{{ expenses.image }}" *ngIf=" expenses.image != 0 " />
-                        <img src="{{ expenses.thumbnail }}" *ngIf=" expenses.image == 0 " />
+                        <img src="{{ expenses.thumbnail }}" />
                         <br/>
                         {{ getThumbnailName(expenses.name, expenses.thumbnail) }}
                         <br/>
