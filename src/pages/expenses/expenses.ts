@@ -461,7 +461,8 @@ export class ExpensesPage {
                 return list[i].name;
             }
         }
-        return 0;
+        
+        return 'Photo';
     }
 
     getDefaultThumbnail(x, y){

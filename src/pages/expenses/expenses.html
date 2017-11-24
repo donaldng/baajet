@@ -44,8 +44,7 @@
                 </ion-list-header>            
                 <ion-item (click)="notReserved(expenses)" no-lines>
                     <ion-thumbnail item-start>
-                        <img src="{{ expenses.image }}" imageViewer *ngIf=" expenses.image != 0 " />
-                        <img src="{{ expenses.thumbnail }}" imageViewer *ngIf=" expenses.image == 0 " />
+                        <img src="{{ expenses.thumbnail }}" imageViewer />
                     </ion-thumbnail>
                     <h2>{{ getThumbnailName(expenses.name, expenses.thumbnail) }}</h2>
                     <p>{{ getFreqText(expenses) }} • {{ expenses.timeago }}</p>

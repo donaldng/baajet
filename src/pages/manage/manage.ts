@@ -36,11 +36,11 @@ export class ManagePage {
     submitted;
     selected_tn;
     recur_text;
+    segment;
 
     constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
-        this.selected_tn = 0;
         this.submitted = 0;
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
@@ -111,20 +111,24 @@ export class ManagePage {
 
         this.storage.get('enablePhotoFlag').then((v) => {
             if(v) this.enablePhotoFlag = v;
+            this.generateImageList(this.expenses.name);
+            this.getSelectedTN();
         });   
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
-        this.generateImageList(this.expenses.name);
 
-        if(this.expenses.thumbnail && this.imageList){
-            for(var i = 0; i < this.imageList.length ; i++){
-                if(this.imageList[i].src == this.expenses.thumbnail){
-                    this.selected_tn = i;
-                    break;
-                }
+    }
+    getSelectedTN(){
+        this.selected_tn = 0;
+
+        if(this.enablePhotoFlag && this.tmpImage != 0) this.selected_tn = 5;
+
+        for(var i = 0; i < this.imageList.length ; i++){
+            if(this.imageList[i].src == this.expenses.thumbnail){
+                this.selected_tn = i;
+                break;
             }
-            
-        }        
+        }
     }
     updateRecurTxt(){
         this.recur_text = "Every " + this.expenses.freq_amt + " days?"
@@ -161,6 +165,9 @@ export class ManagePage {
             };
             this.camera.getPicture(options).then((imagePath) => {              
                 this.tmpImage = 'data:image/jpeg;base64,' + imagePath;
+                this.generateImageList(this.expenses.name);
+                this.selected_tn = 5;
+
             }, (err) => {
             });
     }
@@ -181,6 +188,8 @@ export class ManagePage {
         this.camera.getPicture(options).then((imageData) => {
 
             this.tmpImage = 'data:image/jpeg;base64,' + imageData;
+            this.generateImageList(this.expenses.name);
+            this.selected_tn = 5;
         }, (err) => {
             // Handle error
         });
@@ -333,6 +342,25 @@ export class ManagePage {
 
     generateImageList(name){
         this.imageList = this.imgLib.generateImageList(name);
+
+        if (this.enablePhotoFlag && this.tmpImage == 0){
+            this.imageList[5].src = 'assets/imgs/icons/add-image.png';
+            this.imageList[5].name = 'Add Media';
+        }
+        else if(this.enablePhotoFlag && this.tmpImage != 0){
+            this.imageList[5].src = this.tmpImage;
+            this.imageList[5].name = 'Photo';
+        }
+    }
+
+    clickIcon(idx){
+        if (this.enablePhotoFlag && this.imageList[idx].name == 'Add Media'){
+            this.addMedia();
+        }
+        else{
+            this.selected_tn = idx;
+        }
+        
     }
 
     dismiss() {

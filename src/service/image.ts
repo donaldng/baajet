@@ -8,16 +8,16 @@ export class ImageService {
 
         this.imageCat = {
             'general': [
-                'dollar','rice','taxi','shopping','ticket','groceries'
+                'food','taxi','shopping','ticket','groceries','dollar'
             ],
             'food': [
-                'noodle','meat','salad','pizza','breads','dessert'
+                'rice','noodle','salad','pizza','dessert','breads'
             ],
             'transport': [
                 'bus','scooter','train','airplane','cruise', 'bike'
             ],
             'shopping': [
-                'cloth','bag','shoes','watch','assesories','luxuries'
+                'cloth','bag','shoes','assesories','luxuries','watch'
             ],
             'stay': [
                 'house','apartment','city','camp','cabin','castle'

@@ -526,7 +526,7 @@ export class HomePage {
                 return list[i].name;
             }
         }
-        return 0;
+        return 'Photo';
     }
 
     seemore(){
