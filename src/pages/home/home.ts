@@ -443,7 +443,7 @@ export class HomePage {
             return;
         }
         else if (price < 0){
-            alert('I cannot process negative number, baaaaa...', 'Warning');
+            alert('I cannot process negative number, baaaaa...');
             return;
         }
 
