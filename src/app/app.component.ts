@@ -29,7 +29,12 @@ export class MyApp {
 
         events.subscribe('request:expensesList', () => {
             events.publish('return:expensesList', this.expensesList);
-        });        
+        });
+
+        events.subscribe('app:reload',() => {
+            // preload again in case of reset
+            this.expensesList = [];
+        });
 
     }
 

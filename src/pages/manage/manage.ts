@@ -77,7 +77,7 @@ export class ManagePage {
         if(this.selected_id == '-1'){
             this.expenses = {name: 'General', amount: '', freq: this.segment, freq_amt: "1" };
             if (this.init_price) this.expenses.amount = this.init_price;
-            this.pageName = "Add expenses";
+            this.pageName = "Add Expenses";
             this.expenses.todays = true;
 
         }
@@ -86,7 +86,7 @@ export class ManagePage {
 
             this.expenses = this.expensesList[index];
             this.tmpImage = this.expenses.image;
-            this.pageName = "Manage expenses";
+            this.pageName = "Manage Expenses";
             if (this.expenses.freq == 0){
                 this.expenses.freq = "0";
                 this.todays_b = this.expenses.freq_start.replace(" ", "T");

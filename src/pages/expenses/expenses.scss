@@ -77,4 +77,27 @@ page-expenses {
     .notshow{
         display: none;
     }
+
+    img{
+        object-fit: cover;
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .thumbnail {
+        border-radius: 25px;
+        text-align: right;
+        margin-right: 8px !important;
+        padding-right: 0px !important;
+    }
+
+    .bubble{
+        margin-top: 10px !important;
+        text-align: left;
+        border-radius: 15px;
+        background-color: #488aff;
+        color: #fff;
+        padding: 10px 10px 10px;
+        font-size: 1.5rem;
+    }    
 }

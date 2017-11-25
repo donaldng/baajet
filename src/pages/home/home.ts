@@ -201,7 +201,7 @@ export class HomePage {
         else
             this.greetMsg = 'Look like you haven\'t setup your trip schedule yet, that\'s not good!';
 
-        if(this.day_color == "danger") this.greetMsg = 'Oh no, your budget is running low!';
+        if(this.day_color == "danger" && this.tot_budget) this.greetMsg = 'Oh no, your budget is running low!';
     }
     
     calcDbBudget(){
@@ -276,6 +276,8 @@ export class HomePage {
         this.storage.set('day_budget', this.day_budget);
         
         this.tot_remaining = this.tot_budget - this.tot_expenses;
+        this.tot_remaining = this.tot_remaining.toFixed(2);
+        
         this.day_remaining = this.day_budget - this.day_expenses;
         this.day_remaining = this.day_remaining.toFixed(2);
 
@@ -323,12 +325,12 @@ export class HomePage {
     }
 
     quickAdd(claim){
-        let title = 'Add expenses';
-        let placeholder = '';
+        let title = 'Add Expenses';
+        let placeholder = '0.00';
         let value = '';
 
         if (claim){
-            title = "Use fund";
+            title = "Use " + this.getThumbnailName(claim.name, claim.thumbnail) + " Fund";
             placeholder = claim.amount;
             value = claim.amount;
         }
@@ -441,7 +443,7 @@ export class HomePage {
             return;
         }
         else if (price < 0){
-            alert('I cannot process negative number, baaaaa...');
+            alert('I cannot process negative number, baaaaa...', 'Warning');
             return;
         }
 

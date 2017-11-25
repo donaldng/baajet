@@ -92,6 +92,7 @@ export class SettingPage {
         this.events.publish('reload:home', 'tot_budget', 0);
         this.events.publish('reload:home', 'duration', duration);
         this.events.publish('reload:expenses', []);
+        this.events.publish('app:reload', []);
 
         this.dismiss()
 
@@ -123,23 +124,31 @@ export class SettingPage {
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
         var budget = Number(this.budget);
 
-        this.storage.set('budget', budget);
-        this.storage.set('currency', this.currency);
-        this.storage.set('duration', duration);
-        this.storage.set('saveimageFlag', this.saveimageFlag);
-        this.storage.set('editFlag', this.editFlag);
-        this.storage.set('newphotoFlag', this.newphotoFlag);
-        this.storage.set('enablePhotoFlag', this.enablePhotoFlag);
+        if(this.budget <= 0){
+            alert('We need a valid budget please..!');
+        }
+        else if (this.tripStart > this.tripEnd){
+            alert('Why is the start date bigger than end date? :(');
+        }
+        else{
+            this.storage.set('budget', budget);
+            this.storage.set('currency', this.currency);
+            this.storage.set('duration', duration);
+            this.storage.set('saveimageFlag', this.saveimageFlag);
+            this.storage.set('editFlag', this.editFlag);
+            this.storage.set('newphotoFlag', this.newphotoFlag);
+            this.storage.set('enablePhotoFlag', this.enablePhotoFlag);
 
-        this.events.publish('reload:home', 'tot_budget', budget);
-        this.events.publish('reload:home', 'duration', duration);
-        this.events.publish('update:currency', this.currency);
-        this.events.publish('saveimageFlag', this.saveimageFlag);
-        this.events.publish('editFlag', this.editFlag);
-        this.events.publish('newphotoFlag', this.newphotoFlag);
-        this.events.publish('enablePhotoFlag', this.enablePhotoFlag);
+            this.events.publish('reload:home', 'tot_budget', budget);
+            this.events.publish('reload:home', 'duration', duration);
+            this.events.publish('update:currency', this.currency);
+            this.events.publish('saveimageFlag', this.saveimageFlag);
+            this.events.publish('editFlag', this.editFlag);
+            this.events.publish('newphotoFlag', this.newphotoFlag);
+            this.events.publish('enablePhotoFlag', this.enablePhotoFlag);
 
-        this.presentToast();
-        this.dismiss()
+            this.presentToast();
+            this.dismiss();
+        }
     }
 }

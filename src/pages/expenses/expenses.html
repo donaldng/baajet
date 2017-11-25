@@ -1,24 +1,22 @@
 <ion-header>
     <ion-navbar>
-        <ion-buttons start>
+        <!--<ion-buttons start>
             <button color="dark" ion-button icon-only menuToggle>
                 <ion-icon name="menu"></ion-icon>
             </button>
-        </ion-buttons>
+        </ion-buttons>-->
         <ion-title>
             <span *ngIf="tot_expenses != 0">Total {{ display_currency }}{{ tot_expenses }}</span>
             <span *ngIf="tot_expenses == 0">Expenses</span>
         </ion-title>
-        <!--
         <ion-buttons end>
-            <button ion-button>
-                <ion-icon ios="ios-share" md="md-share"></ion-icon>
+            <button ion-button color="dark" (click)="gotoSetting()">
+                <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
             </button>
         </ion-buttons>
-        -->
     </ion-navbar>
 
-    <ion-segment [(ngModel)]="expenses_type" [class.notshow]="!expenses_found()">
+    <ion-segment [(ngModel)]="expenses_type">
         <ion-segment-button value="onetime" (click)="changeSwitchType('onetime')">
             One time ({{ onetime }})
         </ion-segment-button>
@@ -35,7 +33,15 @@
 <!--    <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>-->
-    <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p>
+    <!-- <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p> -->
+    <div padding *ngIf="!expenses_found();">
+        <ion-item no-lines padding>
+            <img class="thumbnail" src="{{ baaThumbnail }}" item-start />
+            <p class="bubble" item-start>You have no expenses at all!?</p>
+        </ion-item>
+    </div>
+
+
     <div *ngFor="let expenses of expensesList; let idx=index;">
         <div [ngSwitch]="expenses_type">
             <ion-list *ngSwitchCase="getSwitchType(expenses.freq)">

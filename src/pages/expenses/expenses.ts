@@ -5,6 +5,7 @@ import { ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
+import { SettingPage } from '../setting/setting';
 
 @Component({
     selector: 'page-expenses',
@@ -28,10 +29,13 @@ export class ExpensesPage {
     tot_budget = 0;
     newphotoFlag;
     init_price;
+    baaThumbnail;
     imageList;
 
     constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
+
+        this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
 
         this.storage.get('budget').then((v) => {
             if (v && this.tot_budget != v){
@@ -262,7 +266,7 @@ export class ExpensesPage {
 
         interval = Math.floor(seconds / 3600);
         if (interval >= 24) 
-            return oridate.split(' ')[0];
+            return oridate.split(' ')[1];
 
         if (interval >= 1) 
             return interval + " h";
@@ -303,7 +307,7 @@ export class ExpensesPage {
 
     quickAdd(claim){
         let title = 'Add expenses';
-        let placeholder = '';
+        let placeholder = '0.00';
         let value = '';
 
         if (claim){
@@ -468,4 +472,27 @@ export class ExpensesPage {
     getDefaultThumbnail(x, y){
         return this.imgLib.getDefaultThumbnail(x , y);
     } 
+
+    getRandomInt(min, max) {
+        var n = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if (n == 5) {
+            // rare thumbnail
+            n = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        else if (n == 8){
+            // Extra rare
+            n = Math.floor(Math.random() * (max - min + 1)) + min;
+            if(n == 8){
+                n = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+        }
+
+        return n;
+    }  
+
+    gotoSetting(){
+        let modal = this.modalCtrl.create(SettingPage);
+        modal.present();
+    }
 }
