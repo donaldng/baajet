@@ -37,6 +37,7 @@ export class ManagePage {
     selected_tn;
     recur_text;
     segment;
+    oriAmt;
 
     constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
@@ -68,10 +69,8 @@ export class ManagePage {
                 this.tripEnd = tripEnd.toISOString().slice(0, 19);
             }
 
-            if (this.selected_id == '-1'){
                 this.expenses.freq_start = this.tripStart;
                 this.expenses.freq_end = this.tripEnd;            
-            }
         });
 
         if(this.selected_id == '-1'){
@@ -79,7 +78,7 @@ export class ManagePage {
             if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add Expenses";
             this.expenses.todays = true;
-
+            this.expenses.fromReserved = 0;
         }
         else{
             let index = this.findIndex(this.selected_id);
@@ -99,7 +98,9 @@ export class ManagePage {
                 }
             }
 
-        }
+            this.oriAmt = this.expenses.amount;
+
+        }      
 
         this.storage.get('saveimageFlag').then((v) => {
             if(v) this.saveimageFlag = v;
@@ -225,9 +226,14 @@ export class ManagePage {
 
         this.thumbnail = this.imageList[this.selected_tn].src;
 
-
         if(this.tmpImage && this.tmpImage!=0 && typeof this.tmpImage != 'undefined'){
             image = this.tmpImage;
+        }
+
+        // If expenses come from reserved, but later on changed value, it will no longer be considered as reserved status. 
+        // Hence, treating it as a new day expenses.
+        if(this.expenses.fromReserved && this.oriAmt != this.expenses.amount){
+            this.expenses.fromReserved = 0;
         }
 
         var changes = {
@@ -242,30 +248,35 @@ export class ManagePage {
             'image': image,
             'thumbnail': this.thumbnail,
             'todays': this.expenses.todays,
-            'fromReserved': 0
+            'fromReserved': this.expenses.fromReserved
         };
 
-        if (this.selected_id == "-1"){
-            changes['id'] = Math.round((new Date()).getTime() / 1000);
-            changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
-            if (this.expensesList)
-                this.expensesList.push(changes);
-            else
-                this.expensesList = [changes];
-
-            this.events.publish('change_segment', changes.freq);
+        if (this.expenses.freq_start > this.expenses.freq_end){
+            alert('Why is the start date bigger than end date? :(');
         }
         else{
-            let index = this.findIndex(this.selected_id);
-            this.expensesList[index] = changes;
-        }
+            if (this.selected_id == "-1"){
+                changes['id'] = Math.round((new Date()).getTime() / 1000);
+                changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
+                if (this.expensesList)
+                    this.expensesList.push(changes);
+                else
+                    this.expensesList = [changes];
 
-        this.storage.set('expensesList', this.expensesList);
-        this.events.publish('reload:expenses', this.expensesList);
+                this.events.publish('change_segment', changes.freq);
+            }
+            else{
+                let index = this.findIndex(this.selected_id);
+                this.expensesList[index] = changes;
+            }
 
-        this.submitted = 1;
+            this.storage.set('expensesList', this.expensesList);
+            this.events.publish('reload:expenses', this.expensesList);
 
-        this.dismiss();              
+            this.submitted = 1;
+
+            this.dismiss();    
+        }          
     }
     
     deleteRecord(expenses){
