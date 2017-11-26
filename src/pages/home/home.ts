@@ -82,6 +82,11 @@ export class HomePage {
             this.calc(v);
         });
 
+        events.subscribe('enter:home', () => {
+            this.seemore_ok = 0;
+            this.processReserved(this.expensesList);
+        });        
+
         events.subscribe('update:currency', (c) => {
             this.display_currency = c;
         });
@@ -415,7 +420,7 @@ export class HomePage {
     }
 
     gotoManage(init_price){
-        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price});
+        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price, 'segment': "onetime"});
         //this.navCtrl.parent.select(1);
     }
 

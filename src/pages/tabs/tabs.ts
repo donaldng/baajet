@@ -66,4 +66,7 @@ export class TabsPage {
         modal.present();        
     }
 
+    entersHome(){
+        this.events.publish('enter:home');
+    }
 }

@@ -1,4 +1,4 @@
 <ion-tabs id="tabs">
-  <ion-tab [root]="tab1Root" tabTitle="Dashboard"></ion-tab>
+  <ion-tab [root]="tab1Root" (ionSelect)="entersHome()" tabTitle="Dashboard"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="Expenses"></ion-tab>
 </ion-tabs>
