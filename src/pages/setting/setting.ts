@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
-import { ToastController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
 @Component({
@@ -22,7 +21,7 @@ export class SettingPage {
     newphotoFlag;
     enablePhotoFlag;
 
-    constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, public toastCtrl: ToastController, private alertCtrl: AlertController) {
+    constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
         this.storage.get('budget').then((v) => {
@@ -60,15 +59,6 @@ export class SettingPage {
         this.storage.get('enablePhotoFlag').then((v) => {
             if(v) this.enablePhotoFlag = v;
         });  
-    }
-
-    presentToast() {
-        let toast = this.toastCtrl.create({
-          message: 'Ok, I got it!',
-          duration: 2000,
-          position: 'top'
-      });
-        toast.present();
     }
 
     goHome(){
@@ -147,7 +137,6 @@ export class SettingPage {
             this.events.publish('newphotoFlag', this.newphotoFlag);
             this.events.publish('enablePhotoFlag', this.enablePhotoFlag);
 
-            this.presentToast();
             this.dismiss();
         }
     }
