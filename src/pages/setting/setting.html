@@ -29,12 +29,12 @@
                 <!-- H:mm -->
                 <ion-item>
                     <ion-label color="primary" stacked>Trips from?</ion-label>
-                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripStart" [max]="maxDate" name="tripStart"></ion-datetime>
+                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripStart" [max]="maxDate" name="tripStart" (ngModelChange)="validateDate('start')"></ion-datetime>
                 </ion-item>
 
                 <ion-item>
                     <ion-label color="primary" stacked>Trips until?</ion-label>
-                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripEnd" [min]="tripStart" [max]="maxDate" name="tripEnd"></ion-datetime>
+                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripEnd" [min]="tripStart" [max]="maxDate" name="tripEnd" (ngModelChange)="validateDate('end')"></ion-datetime>
                 </ion-item>  
 
                 <ion-item>

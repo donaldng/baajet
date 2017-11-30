@@ -137,11 +137,18 @@ export class SettingPage {
         alert.present();
     }
 
+    validateDate(field){
+        if (this.tripStart <= this.tripEnd) return;
+
+        if (field == "start") this.tripEnd = this.tripStart;
+        if (field == "end") this.tripStart = this.tripEnd;
+    }
+
     submitForm() {
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
         var budget = Number(this.budget);
 
-        if(this.budget <= 0){
+        if(this.budget <= 0 || typeof this.budget == 'undefined'){
             alert('We need a valid budget please..!');
         }
         else if (this.tripStart > this.tripEnd){
