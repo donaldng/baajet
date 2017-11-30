@@ -69,8 +69,9 @@ export class SettingPage {
         this.viewCtrl.dismiss();
     }
     
-    reset(){
-        this.storage.clear();
+    resetStorage(){
+        //this.storage.clear();
+        this.clearAll()
 
         this.tripStart = new Date().toISOString().slice(0, 19);
         this.tripEnd = new Date();
@@ -88,6 +89,24 @@ export class SettingPage {
 
     }
 
+    clearAll(){
+        this.storage.set('budget', 0);
+        this.storage.set('currency', '$');
+        this.storage.set('duration', '');
+        this.storage.set('saveimageFlag', 0);
+        this.storage.set('editFlag', 0);
+        this.storage.set('newphotoFlag', 0);
+        this.storage.set('enablePhotoFlag', 0);
+
+        this.events.publish('reload:home', 'tot_budget', 0);
+        this.events.publish('reload:home', 'duration', '');
+        this.events.publish('update:currency', '$');
+        this.events.publish('saveimageFlag', 0);
+        this.events.publish('editFlag', 0);
+        this.events.publish('newphotoFlag', 0);
+        this.events.publish('enablePhotoFlag', 0);        
+    }
+
     presentConfirm() {
         let alert = this.alertCtrl.create({
             title: 'Reset',
@@ -102,7 +121,7 @@ export class SettingPage {
             {
                 text: 'Yes',
                 handler: () => {
-                    this.reset();
+                    this.resetStorage();
                 }
             }
             ]
