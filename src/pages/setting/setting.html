@@ -29,12 +29,12 @@
                 <!-- H:mm -->
                 <ion-item>
                     <ion-label color="primary" stacked>Trips from?</ion-label>
-                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripStart" name="tripStart"></ion-datetime>
+                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripStart" [max]="maxDate" name="tripStart"></ion-datetime>
                 </ion-item>
 
                 <ion-item>
                     <ion-label color="primary" stacked>Trips until?</ion-label>
-                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripEnd" name="tripEnd"></ion-datetime>
+                    <ion-datetime displayFormat="DD MMM YYYY" [(ngModel)]="tripEnd" [min]="tripStart" [max]="maxDate" name="tripEnd"></ion-datetime>
                 </ion-item>  
 
                 <ion-item>
@@ -68,12 +68,6 @@
                       <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>&nbsp;@donaldngg
                     </ion-item>
             </ion-item-group>
-<!--             <ion-item-group text-wrap>
-                <ion-item-divider color="light">Donation</ion-item-divider>
-                    <ion-item>
-                      <ion-icon name="logo-bitcoin"></ion-icon>&nbsp;&nbsp;h834giogATuexi3rnDNkasndkladug1r8y
-                    </ion-item>    
-            </ion-item-group>             -->
             <ion-item-group>
                 <ion-item-divider color="light">Reset</ion-item-divider>
                     <ion-item>

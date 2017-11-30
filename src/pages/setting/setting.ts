@@ -20,10 +20,17 @@ export class SettingPage {
     editFlag;
     newphotoFlag;
     enablePhotoFlag;
+    maxDate;
 
     constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
+
+        this.maxDate = new Date();
+        this.maxDate.setDate(this.maxDate.getDate() + 180);
+        this.maxDate = this.maxDate.toISOString().slice(0, 19);
+
+
         this.storage.get('budget').then((v) => {
             if(v) this.budget = v;
         });
@@ -97,6 +104,7 @@ export class SettingPage {
         this.storage.set('editFlag', 0);
         this.storage.set('newphotoFlag', 0);
         this.storage.set('enablePhotoFlag', 0);
+        this.storage.set('expensesList', []);
 
         this.events.publish('reload:home', 'tot_budget', 0);
         this.events.publish('reload:home', 'duration', '');
