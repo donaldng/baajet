@@ -282,7 +282,7 @@ export class ExpensesPage {
         var now = new Date().getDate();
         var d = new Date(oridate.replace(" ","T")).getDate();
 
-        var day = now - d;
+        var day = Math.abs(now - d);
         
         if(day == 0) return "Today"
         if (day == 1) return 'Yesterday';
@@ -490,7 +490,7 @@ export class ExpensesPage {
     }  
 
     gotoSetting(){
-        let modal = this.modalCtrl.create(SettingPage);
+        let modal = this.modalCtrl.create(SettingPage, {'init_budget': 0});
         modal.present();
     }
 }
