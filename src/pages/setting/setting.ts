@@ -140,8 +140,14 @@ export class SettingPage {
     validateDate(field){
         if (this.tripStart <= this.tripEnd) return;
 
-        if (field == "start") this.tripEnd = this.tripStart;
-        if (field == "end") this.tripStart = this.tripEnd;
+        if (field == "start"){
+            this.tripEnd = new Date(this.tripStart);
+            this.tripEnd.setDate(this.tripEnd.getDate() + 3);
+            this.tripEnd = this.tripEnd.toISOString().slice(0, 19);            
+        }
+        if (field == "end"){
+            this.tripStart = this.tripEnd;
+        }
     }
 
     submitForm() {
