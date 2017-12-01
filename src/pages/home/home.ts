@@ -378,6 +378,43 @@ export class HomePage {
         });
     }
 
+    firstTimeSetting(){
+        let title = 'Budget Setup';
+        let placeholder = '0.00';
+        let value = '';
+
+        let prompt = this.alertCtrl.create({
+            title: title,
+            message: "How much budget have you prepared for the trip?",
+            inputs: [
+            {
+                name: 'budget',
+                placeholder: placeholder,
+                type: 'number',
+                value: value
+            },
+            ],
+            buttons: [
+            {
+                text: 'Cancel',
+                handler: data => {
+                }
+            },
+            {
+                text: 'Go',
+                handler: data => {
+                    this.gotoSetting(data.budget);
+                }
+            }
+            ]
+        });
+        prompt.present().then(() => {
+            const firstInput: any = document.querySelector('ion-alert input');
+            firstInput.focus();
+            return;
+        });
+    }
+
     getReservedAmount(expensesList){
         if(!expensesList){
             this.storage.get('expensesList').then((v) => {
@@ -429,8 +466,8 @@ export class HomePage {
         //this.navCtrl.parent.select(1);
     }
 
-    gotoSetting(){
-        let modal = this.modalCtrl.create(SettingPage);
+    gotoSetting(init_budget){
+        let modal = this.modalCtrl.create(SettingPage, {'init_budget': init_budget});
         modal.present();
     }
 

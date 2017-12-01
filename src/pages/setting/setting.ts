@@ -23,6 +23,8 @@ export class SettingPage {
     maxDate;
 
     constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+        this.budget = this.params.get('init_budget');        
+
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
 
@@ -30,10 +32,12 @@ export class SettingPage {
         this.maxDate.setDate(this.maxDate.getDate() + 180);
         this.maxDate = this.maxDate.toISOString().slice(0, 19);
 
-
-        this.storage.get('budget').then((v) => {
-            if(v) this.budget = v;
-        });
+        // If no budget passed in, check if database has the value.
+        if (this.budget == 0){
+            this.storage.get('budget').then((v) => {
+                if(v) this.budget = v;
+            });
+        }
 
         this.storage.get('currency').then((v) => {
             if(v) this.currency = v;
