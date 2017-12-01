@@ -42,9 +42,9 @@ export class HomePage {
     seemore_reserved;
     baaThumbnail;
     seemore_ok;
-    
-    constructor(public imgLib: ImageService, private alertCtrl: AlertController, public admob: AdMobFree, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
-        //this.storage.clear();
+
+    // public admob: AdMobFree, 
+    constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
 
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
