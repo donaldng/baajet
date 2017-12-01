@@ -283,13 +283,11 @@ export class ExpensesPage {
         var d = new Date(oridate.replace(" ","T")).getDate();
 
         var day = now - d;
+        
+        if(day == 0) return "Today"
+        if (day == 1) return 'Yesterday';
 
-        if (day > 0){
-            if(day == 1) return 'Yesterday';
-            return '' + day + ' days ago';
-        }
-
-        return "Today";    
+        return '' + day + ' days ago';        
     }
 
     doRefresh(refresher) {
