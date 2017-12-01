@@ -1,26 +1,31 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+# Baajet
 
-## How to use this template
+Budget tracking made easy
 
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
+## Description
 
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
+Baajet is a simple budget tracking app focuses on minimalism and usability. You don't need a Finance Degree to use it, because we do not have any reports, charts and all other unnecessary advance features.
 
-### With the Ionic CLI:
+Based on your travelling budget and expenses, we will crunches the math, and gives you the estimation of daily spending limits, without you going through the fusses all by yourself.
 
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
+Tracking trip's budget is hard, math is harder, Baajet will do all the hard work for you. So, you can free your mind from money management and enjoy the trip!
 
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myTabs tabs
-```
+Budget tracking made easy. Bon voyage!
 
-Then, to run it, cd into `myTabs` and run:
+## Features
 
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
-```
+* Keep track of total budget and daily limits
+* Expenses history list for reference
+* Easy to add and manage new expenses
+* Expenses category with various icon to choose
+* Camera to captured image as icon
+* Reserves fund
+* Recurring expenses
 
-Substitute ios for android if not on a Mac.
+## Authors
 
+* **Donald Ng** - *Developer*
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
