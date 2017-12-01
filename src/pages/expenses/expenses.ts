@@ -279,15 +279,20 @@ export class ExpensesPage {
     }
 
     daySince(oridate){
-        var now = new Date().getDate();
-        var d = new Date(oridate.replace(" ","T")).getDate();
+        var today = new Date();
+        var createdOn = new Date(oridate.replace(" ","T"));
 
-        var day = Math.abs(now - d);
+        var msInDay = 24 * 60 * 60 * 1000;
         
-        if(day == 0) return "Today"
-        if (day == 1) return 'Yesterday';
+        createdOn.setHours(0,0,0,0);
+        
+        var day = (+today - +createdOn)/msInDay
+        var diff = String(day).split('.')[0];
 
-        return '' + day + ' days ago';        
+        if(diff == "0") return "Today"
+        if (diff == "1") return 'Yesterday';
+
+        return '' + diff + ' days ago';        
     }
 
     doRefresh(refresher) {
