@@ -275,7 +275,7 @@ export class ManagePage {
             this.events.publish('reload:expenses', this.expensesList);
 
             this.submitted = 1;
-            // this.admobLib.showInterstitialAds();
+            this.admobLib.showInterstitialAds();
             this.dismiss();    
         }          
     }

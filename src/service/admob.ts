@@ -10,13 +10,10 @@ export class AdMobService {
         isTesting: true,
         autoShow: true
     };
+    counter; // spam prevention
     
     constructor(public platform: Platform, public admob: AdMobFree) {
-        // platform.ready().then(() => {
-        //     if (!this.paidVersion){
-        //         this.runAds();
-        //     }
-        // });   
+        this.counter = 0;
     }
 
     AdsId(){
@@ -30,14 +27,17 @@ export class AdMobService {
     }
 
     showInterstitialAds(){
-        if (this.paidVersion) return; 
-        
-
-        this.admob.interstitial.config(this.bannerConfig);
-    
-        this.admob.interstitial.prepare().then(() => {
-            // this.admob.interstitial.show()
-        }).catch(e => console.log(e));    
+        this.counter += 1;
+        var chance = Math.round(Math.random()); // 50% chance of showing
+        if (!this.paidVersion && this.counter >= 3 && chance <= 0.5){
+            this.admob.interstitial.config(this.bannerConfig);
+            
+            this.admob.interstitial.prepare().then(() => {
+                this.counter = 0;
+                // this.admob.interstitial.show()
+                this.runAds();
+            }).catch(e => console.log(e));    
+        }
     }  
     
     runAds(){

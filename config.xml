@@ -5,7 +5,7 @@
         An app designed to make travellers' life easy. Stay informed of daily spending limits. Never overspent another trip no more.        
     </description>
     <author email="contact@baajetapp.com" href="https://baajetapp.com/">Baajet Developer</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.159.192:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
