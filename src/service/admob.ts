@@ -8,12 +8,15 @@ export class AdMobService {
     bannerConfig: AdMobFreeBannerConfig = {
         id: this.AdsId(),
         isTesting: true,
+        overlap: false,
         autoShow: true
     };
     counter; // spam prevention
+    limit;
     
     constructor(public platform: Platform, public admob: AdMobFree) {
         this.counter = 0;
+        this.limit = 3;
     }
 
     AdsId(){
@@ -29,24 +32,22 @@ export class AdMobService {
     showInterstitialAds(){
         this.counter += 1;
         var chance = Math.round(Math.random()); // 50% chance of showing
-        if (!this.paidVersion && this.counter >= 3 && chance <= 0.5){
+        if (!this.paidVersion && this.counter >= this.limit && chance <= 0.5){
             this.admob.interstitial.config(this.bannerConfig);
             
             this.admob.interstitial.prepare().then(() => {
-                this.counter = 0;
-                // this.admob.interstitial.show()
+                this.admob.banner.remove();
                 this.runAds();
             }).catch(e => console.log(e));    
         }
     }  
     
     runAds(){
-        if (this.paidVersion) return; 
-
-        this.admob.banner.config(this.bannerConfig);
-        this.admob.banner.prepare().then(() => {
-        }).catch(e => console.log(e));
-                
+        if (!this.paidVersion){
+            this.admob.banner.config(this.bannerConfig);
+            this.admob.banner.prepare().then(() => {
+            }).catch(e => console.log(e));
+        }                
     }
  
 }

@@ -275,7 +275,6 @@ export class ManagePage {
             this.events.publish('reload:expenses', this.expensesList);
 
             this.submitted = 1;
-            this.admobLib.showInterstitialAds();
             this.dismiss();    
         }          
     }
@@ -381,6 +380,7 @@ export class ManagePage {
 
     dismiss() {
         if (!this.submitted) this.events.publish('reset:expenses');
+        //this.admobLib.showInterstitialAds(); // DO not show interstitial ads because banner overlap problem
         this.viewCtrl.dismiss();
     }
 }
