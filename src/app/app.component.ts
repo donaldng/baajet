@@ -13,7 +13,7 @@ export class MyApp {
     rootPage:any = TabsPage;
     dates;
     expensesList;
-    paidVersion:boolean = false;
+    paidVersion:boolean = true;
 
     constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public admob: AdMobFree, public events: Events) {
 

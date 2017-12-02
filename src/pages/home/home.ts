@@ -42,7 +42,6 @@ export class HomePage {
     baaThumbnail;
     seemore_ok;
 
-    // constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
     constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
         this.expensesList = [];
