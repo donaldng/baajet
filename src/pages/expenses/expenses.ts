@@ -236,6 +236,7 @@ export class ExpensesPage {
         return this.freqMap[expenses.freq];
 
     }
+    
     refreshSegment(expenses){
         if (!this.getSegment(expenses.freq)){
             for(var i = 0; i < this.freqMap.length; i++){
@@ -283,9 +284,9 @@ export class ExpensesPage {
         var createdOn = new Date(oridate.replace(" ","T"));
 
         var msInDay = 24 * 60 * 60 * 1000;
-        
+
         createdOn.setHours(0,0,0,0);
-        
+
         var day = (+today - +createdOn)/msInDay
         var diff = String(day).split('.')[0];
 

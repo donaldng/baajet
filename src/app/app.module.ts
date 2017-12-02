@@ -4,7 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { ExpensesPage } from '../pages/expenses/expenses';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ManagePage } from '../pages/manage/manage';
@@ -23,7 +22,6 @@ import { ImageService } from '../service/image';
   declarations: [
     MyApp,
     ExpensesPage,
-    ContactPage,
     HomePage,
     TabsPage,
     ManagePage,
@@ -39,7 +37,6 @@ import { ImageService } from '../service/image';
   entryComponents: [
     MyApp,
     ExpensesPage,
-    ContactPage,
     HomePage,
     TabsPage,
     ManagePage,

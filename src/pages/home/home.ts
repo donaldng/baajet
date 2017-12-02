@@ -4,7 +4,6 @@ import { Storage } from '@ionic/storage';
 import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
-// import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 import { ImageService } from '../../service/image';
 
 @Component({
@@ -43,9 +42,9 @@ export class HomePage {
     baaThumbnail;
     seemore_ok;
 
-    // public admob: AdMobFree, 
+    // constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
     constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
-
+            
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
         this.display_currency = '$';
@@ -97,29 +96,6 @@ export class HomePage {
 
         this.campaign_ended = 0;
         this.getGreetMsg();
-        
-        // platform.ready().then(() => {
-        
-        //     let adId;
-        //     if(platform.is('android')) {
-        //         adId = 'ca-app-pub-8912779457218327~4932552355';
-        //     } else if (platform.is('ios')) {
-        //         adId = 'ca-app-pub-8912779457218327/6232836365';
-        //     }
-            
-        //     let bannerConfig: AdMobFreeBannerConfig = {
-        //         isTesting: false,
-        //         autoShow: true,
-        //         id: adId
-        //     };
-
-        //     admob.banner.config(bannerConfig);
-
-        //     admob.banner.prepare().then(() => {
-        //     }).catch(e => console.log(e));        
-        // });
-
-
     }
 
     updateData(){
