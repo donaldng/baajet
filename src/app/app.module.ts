@@ -17,6 +17,7 @@ import { Camera } from '@ionic-native/camera';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AdMobFree } from '@ionic-native/admob-free';
 import { ImageService } from '../service/image';
+import { AdMobService } from '../service/admob';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ImageService } from '../service/image';
     Camera,
     AdMobFree,
     ImageService,
+    AdMobService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

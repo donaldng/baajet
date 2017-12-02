@@ -3,8 +3,8 @@ import { Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 import { TabsPage } from '../pages/tabs/tabs';
+import { AdMobService } from '../service/admob';
 
 @Component({
     templateUrl: 'app.html'
@@ -13,13 +13,12 @@ export class MyApp {
     rootPage:any = TabsPage;
     dates;
     expensesList;
-    paidVersion:boolean = true;
 
-    constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public admob: AdMobFree, public events: Events) {
+    constructor(admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
-            if (!this.paidVersion) this.runAds();
+            admobLib.runAds();
             this.preloadData();
             splashScreen.hide();
         });
@@ -37,27 +36,10 @@ export class MyApp {
             this.expensesList = [];
         });
 
-    }
+        events.subscribe('reload:expenses', (v)=>{
+            if(v) this.expensesList = v;
+        });
 
-    runAds(){
-        let adId;
-        if(this.platform.is('android')) {
-            adId = 'ca-app-pub-8912779457218327~4932552355';
-        } else if (this.platform.is('ios')) {
-            adId = 'ca-app-pub-8912779457218327/6232836365';
-        }
-        
-        let bannerConfig: AdMobFreeBannerConfig = {
-            isTesting: true,
-            autoShow: true,
-            id: adId
-        };
-
-        this.admob.banner.config(bannerConfig);
-
-        this.admob.banner.prepare().then(() => {
-        }).catch(e => console.log(e));
-                
     }
 
     preloadData(){

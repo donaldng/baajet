@@ -6,6 +6,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
 import { ImageViewerController } from 'ionic-img-viewer';
 import { ImageService } from '../../service/image';
+import { AdMobService } from '../../service/admob';
 
 @Component({
     selector: 'page-manage',
@@ -39,7 +40,7 @@ export class ManagePage {
     segment;
     oriAmt;
 
-    constructor(public menuCtrl: MenuController, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
         this.submitted = 0;
@@ -274,7 +275,7 @@ export class ManagePage {
             this.events.publish('reload:expenses', this.expensesList);
 
             this.submitted = 1;
-
+            // this.admobLib.showInterstitialAds();
             this.dismiss();    
         }          
     }

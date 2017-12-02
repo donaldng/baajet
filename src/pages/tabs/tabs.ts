@@ -28,7 +28,11 @@ export class TabsPage {
                 this.tot_budget = v;
             }
         });
-                
+
+        this.storage.get('expensesList').then((v) => {
+            if(v) this.expensesList = v;
+        });        
+
         events.subscribe('reload:home', (k, v) => {
             if (k == 'expensesList') this.expensesList = v;
             else if(k == "tot_budget"){
