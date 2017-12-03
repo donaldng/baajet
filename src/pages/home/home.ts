@@ -130,8 +130,7 @@ export class HomePage {
           }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                this.tripEnd = new Date();
-                this.tripEnd.setDate(this.tripEnd.getDate() + 7);
+                this.tripEnd = this.dateLib.addDay(new Date(), 7);
                 this.tripEnd = this.dateLib.toString(this.tripEnd);
             }
 

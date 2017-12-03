@@ -29,8 +29,7 @@ export class SettingPage {
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
 
-        this.maxDate = new Date();
-        this.maxDate.setDate(this.maxDate.getDate() + 180);
+        this.maxDate = this.dateLib.addDay(new Date(), 180);
         this.maxDate = this.dateLib.toString(this.maxDate);
 
         // If no budget passed in, check if database has the value.
@@ -53,8 +52,7 @@ export class SettingPage {
             }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                this.tripEnd = new Date();
-                this.tripEnd.setDate(this.tripEnd.getDate() + 7);
+                this.tripEnd = this.dateLib.addDay(new Date(), 7);
                 this.tripEnd = this.dateLib.toString(this.tripEnd);
             }
         });
@@ -86,8 +84,7 @@ export class SettingPage {
         this.clearAll()
 
         this.tripStart = this.dateLib.toString(new Date());
-        this.tripEnd = new Date();
-        this.tripEnd.setDate(this.tripEnd.getDate() + 7);
+        this.tripEnd = this.dateLib.addDay(new Date(), 7);
         this.tripEnd = this.dateLib.toString(this.tripEnd);
 
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
@@ -146,8 +143,7 @@ export class SettingPage {
         if (this.tripStart <= this.tripEnd) return;
 
         if (field == "start"){
-            this.tripEnd = new Date(this.tripStart);
-            this.tripEnd.setDate(this.tripEnd.getDate() + 3);
+            this.tripEnd = this.dateLib.addDay(new Date(this.tripStart), 3);
             this.tripEnd = this.dateLib.toString(this.tripEnd);            
         }
         if (field == "end"){

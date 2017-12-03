@@ -66,8 +66,7 @@ export class ManagePage {
             }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                var tripEnd = new Date();
-                tripEnd.setDate(tripEnd.getDate() + 7);
+                var tripEnd = this.dateLib.addDay(new Date(), 7);
                 this.tripEnd = this.dateLib.toString(tripEnd);
             }
 
@@ -200,8 +199,7 @@ export class ManagePage {
     }
 
     set_todays_b(){
-        var todays_b = new Date();
-        todays_b.setDate(todays_b.getDate() + 1);
+        var todays_b = this.dateLib.addDay(new Date(), 1);
         this.todays_b = this.dateLib.toString(todays_b);
     }
     
