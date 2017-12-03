@@ -1,8 +1,8 @@
+![Baajet app banner](https://raw.githubusercontent.com/donaldng/baajetapp.com/master/images/featured.png)
+
 # Baajet
 
 Simple budget tracking app made for travellers.
-
-![alt text](https://raw.githubusercontent.com/donaldng/baajetapp.com/master/images/featured.png)
 
 ## Description
 
