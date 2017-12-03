@@ -1,9 +1,9 @@
 <ion-header>
     <ion-toolbar>
 
-        <ion-buttons start>
+        <ion-buttons left>
             <button ion-button (click)="dismiss()">
-                <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+                <ion-icon ios="ios-arrow-back" md="md-arrow-back" android="android-arrow-back"></ion-icon>
             </button>
         </ion-buttons>
 
@@ -11,7 +11,7 @@
             {{ pageName }}
         </ion-title>
 
-        <ion-buttons end *ngIf="this.selected_id != '-1'">
+        <ion-buttons right *ngIf="this.selected_id != '-1'">
             <button ion-button (click)="deleteRecord(expenses)">
                 <ion-icon ios="ios-trash" md="md-trash" color="danger"></ion-icon>
             </button>

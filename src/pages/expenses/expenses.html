@@ -9,7 +9,7 @@
             <span *ngIf="tot_expenses != 0">Total {{ display_currency }}{{ tot_expenses }}</span>
             <span *ngIf="tot_expenses == 0">Expenses</span>
         </ion-title>
-        <ion-buttons end>
+        <ion-buttons right>
             <button ion-button color="dark" (click)="gotoSetting()">
                 <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
             </button>
