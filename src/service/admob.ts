@@ -4,19 +4,15 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 @Injectable()
 export class AdMobService {
-    paidVersion:boolean = false;
+    paidVersion:boolean = true;
     bannerConfig: AdMobFreeBannerConfig = {
         id: this.AdsId(),
         isTesting: true,
         overlap: false,
         autoShow: true
     };
-    counter; // spam prevention
-    limit;
     
     constructor(public platform: Platform, public admob: AdMobFree) {
-        this.counter = 0;
-        this.limit = 3;
     }
 
     AdsId(){
@@ -30,9 +26,8 @@ export class AdMobService {
     }
 
     showInterstitialAds(){
-        this.counter += 1;
-        var chance = Math.round(Math.random()); // 50% chance of showing
-        if (!this.paidVersion && this.counter >= this.limit && chance <= 0.5){
+        var showchance = Math.round(Math.random()); // 50% chance of showing
+        if (!this.paidVersion && showchance <= 0.4){
             this.admob.interstitial.config(this.bannerConfig);
             
             this.admob.interstitial.prepare().then(() => {
