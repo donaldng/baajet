@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
 import { SettingPage } from '../setting/setting';
+import { DateService } from '../../service/date';
 
 @Component({
     selector: 'page-expenses',
@@ -32,7 +33,7 @@ export class ExpensesPage {
     baaThumbnail;
     imageList;
 
-    constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+    constructor(public dateLib: DateService, public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
 
         this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
@@ -383,7 +384,7 @@ export class ExpensesPage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         var x = new Date();
-        var today = x.toISOString().slice(0, 19).replace('T',' ');
+        var today = this.dateLib.toString(x).slice(0, 19).replace('T',' ');
 
 
         // Add new expenses

@@ -5,6 +5,7 @@ import { ModalController, Platform } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
+import { DateService } from '../../service/date';
 
 @Component({
     selector: 'page-home',
@@ -42,7 +43,7 @@ export class HomePage {
     baaThumbnail;
     seemore_ok;
 
-    constructor(public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public dateLib: DateService, public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
@@ -128,10 +129,10 @@ export class HomePage {
                 this.decodeDuration(v);        
           }
             else{
-                this.tripStart = new Date().toISOString().slice(0, 19);
+                this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
                 this.tripEnd = new Date();
                 this.tripEnd.setDate(this.tripEnd.getDate() + 7);
-                this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
+                this.tripEnd = this.dateLib.toString(this.tripEnd).slice(0, 19);
             }
 
             this.check_ended();
@@ -213,7 +214,7 @@ export class HomePage {
 
         if(v){
             for (var i=0; i < v.length; i++){
-                if(v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ') && v[i].freq_end.slice(0, 10).replace('T',' ') == new Date().toISOString().slice(0, 10).replace('T',' ')){
+                if (v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T', ' ') && v[i].freq_end.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T',' ')){
                     // Do not account day expenses into daily budget calculation
                     // Unless it's a over spent, then we deduct overspent amount from daily budget
                     this.day_expenses += Number(v[i].amount);
@@ -475,8 +476,8 @@ export class HomePage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         var x = new Date();
-        var today = x.toISOString().slice(0, 19).replace('T',' ');
-
+        var today = this.dateLib.toString(x).slice(0, 19).replace('T',' ');
+        alert(today);
         // Add new expenses
         var newExpenses = {
             'id': Math.round((new Date()).getTime() / 1000),

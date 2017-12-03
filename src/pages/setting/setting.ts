@@ -3,6 +3,7 @@ import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { DateService } from '../../service/date';
 
 @Component({
     selector: 'page-setting',
@@ -22,7 +23,7 @@ export class SettingPage {
     enablePhotoFlag;
     maxDate;
 
-    constructor( public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+    constructor(public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');        
 
         this.items = ['$', '¥', '€', '£', '฿'];
@@ -30,7 +31,7 @@ export class SettingPage {
 
         this.maxDate = new Date();
         this.maxDate.setDate(this.maxDate.getDate() + 180);
-        this.maxDate = this.maxDate.toISOString().slice(0, 19);
+        this.maxDate = this.dateLib.toString(this.maxDate).slice(0, 19);
 
         // If no budget passed in, check if database has the value.
         if (this.budget == 0){
@@ -51,10 +52,10 @@ export class SettingPage {
                 this.tripEnd = this.duration[1];
             }
             else{
-                this.tripStart = new Date().toISOString().slice(0, 19);
+                this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
                 this.tripEnd = new Date();
                 this.tripEnd.setDate(this.tripEnd.getDate() + 7);
-                this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
+                this.tripEnd = this.dateLib.toString(this.tripEnd).slice(0, 19);
             }
         });
 
@@ -84,10 +85,10 @@ export class SettingPage {
         //this.storage.clear();
         this.clearAll()
 
-        this.tripStart = new Date().toISOString().slice(0, 19);
+        this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
         this.tripEnd = new Date();
         this.tripEnd.setDate(this.tripEnd.getDate() + 7);
-        this.tripEnd = this.tripEnd.toISOString().slice(0, 19);
+        this.tripEnd = this.dateLib.toString(this.tripEnd).slice(0, 19);
 
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
 
@@ -147,7 +148,7 @@ export class SettingPage {
         if (field == "start"){
             this.tripEnd = new Date(this.tripStart);
             this.tripEnd.setDate(this.tripEnd.getDate() + 3);
-            this.tripEnd = this.tripEnd.toISOString().slice(0, 19);            
+            this.tripEnd = this.dateLib.toString(this.tripEnd).slice(0, 19);            
         }
         if (field == "end"){
             this.tripStart = this.tripEnd;

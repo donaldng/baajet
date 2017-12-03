@@ -7,6 +7,7 @@ import { Events } from 'ionic-angular';
 import { ImageViewerController } from 'ionic-img-viewer';
 import { ImageService } from '../../service/image';
 import { AdMobService } from '../../service/admob';
+import { DateService } from '../../service/date';
 
 @Component({
     selector: 'page-manage',
@@ -40,7 +41,7 @@ export class ManagePage {
     segment;
     oriAmt;
 
-    constructor(public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public dateLib: DateService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = 0;
         this.submitted = 0;
@@ -64,10 +65,10 @@ export class ManagePage {
                 this.tripEnd = duration[1];
             }
             else{
-                this.tripStart = new Date().toISOString().slice(0, 19);
+                this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
                 var tripEnd = new Date();
                 tripEnd.setDate(tripEnd.getDate() + 7);
-                this.tripEnd = tripEnd.toISOString().slice(0, 19);
+                this.tripEnd = this.dateLib.toString(tripEnd).slice(0, 19);
             }
 
                 this.expenses.freq_start = this.tripStart;
@@ -201,7 +202,7 @@ export class ManagePage {
     set_todays_b(){
         var todays_b = new Date();
         todays_b.setDate(todays_b.getDate() + 1);
-        this.todays_b = todays_b.toISOString().slice(0, 19);
+        this.todays_b = this.dateLib.toString(todays_b).slice(0, 19);
     }
     
     submitForm() {
@@ -209,13 +210,13 @@ export class ManagePage {
 
         if (this.expenses.name.trim() != "") name = this.expenses.name.trim();
 
-        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
-        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
+        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
         
         if (this.expenses.freq == 0){
             if(this.expenses.todays){
-                this.expenses.freq_start = new Date().toISOString().slice(0, 19).replace('T',' ');
-                this.expenses.freq_end = new Date().toISOString().slice(0, 19).replace('T',' ');
+                this.expenses.freq_start = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
+                this.expenses.freq_end = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
             }
             else{
                 this.expenses.freq_start = this.todays_b.replace('T',' ');
@@ -258,7 +259,7 @@ export class ManagePage {
         else{
             if (this.selected_id == "-1"){
                 changes['id'] = Math.round((new Date()).getTime() / 1000);
-                changes['datetime'] = new Date().toISOString().slice(0, 19).replace('T',' ');
+                changes['datetime'] = this.dateLib.toString(new Date()).replace('T',' ');
                 if (this.expensesList)
                     this.expensesList.push(changes);
                 else

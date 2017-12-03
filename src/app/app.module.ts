@@ -16,8 +16,11 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AdMobFree } from '@ionic-native/admob-free';
+
+// Services
 import { ImageService } from '../service/image';
 import { AdMobService } from '../service/admob';
+import { DateService } from '../service/date';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,7 @@ import { AdMobService } from '../service/admob';
     AdMobFree,
     ImageService,
     AdMobService,
+    DateService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
