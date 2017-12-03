@@ -2,38 +2,39 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ImageService {
-    imageCat;
 
     constructor() {
 
-        this.imageCat = {
+    }
+    getCategory(){
+        let imageCat = {
             'general': [
-                'food','taxi','shopping','ticket','groceries','dollar'
+                'food', 'taxi', 'shopping', 'ticket', 'groceries', 'dollar'
             ],
             'food': [
-                'rice','noodle','salad','pizza','dessert','breads'
+                'rice', 'noodle', 'salad', 'pizza', 'dessert', 'breads'
             ],
             'transport': [
-                'bus','scooter','train','airplane','cruise', 'bike'
+                'bus', 'scooter', 'train', 'airplane', 'cruise', 'bike'
             ],
             'shopping': [
-                'cloth','bag','shoes','assesories','luxuries','watch'
+                'cloth', 'bag', 'shoes', 'assesories', 'luxuries', 'watch'
             ],
             'stay': [
-                'house','apartment','city','camp','cabin','castle'
+                'house', 'apartment', 'city', 'camp', 'cabin', 'castle'
             ],
             'relax': [
-                'coffee','beer','bar','theater','karaoke','disco'
+                'coffee', 'beer', 'bar', 'theater', 'karaoke', 'disco'
             ],
             'souvenir': [
-                'typical','toy','doll','assesories','gift','package'
+                'typical', 'toy', 'doll', 'assesories', 'gift', 'package'
             ],
             'other': [
-                'cash','cash_bag','credit_card','online','bitcoin','invoice'
+                'cash', 'cash_bag', 'credit_card', 'online', 'bitcoin', 'invoice'
             ],
         };
+        return imageCat;
     }
-
     getDefaultThumbnail(name, type){
         
         if(type==1 && name=="General") return "assets/imgs/icons/reserved.png";
@@ -56,15 +57,16 @@ export class ImageService {
         var img_size = 1;
         name = name.toLowerCase();
 
-        img_size = this.imageCat[name].length;
+        let category = this.getCategory();
+        img_size = category[name].length;
 
         
         for(var i = 0; i < img_size ; i++){
-            var img_name = this.capitalizeFirstLetter(this.imageCat[name][i].replace('_', ' '));
+            var img_name = this.capitalizeFirstLetter(category[name][i].replace('_', ' '));
 
             imageList.push({
                 name: img_name,
-                src: "assets/imgs/icons/" + name + "/" + this.imageCat[name][i] + ".png"
+                src: "assets/imgs/icons/" + name + "/" + category[name][i] + ".png"
             });
         }
 

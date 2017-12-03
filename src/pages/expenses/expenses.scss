@@ -59,6 +59,11 @@ page-expenses {
         font-size: 1.85rem;
     }
 
+    ion-thumbnail{
+        text-align: center !important;
+        vertical-align: middle !important;        
+    }
+
     img{ 
         margin: 0px 4px 0px;
         object-fit: cover;
@@ -66,8 +71,13 @@ page-expenses {
         border-radius: 10%;
      }
 
+     .expensesTN{
+         padding:10px;
+     }
+
     ion-footer{
-        text-align: center; vertical-align: middle;    
+        text-align: center; 
+        vertical-align: middle;    
     }
 
     .margintop{
@@ -78,7 +88,7 @@ page-expenses {
         display: none;
     }
 
-    img{
+    .thumbnail{
         object-fit: cover;
         width: 50px !important;
         height: 50px !important;
