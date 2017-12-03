@@ -129,10 +129,10 @@ export class HomePage {
                 this.decodeDuration(v);        
           }
             else{
-                this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
+                this.tripStart = this.dateLib.toString(new Date());
                 this.tripEnd = new Date();
                 this.tripEnd.setDate(this.tripEnd.getDate() + 7);
-                this.tripEnd = this.dateLib.toString(this.tripEnd).slice(0, 19);
+                this.tripEnd = this.dateLib.toString(this.tripEnd);
             }
 
             this.check_ended();
@@ -476,7 +476,7 @@ export class HomePage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         var x = new Date();
-        var today = this.dateLib.toString(x).slice(0, 19).replace('T',' ');
+        var today = this.dateLib.toString(x).replace('T',' ');
         alert(today);
         // Add new expenses
         var newExpenses = {

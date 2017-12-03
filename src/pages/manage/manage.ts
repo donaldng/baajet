@@ -65,10 +65,10 @@ export class ManagePage {
                 this.tripEnd = duration[1];
             }
             else{
-                this.tripStart = this.dateLib.toString(new Date()).slice(0, 19);
+                this.tripStart = this.dateLib.toString(new Date());
                 var tripEnd = new Date();
                 tripEnd.setDate(tripEnd.getDate() + 7);
-                this.tripEnd = this.dateLib.toString(tripEnd).slice(0, 19);
+                this.tripEnd = this.dateLib.toString(tripEnd);
             }
 
                 this.expenses.freq_start = this.tripStart;
@@ -202,7 +202,7 @@ export class ManagePage {
     set_todays_b(){
         var todays_b = new Date();
         todays_b.setDate(todays_b.getDate() + 1);
-        this.todays_b = this.dateLib.toString(todays_b).slice(0, 19);
+        this.todays_b = this.dateLib.toString(todays_b);
     }
     
     submitForm() {
@@ -210,13 +210,13 @@ export class ManagePage {
 
         if (this.expenses.name.trim() != "") name = this.expenses.name.trim();
 
-        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
-        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
+        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = this.dateLib.toString(new Date()).replace('T',' ');
+        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = this.dateLib.toString(new Date()).replace('T',' ');
         
         if (this.expenses.freq == 0){
             if(this.expenses.todays){
-                this.expenses.freq_start = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
-                this.expenses.freq_end = this.dateLib.toString(new Date()).slice(0, 19).replace('T',' ');
+                this.expenses.freq_start = this.dateLib.toString(new Date()).replace('T',' ');
+                this.expenses.freq_end = this.dateLib.toString(new Date()).replace('T',' ');
             }
             else{
                 this.expenses.freq_start = this.todays_b.replace('T',' ');

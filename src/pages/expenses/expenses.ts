@@ -384,7 +384,7 @@ export class ExpensesPage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         var x = new Date();
-        var today = this.dateLib.toString(x).slice(0, 19).replace('T',' ');
+        var today = this.dateLib.toString(x).replace('T',' ');
 
 
         // Add new expenses

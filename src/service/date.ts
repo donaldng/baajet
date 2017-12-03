@@ -8,7 +8,7 @@ export class DateService {
     }
 
     toString(dateObj){
-        return format(dateObj)
+        return format(dateObj).slice(0, 19)
     }
 
 }
