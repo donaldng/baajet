@@ -4,10 +4,10 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 @Injectable()
 export class AdMobService {
-    paidVersion:boolean = true;
+    paidVersion:boolean = false;
     bannerConfig: AdMobFreeBannerConfig = {
         id: this.AdsId(),
-        isTesting: true,
+        isTesting: false,
         overlap: false,
         autoShow: true
     };
@@ -18,9 +18,9 @@ export class AdMobService {
     AdsId(){
         let adId;
         if(this.platform.is('android')) {
-            adId = 'ca-app-pub-8912779457218327~4932552355';
+            adId = 'ca-app-pub-8912779457218327/8169940814';
         } else if (this.platform.is('ios')) {
-            adId = 'ca-app-pub-8912779457218327/6232836365';
+            adId = 'ca-app-pub-8912779457218327/8529033465';
         }
         return adId;
     }
