@@ -1,6 +1,8 @@
 # Baajet
 
-Budget tracking made easy
+Simple budget tracking app made for travellers.
+
+![alt text](https://raw.githubusercontent.com/donaldng/baajetapp.com/master/images/featured.png)
 
 ## Description
 
