@@ -28,21 +28,24 @@ export class MyApp {
         });
 
         events.subscribe('request:expensesList', () => {
+            // upon reaching expensesPage for the first time, fetch expensesList.
             events.publish('return:expensesList', this.expensesList);
         });
 
         events.subscribe('app:reload',() => {
-            // preload again in case of reset
+            // in case of reset expenses before reaching expensesPage
             this.expensesList = [];
         });
 
         events.subscribe('reload:expenses', (v)=>{
+            // in case of adding new expenses before reaching expensesPage
             if(v) this.expensesList = v;
         });
 
     }
 
     preloadData(){
+        // preload data to solve expensesPage first time loading problem.
         this.storage.get('expensesList').then((expensesList) => {
             if(expensesList) this.expensesList = expensesList;
         });
