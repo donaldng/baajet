@@ -20,9 +20,9 @@ export class MyApp {
             // statusBar.styleDefault();
             admobLib.runAds();
             this.preloadData();
-
+            var backbutton = 0;
+            
             this.platform.registerBackButtonAction(() => {
-                var backbutton = 0;
                 let nav = app.getActiveNav();
                 if (!nav.canGoBack()) { //Can we go back?
                     if (backbutton == 0) {
