@@ -26,11 +26,12 @@ export class MyApp {
                 let nav = app.getActiveNav();
                 if (!nav.canGoBack()) { //Can we go back?
                     if (backbutton == 0) {
-                        alert(1);
-                        backbutton++;
+                        backbutton+=1;
+                        alert(backbutton);
                         //window.plugins.toast.showShortCenter('Press again to exit');
-                        setTimeout(function () { backbutton = 0; }, 5000);
+                        setTimeout(function () { backbutton = 0;alert('reset'); }, 5000);
                     } else {
+                        alert('exit');
                         this.platform.exitApp();
                     }
                 }
