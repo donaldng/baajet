@@ -476,7 +476,7 @@ export class HomePage {
 
         var x = new Date();
         var today = this.dateLib.toString(x).replace('T',' ');
-        alert(today);
+
         // Add new expenses
         var newExpenses = {
             'id': Math.round((new Date()).getTime() / 1000),
