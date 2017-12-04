@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, Events, App } from 'ionic-angular';
+import { Platform, Events, ViewController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -22,19 +22,15 @@ export class MyApp {
             this.preloadData();
 
             this.platform.registerBackButtonAction(() => {
+                var backbutton = 0;
                 let nav = app.getActiveNav();
-                if (nav.canGoBack()) { //Can we go back?
-                    nav.pop();
-                } else {
-                    var backbutton = 0;
-
+                if (!nav.canGoBack()) { //Can we go back?
                     if (backbutton == 0) {
                         backbutton++;
                         //window.plugins.toast.showShortCenter('Press again to exit');
                         setTimeout(function () { backbutton = 0; }, 5000);
-                    }
-                    else{
-                        alert('exit');
+                    } else {
+                        this.platform.exitApp();
                     }
                 }
             });
