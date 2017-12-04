@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, Events, App, ToastController, ViewController } from 'ionic-angular';
+import { Platform, Events, App, ToastController, IonicApp } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -14,7 +14,7 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(public viewCtrl: ViewController, private toastCtrl: ToastController, app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(private toastCtrl: ToastController, app: App, public ionicApp: IonicApp, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
@@ -24,22 +24,26 @@ export class MyApp {
             
             this.platform.registerBackButtonAction(() => {
                 let nav = app.getActiveNav();
+                let activePortal = this.ionicApp._loadingPortal.getActive() ||
+                    this.ionicApp._modalPortal.getActive() ||
+                    this.ionicApp._toastPortal.getActive() ||
+                    this.ionicApp._overlayPortal.getActive();
 
-                try {
-                    this.viewCtrl.dismiss()
+                if (nav.canGoBack()) {
+                    nav.pop();
+                } else if (activePortal) {
+                    activePortal.dismiss();
                 }
-                catch (e) {
-                    if (!nav.canGoBack()) { //Can we go back?
-                        if (backbutton == 0) {
-                            backbutton += 1;
-                            this.presentToast();
-                            setTimeout(function () { backbutton = 0; }, 3000);
-                        } else {
-                            this.platform.exitApp();
-                        }
+                else{
+                    if (backbutton == 0) {
+                        backbutton += 1;
+                        this.presentToast();
+                        setTimeout(function () { backbutton = 0; }, 3000);
+                    } else {
+                        this.platform.exitApp();
                     }
-                    else nav.pop();                    
-                }
+                }              
+                
             });
             
             splashScreen.hide();
@@ -76,7 +80,7 @@ export class MyApp {
     presentToast() {
         let toast = this.toastCtrl.create({
             message: 'Press again to exit',
-            duration: 3000,
+            duration: 2000,
             position: 'bottom'
         });
 
