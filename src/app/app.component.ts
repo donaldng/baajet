@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, Events, App } from 'ionic-angular';
+import { Platform, Events, App, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -14,7 +14,7 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(private toastCtrl: ToastController, app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
@@ -27,11 +27,9 @@ export class MyApp {
                 if (!nav.canGoBack()) { //Can we go back?
                     if (backbutton == 0) {
                         backbutton+=1;
-                        alert(backbutton);
-                        //window.plugins.toast.showShortCenter('Press again to exit');
-                        setTimeout(function () { backbutton = 0;alert('reset'); }, 5000);
+                        this.presentToast();
+                        setTimeout(function () { backbutton = 0; }, 3000);
                     } else {
-                        alert('exit');
                         this.platform.exitApp();
                     }
                 }
@@ -68,5 +66,15 @@ export class MyApp {
         this.storage.get('expensesList').then((expensesList) => {
             if(expensesList) this.expensesList = expensesList;
         });
+    }
+
+    presentToast() {
+        let toast = this.toastCtrl.create({
+            message: 'Press again to exit',
+            duration: 3000,
+            position: 'bottom'
+        });
+
+        toast.present();
     }
 }
