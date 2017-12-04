@@ -26,7 +26,7 @@ export class MyApp {
                 let nav = app.getActiveNav();
                 let activePortal = this.ionicApp._loadingPortal.getActive() ||
                     this.ionicApp._modalPortal.getActive() ||
-                    this.ionicApp._toastPortal.getActive() ||
+                    // this.ionicApp._toastPortal.getActive() ||
                     this.ionicApp._overlayPortal.getActive();
 
                 if (nav.canGoBack()) {
