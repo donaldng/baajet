@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, Events, App, ToastController } from 'ionic-angular';
+import { Platform, Events, App, ToastController, ViewController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -14,7 +14,7 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(private toastCtrl: ToastController, app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(public viewCtrl: ViewController, private toastCtrl: ToastController, app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
@@ -24,19 +24,24 @@ export class MyApp {
             
             this.platform.registerBackButtonAction(() => {
                 let nav = app.getActiveNav();
-                if (!nav.canGoBack()) { //Can we go back?
-                    if (backbutton == 0) {
-                        backbutton+=1;
-                        this.presentToast();
-                        setTimeout(function () { backbutton = 0; }, 3000);
-                    } else {
-                        this.platform.exitApp();
-                    }
+
+                try {
+                    this.viewCtrl.dismiss()
                 }
-                else nav.pop();
+                catch (e) {
+                    if (!nav.canGoBack()) { //Can we go back?
+                        if (backbutton == 0) {
+                            backbutton += 1;
+                            this.presentToast();
+                            setTimeout(function () { backbutton = 0; }, 3000);
+                        } else {
+                            this.platform.exitApp();
+                        }
+                    }
+                    else nav.pop();                    
+                }
             });
             
-
             splashScreen.hide();
         });
 
