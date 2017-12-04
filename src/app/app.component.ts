@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, Events } from 'ionic-angular';
+import { Platform, Events, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -14,12 +14,32 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(app: App, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
             admobLib.runAds();
             this.preloadData();
+
+            this.platform.registerBackButtonAction(() => {
+                let nav = app.getActiveNav();
+                if (nav.canGoBack()) { //Can we go back?
+                    nav.pop();
+                } else {
+                    var backbutton = 0;
+
+                    if (backbutton == 0) {
+                        backbutton++;
+                        //window.plugins.toast.showShortCenter('Press again to exit');
+                        setTimeout(function () { backbutton = 0; }, 5000);
+                    }
+                    else{
+                        alert('exit');
+                    }
+                }
+            });
+            
+
             splashScreen.hide();
         });
 
