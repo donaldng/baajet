@@ -37,7 +37,7 @@ export class MyApp {
                     if (backbutton == 0) {
                         backbutton += 1;
                         this.presentToast();
-                        setTimeout(function () { backbutton = 0; }, 3000);
+                        setTimeout(function () { backbutton = 0; }, 2000);
                     } else {
                         this.platform.exitApp();
                     }
@@ -80,7 +80,8 @@ export class MyApp {
         let toast = this.toastCtrl.create({
             message: 'Press again to exit',
             duration: 2000,
-            position: 'bottom'
+            position: 'bottom',
+            cssClass: 'toastStyle'
         });
 
         toast.present();
