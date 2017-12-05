@@ -470,12 +470,12 @@ export class ExpensesPage {
     }  
 
     gotoSetting(){
-        let modal = this.modalCtrl.create(SettingPage, {'init_budget': 0});
+        let modal = this.modalCtrl.create(SettingPage, { 'init_budget': 0 }, { showBackdrop: false, enableBackdropDismiss: true });
         modal.present();
     }
 
     runNumberModal(option) {
-        let modal = this.modalCtrl.create(NumberPage, option);
+        let modal = this.modalCtrl.create(NumberPage, option, {enableBackdropDismiss: false});
 
         modal.present().then(() => {
             const firstInput: any = document.querySelector('input');

@@ -398,7 +398,7 @@ export class HomePage {
     }
 
     gotoSetting(init_budget){
-        let modal = this.modalCtrl.create(SettingPage, {'init_budget': init_budget});
+        let modal = this.modalCtrl.create(SettingPage, { 'init_budget': init_budget }, { showBackdrop: false, enableBackdropDismiss: true });
         modal.present();
     }
 
@@ -510,7 +510,7 @@ export class HomePage {
     }
 
     runNumberModal(option) {
-        let modal = this.modalCtrl.create(NumberPage, option, {'showBackdrop': false});
+        let modal = this.modalCtrl.create(NumberPage, option, { enableBackdropDismiss: false});
         
         modal.present().then(() => {
             const firstInput: any = document.querySelector('input');

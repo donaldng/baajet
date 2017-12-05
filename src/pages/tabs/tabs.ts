@@ -64,7 +64,7 @@ export class TabsPage {
     }
 
     runModal(){
-        let modal = this.modalCtrl.create(ManagePage, {'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn, 'init_price': this.init_price, 'segment': this.segment});
+        let modal = this.modalCtrl.create(ManagePage, { 'selected_id': this.selected_id, 'expensesList': this.expensesList, 'camOn': this.camOn, 'init_price': this.init_price, 'segment': this.segment }, { showBackdrop: false, enableBackdropDismiss: true });
         modal.onDidDismiss(data => {
         });
         modal.present();        
