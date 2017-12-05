@@ -35,7 +35,7 @@ import { DateService } from '../service/date';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, { animate: false }),
+    IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     IonicImageViewerModule
   ],

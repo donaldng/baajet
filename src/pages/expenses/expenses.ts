@@ -326,7 +326,8 @@ export class ExpensesPage {
             'value': value,
             'message': message,
             'claim': claim,
-            'firsttime': 0
+            'firsttime': 0,
+            'newphotoFlag': this.newphotoFlag
         }
 
         this.runNumberModal(option);
@@ -483,11 +484,7 @@ export class ExpensesPage {
         });
 
         modal.onDidDismiss(data => {
-            if (!data.claim) {
-                this.init_price = data.value;
-                this.gotoManage('-1');
-            }
-            else {
+            if (data.claim) {
                 // If claim direct add one
                 this.claimExpenses(data.claim, data.value);
             }

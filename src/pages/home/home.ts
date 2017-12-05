@@ -308,6 +308,7 @@ export class HomePage {
         let placeholder = '0.00';
         let value = '';
 
+
         if (claim){
             title = "Use " + this.getThumbnailName(claim.name, claim.thumbnail) + " Fund";
             placeholder = claim.amount;
@@ -321,7 +322,8 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': claim,
-            'firsttime': 0
+            'firsttime': 0,
+            'newphotoFlag': this.newphotoFlag
         }
 
         this.runNumberModal(option);
@@ -340,7 +342,8 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': 0,
-            'firsttime': 1
+            'firsttime': 1,
+            'newphotoFlag': 0
         }
 
         this.runNumberModal(option);
@@ -387,19 +390,9 @@ export class HomePage {
         }
     }
 
-    gotoManage(init_price){
-        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price, 'segment': "onetime"});
-        //this.navCtrl.parent.select(1);
-    }
-
     gotoImage(){
         this.events.publish('gotoManage', {'selected_id': -1, 'camOn': 1});
         //this.navCtrl.parent.select(1);
-    }
-
-    gotoSetting(init_budget){
-        let modal = this.modalCtrl.create(SettingPage, { 'init_budget': init_budget }, { showBackdrop: false, enableBackdropDismiss: true });
-        modal.present();
     }
 
     calcFrequency(freq_type, freq_amount, start, end){
@@ -518,13 +511,7 @@ export class HomePage {
         });
 
         modal.onDidDismiss(data => {
-            if (data.firsttime) {
-                this.gotoSetting(data.value);
-            }            
-            else if (!data.claim) {
-                this.gotoManage(data.value);
-            }
-            else {
+            if (data.claim) {
                 // If claim direct add one
                 this.claimExpenses(data.claim, data.value);
             }   
