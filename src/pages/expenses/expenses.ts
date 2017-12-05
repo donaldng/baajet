@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-import { ActionSheetController } from 'ionic-angular'
-import { ModalController } from 'ionic-angular';
+import { ActionSheetController, NavController, ModalController, Events } from 'ionic-angular'
 import { Storage } from '@ionic/storage';
-import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
 import { SettingPage } from '../setting/setting';
 import { DateService } from '../../service/date';
@@ -34,7 +31,7 @@ export class ExpensesPage {
     baaThumbnail;
     imageList;
 
-    constructor(public dateLib: DateService, public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+    constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
 
         this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";

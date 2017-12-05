@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { ModalController, Platform } from 'ionic-angular';
+import { ModalController, Platform, NavController, Events } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
-import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
 import { DateService } from '../../service/date';
 import { NumberPage } from '../number/number';
@@ -44,7 +42,7 @@ export class HomePage {
     baaThumbnail;
     seemore_ok;
 
-    constructor(public dateLib: DateService, public imgLib: ImageService, private alertCtrl: AlertController, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
@@ -512,7 +510,7 @@ export class HomePage {
     }
 
     runNumberModal(option) {
-        let modal = this.modalCtrl.create(NumberPage, option);
+        let modal = this.modalCtrl.create(NumberPage, option, {'showBackdrop': false});
         
         modal.present().then(() => {
             const firstInput: any = document.querySelector('input');
