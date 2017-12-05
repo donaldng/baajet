@@ -25,9 +25,8 @@ export class MyApp {
             this.platform.registerBackButtonAction(() => {
                 let nav = app.getActiveNav();
                 let activePortal = this.ionicApp._loadingPortal.getActive() ||
-                    this.ionicApp._modalPortal.getActive() ||
-                    // this.ionicApp._toastPortal.getActive() ||
-                    this.ionicApp._overlayPortal.getActive();
+                    this.ionicApp._overlayPortal.getActive() ||
+                    this.ionicApp._modalPortal.getActive();
 
                 if (nav.canGoBack()) {
                     nav.pop();
