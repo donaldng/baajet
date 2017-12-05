@@ -83,6 +83,13 @@ export class ExpensesPage {
             }
         });
 
+        events.subscribe('dismiss:expenses', (data) => {
+            if (!data.claim) {
+                this.init_price = data.value;
+                this.gotoManage('-1');
+            }
+        });                
+
         events.publish('request:expensesList');
 
         events.subscribe('reload:expenses', (v) => {
@@ -327,7 +334,7 @@ export class ExpensesPage {
             'message': message,
             'claim': claim,
             'firsttime': 0,
-            'newphotoFlag': this.newphotoFlag
+            'from': 'expenses'
         }
 
         this.runNumberModal(option);
