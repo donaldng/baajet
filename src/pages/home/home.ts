@@ -350,7 +350,8 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': 0,
-            'firsttime': 1
+            'firsttime': 1,
+            'from':'home'
         }
 
         this.runNumberModal(option);
