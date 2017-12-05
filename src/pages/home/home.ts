@@ -6,6 +6,7 @@ import { SettingPage } from '../setting/setting';
 import { Events } from 'ionic-angular';
 import { ImageService } from '../../service/image';
 import { DateService } from '../../service/date';
+import { NumberPage } from '../number/number';
 
 @Component({
     selector: 'page-home',
@@ -315,42 +316,18 @@ export class HomePage {
             value = claim.amount;
         }
 
-        let prompt = this.alertCtrl.create({
-            title: title,
-            message: "How much are you spending?",
-            inputs: [
-            {
-                name: 'price',
-                placeholder: placeholder,
-                type: 'number',
-                value: value
-            },
-            ],
-            buttons: [
-            {
-                text: 'Cancel',
-                handler: data => {
-                }
-            },
-            {
-                text: 'Go',
-                handler: data => {
-                    if(!claim){
-                        this.gotoManage(data.price);
-                    }
-                    else{
-                        // If claim direct add one
-                        this.claimExpenses(claim, data.price);
-                    }                    
-                }
-            }
-            ]
-        });
-        prompt.present().then(() => {
-            const firstInput: any = document.querySelector('ion-alert input');
-            firstInput.focus();
-            return;
-        });
+        let message = "How much are you spending?";
+        let option = {
+            'title': title,
+            'placeholder': placeholder,
+            'value': value,
+            'message': message,
+            'claim': claim,
+            'firsttime': 0
+        }
+
+        this.runNumberModal(option);
+
     }
 
     firstTimeSetting(){
@@ -358,36 +335,17 @@ export class HomePage {
         let placeholder = '0.00';
         let value = '';
 
-        let prompt = this.alertCtrl.create({
-            title: title,
-            message: "How much budget have you prepared for the trip?",
-            inputs: [
-            {
-                name: 'budget',
-                placeholder: placeholder,
-                type: 'number',
-                value: value
-            },
-            ],
-            buttons: [
-            {
-                text: 'Cancel',
-                handler: data => {
-                }
-            },
-            {
-                text: 'Go',
-                handler: data => {
-                    this.gotoSetting(data.budget);
-                }
-            }
-            ]
-        });
-        prompt.present().then(() => {
-            const firstInput: any = document.querySelector('ion-alert input');
-            firstInput.focus();
-            return;
-        });
+        let message = "How much budget have you prepared for the trip?";
+        let option = {
+            'title': title,
+            'placeholder': placeholder,
+            'value': value,
+            'message': message,
+            'claim': 0,
+            'firsttime': 1
+        }
+
+        this.runNumberModal(option);
     }
 
     getReservedAmount(expensesList){
@@ -551,5 +509,27 @@ export class HomePage {
     seemore(){
         this.seemore_ok = 1;
         this.processReserved(this.expensesList);        
+    }
+
+    runNumberModal(option) {
+        let modal = this.modalCtrl.create(NumberPage, option);
+        
+        modal.present().then(() => {
+            const firstInput: any = document.querySelector('input');
+            firstInput.focus();
+        });
+
+        modal.onDidDismiss(data => {
+            if (data.firsttime) {
+                this.gotoSetting(data.value);
+            }            
+            else if (!data.claim) {
+                this.gotoManage(data.value);
+            }
+            else {
+                // If claim direct add one
+                this.claimExpenses(data.claim, data.value);
+            }   
+        });
     }
 }

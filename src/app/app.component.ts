@@ -80,8 +80,7 @@ export class MyApp {
         let toast = this.toastCtrl.create({
             message: 'Press again to exit',
             duration: 2000,
-            position: 'bottom',
-            cssClass: 'toastStyle'
+            position: 'bottom'
         });
 
         toast.present();

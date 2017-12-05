@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ManagePage } from '../pages/manage/manage';
 import { SettingPage } from '../pages/setting/setting';
+import { NumberPage } from '../pages/number/number';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,7 +30,8 @@ import { DateService } from '../service/date';
     HomePage,
     TabsPage,
     ManagePage,
-    SettingPage
+    SettingPage,
+    NumberPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { DateService } from '../service/date';
     HomePage,
     TabsPage,
     ManagePage,
-    SettingPage
+    SettingPage,
+    NumberPage
   ],
   providers: [
     StatusBar,

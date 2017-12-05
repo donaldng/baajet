@@ -1,0 +1,26 @@
+page-number {
+    text-align: center !important;
+    
+    ion-content{
+        position: fixed;
+    }
+    
+    h3{
+        text-align: center;
+        padding-top: 20px;
+        color: #424242 !important;
+    }
+
+    .numberBox{
+        font-size: 25px;
+        padding: 30px;
+
+        input{
+            border: none;
+            background: transparent;
+            outline: none;
+            text-align: right;
+            color: color($colors, primary);
+        }
+    }
+}
