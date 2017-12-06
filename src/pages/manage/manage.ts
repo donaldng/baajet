@@ -15,6 +15,7 @@ import { DateService } from '../../service/date';
 })
 
 export class ManagePage {
+    unchanged: any;
     expensesList;
     expenses;
     pageName;
@@ -118,7 +119,7 @@ export class ManagePage {
         });   
 
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
-
+        this.unchanged = JSON.parse(JSON.stringify(this.expensesList));
     }
     getSelectedTN(){
         this.selected_tn = 0;
@@ -378,8 +379,10 @@ export class ManagePage {
     }
 
     dismiss() {
-        if (!this.submitted) this.events.publish('reset:expenses');
+        if (!this.submitted){
+            this.events.publish('return:expensesList', this.unchanged);
+        }
         //this.admobLib.showInterstitialAds(); // DO not show interstitial ads because banner overlap problem
-        this.viewCtrl.dismiss();
+        this.viewCtrl.dismiss(this.expensesList);
     }
 }
