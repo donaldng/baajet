@@ -260,7 +260,6 @@ export class HomePage {
 
         this.tot_expenses += this.day_expenses;
 
-        this.events.publish('total_expenses', this.tot_expenses);
         this.storage.set('day_budget', this.day_budget);
         
         this.tot_remaining = this.tot_budget - this.tot_expenses;

@@ -284,7 +284,6 @@ export class ManagePage {
         this.expensesList.splice(index,1);
         this.storage.set('expensesList', this.expensesList);
         this.events.publish('reload:home','expensesList',this.expensesList);
-        this.events.publish('reload:expenses',this.expensesList);
         this.submitted = 1;
         this.dismiss();
     }
@@ -380,7 +379,7 @@ export class ManagePage {
 
     dismiss() {
         if (!this.submitted){
-            this.events.publish('return:expensesList', this.unchanged);
+            this.events.publish('expenses:expensesList', this.unchanged);
         }
         //this.admobLib.showInterstitialAds(); // DO not show interstitial ads because banner overlap problem
         this.viewCtrl.dismiss(this.expensesList);

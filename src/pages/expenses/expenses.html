@@ -30,10 +30,10 @@
 </ion-header>
 
 <ion-content>
-<!--    <ion-refresher (ionRefresh)="doRefresh($event)">
+   <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>-->
-    <!-- <p class="emptyMsg" *ngIf="!expenses_found();">You have no expenses at all!?</p> -->
+    </ion-refresher>
+
     <div padding *ngIf="!expenses_found();">
         <ion-item no-lines padding>
             <img class="thumbnail" src="{{ baaThumbnail }}" item-start />

@@ -14,7 +14,6 @@ import { NumberPage } from '../number/number';
 export class ExpensesPage {
     expensesList = [];
     display_currency = '$';
-    oriList;
     freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
     runningId;
     lastExpenses = 0;
@@ -24,8 +23,7 @@ export class ExpensesPage {
     recurring = 0;
     reserved = 0;
     showSegment = 0;
-    tot_expenses = 0;
-    tot_budget = 0;
+    tot_budget : number;
     newphotoFlag;
     init_price;
     baaThumbnail;
@@ -35,9 +33,10 @@ export class ExpensesPage {
         this.init_price = 0;
 
         this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
-
+        
+        // to show quick add button
         this.storage.get('budget').then((v) => {
-            if (v && this.tot_budget != v){
+            if (v && this.tot_budget != v) {
                 this.tot_budget = v;
             }
         });
@@ -50,16 +49,8 @@ export class ExpensesPage {
             this.display_currency = c;
         });
 
-        events.subscribe('reset:expenses', () => {
-            this.loadData();
-        });        
-
         events.subscribe('change_segment', (v) => {
             this.expenses_type = this.getSwitchType(v);
-        });
-
-        events.subscribe('total_expenses', (v) => {
-            this.tot_expenses = v.toFixed(2);
         });
 
         events.subscribe('refreshSegment', (expenses) => {
@@ -70,19 +61,16 @@ export class ExpensesPage {
             this.newphotoFlag = v;
         });       
 
-        events.subscribe('reload:home', (k, v) => {
-            if(k == "tot_budget"){
-                this.tot_budget = v;
-            }
-        });
-
-        events.subscribe('return:expensesList', (expensesList) => {
+        events.subscribe('expenses:expensesList', (expensesList) => {
             if(expensesList){
                 this.expensesList = expensesList;
                 this.processExpensesList(expensesList);
             }
         });
 
+        events.publish('expenses:initiate');
+
+        // NumberPage on dismissal execute this immediately
         events.subscribe('dismiss:expenses', (data) => {
             if (!data.claim) {
                 this.init_price = data.value;
@@ -90,10 +78,7 @@ export class ExpensesPage {
             }
         });                
 
-        events.publish('request:expensesList');
-
         events.subscribe('reload:expenses', (v) => {
-            this.oriList = v;
             this.expensesList = v.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
             this.resetSegment();
             for (var i = 0 ; i < this.expensesList.length ; i++ ){
@@ -101,11 +86,9 @@ export class ExpensesPage {
                 this.setSegment(this.expensesList[i].freq);
             }
             this.showSegment = this.getSegmentStatus();               
-        });
-
-        //this.loadData();
-
+        });        
     }
+
     previousDiff(expenses, idx){
         if (idx == 0) return true;
 
@@ -117,30 +100,20 @@ export class ExpensesPage {
         return false;
     }
 
-    loadData(){
-        this.storage.get('expensesList').then((expensesList) => {
-            this.processExpensesList(expensesList);                        
-        });
-
-        this.storage.get('newphotoFlag').then((v) => {
-            this.newphotoFlag = v;
-        });
-    }
-
     processExpensesList(expensesList){
-        let available_dates = [];
+        // let available_dates = [];
 
         if (expensesList){
             this.expensesList = expensesList.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
-            this.oriList = expensesList;
+
             this.resetSegment();
             for (var i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                 this.setSegment(this.expensesList[i].freq);
-                available_dates.push(this.daySince(this.expensesList[i].datetime));
+                // available_dates.push(this.daySince(this.expensesList[i].datetime));
             }
 
-            this.events.publish('filter:dates', available_dates); 
+            // this.events.publish('filter:dates', available_dates); 
         }
         else{
             this.storage.set('expensesList', []);
@@ -148,7 +121,7 @@ export class ExpensesPage {
         }
 
         this.showSegment = this.getSegmentStatus();
-        this.events.publish('reload:home', 'expensesList', this.oriList);
+        this.events.publish('reload:home', 'expensesList', this.expensesList);
     }
 
     setSegment(freq){
@@ -175,58 +148,14 @@ export class ExpensesPage {
         return x;
     }
 
-    presentActionSheet(expenses) {
-        const actionSheet = this.actionSheetCtrl.create({
-            title: 'Action',
-            buttons: [
-            {
-                text: 'Edit',
-                handler: () => {
-                    let selected_id = expenses.id;
-                    this.gotoManage(selected_id);
-                }
-            },
-            {
-                text: 'Delete',
-                role: 'destructive',
-                handler: () => {
-                    let index = this.expensesList.indexOf(expenses);
-                    this.expensesList.splice(index,1);
-                    this.storage.set('expensesList', this.expensesList);
-                    this.events.publish('reload:home','expensesList',this.expensesList);
-                    this.events.publish('reload:expenses',this.expensesList);
-
-                    if (!this.getSegment(expenses.freq)){
-                        for(var i = 0; i < this.freqMap.length; i++){
-                            if(this.getSegment(i)){
-                                this.expenses_type = this.getSwitchType(i);
-                                break;
-                            }
-                        }
-
-                        this.showSegment = this.getSegmentStatus();
-                    }
-                }
-            },
-            {
-                text: 'Cancel',
-                role: 'cancel',
-                handler: () => {
-                }
-            }
-            ]
-        });
-
-        actionSheet.present();
-    }
-
     changeSwitchType(type){
         this.expenses_type = type;
     }
 
     gotoManage(selected_id) {
-        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.oriList, 'camOn': this.newphotoFlag, 'init_price': this.init_price, 'segment': this.expenses_type});
+        this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.expensesList, 'camOn': this.newphotoFlag, 'init_price': this.init_price, 'segment': this.expenses_type});
     }
+    
     getFreqText(expenses){
         if (expenses.freq == 2){
             var days = expenses.freq_amt;
@@ -304,8 +233,10 @@ export class ExpensesPage {
 
     doRefresh(refresher) {
         setTimeout(() => {
-            this.loadData();
-            refresher.complete();
+            this.storage.get('expensesList').then((expensesList) => {
+                if(expensesList) this.processExpensesList(expensesList);
+                refresher.complete();
+            });
         }, 1000);
     }
 

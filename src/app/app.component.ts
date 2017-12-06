@@ -52,9 +52,9 @@ export class MyApp {
             this.dates = v;
         });
 
-        events.subscribe('request:expensesList', () => {
+        events.subscribe('expenses:initiate', () => {
             // upon reaching expensesPage for the first time, fetch expensesList.
-            events.publish('return:expensesList', this.expensesList);
+            events.publish('expenses:expensesList', this.expensesList);
         });
 
         events.subscribe('app:reload',() => {
