@@ -52,8 +52,8 @@
 
                     <ion-grid>
                         <ion-row>
-                            <ion-col col-4 *ngFor="let image of imageList; let idx = index" [class.selected_tn]="selected_tn == idx" text-center>
-                                <img (click)="clickIcon(idx, thisImage)" #thisImage
+                            <ion-col col-4 *ngFor="let image of imageList; let idx = index" [class.selected_tn]="selected_tn == idx" text-center (click)="clickIcon(idx, thisImage)" #thisImage>
+                                <img
                                 class="thumbnailOption" 
                                 src="{{ image.src }}" />
                                 <br/>

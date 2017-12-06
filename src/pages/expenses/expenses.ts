@@ -276,13 +276,13 @@ export class ExpensesPage {
             return oridate.split(' ')[1];
 
         if (interval >= 1) 
-            return interval + " h";
+            return interval + "h";
         
         interval = Math.floor(seconds / 60);
         if (interval >= 1) 
-            return interval + " m";
+            return interval + "m";
 
-        return seconds + " s";
+        return "now";
     }
 
     daySince(oridate){
