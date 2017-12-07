@@ -259,6 +259,7 @@ export class HomePage {
         // Since we don't want to affect day_budget every time we spent money
 
         this.tot_expenses += this.day_expenses;
+        this.events.publish('expenses:total_expenses',this.tot_expenses);
 
         this.storage.set('day_budget', this.day_budget);
         

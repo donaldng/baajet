@@ -46,6 +46,6 @@ export class NumberPage {
     }
     dismiss() {
         this.value = '';
-        this.viewCtrl.dismiss();
+        this.viewCtrl.dismiss({'claim': 0});
     }
 }

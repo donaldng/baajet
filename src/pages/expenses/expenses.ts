@@ -28,6 +28,7 @@ export class ExpensesPage {
     init_price;
     baaThumbnail;
     imageList;
+    tot_expenses : number;
 
     constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
@@ -43,6 +44,10 @@ export class ExpensesPage {
 
         this.storage.get('currency').then((v) => {
             if(v) this.display_currency = v;
+        });
+
+        events.subscribe('expenses:total_expenses', (n) => {
+            if(n) this.tot_expenses = n;
         });
 
         events.subscribe('update:currency', (c) => {
@@ -222,7 +227,7 @@ export class ExpensesPage {
 
         createdOn.setHours(0,0,0,0);
 
-        var day = (+today - +createdOn)/msInDay
+        var day = Math.abs((+today - +createdOn)/msInDay);
         var diff = String(day).split('.')[0];
 
         if(diff == "0") return "Today"
