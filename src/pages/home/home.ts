@@ -178,8 +178,14 @@ export class HomePage {
     }
     
     dayDiff(tripStart, tripEnd){
+        // setHours to fix after 12am but n_day not changing bug
+        // End trip we assume trip is ending by 12pm.
+        tripStart.setHours(0, 0, 0, 0);
+        tripEnd.setHours(12, 0, 0, 0);
+
         var timeDiff = Math.abs(tripEnd - tripStart);
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
         return diffDays;
     }
 
@@ -201,12 +207,15 @@ export class HomePage {
 
     get_nday(){
         var startDate = new Date();
+
         if (new Date(this.tripStart) > startDate){
             startDate = new Date(this.tripStart);
         }
 
         var n_day = 1;
+
         if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
+
         return n_day;
     }
 

@@ -28,7 +28,7 @@ export class ExpensesPage {
     init_price;
     baaThumbnail;
     imageList;
-    tot_expenses : number;
+    tot_expenses : number = 0;
 
     constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
