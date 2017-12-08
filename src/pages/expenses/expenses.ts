@@ -42,12 +42,16 @@ export class ExpensesPage {
             }
         });
 
+        events.subscribe('reload:home', (k,v) => {
+            if (k == "tot_budget") this.tot_budget = v;
+        });
+
         this.storage.get('currency').then((v) => {
             if(v) this.display_currency = v;
         });
 
         events.subscribe('expenses:total_expenses', (n) => {
-            if(n) this.tot_expenses = n;
+            this.tot_expenses = n;
         });
 
         events.subscribe('update:currency', (c) => {

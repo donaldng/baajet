@@ -91,7 +91,9 @@ export class SettingPage {
 
         this.events.publish('reload:home', 'tot_budget', 0);
         this.events.publish('reload:home', 'duration', duration);
+        this.events.publish('expenses:total_expenses', 0);
         this.events.publish('reload:expenses', []);
+        
         this.events.publish('app:reload', []);
 
         this.dismiss()
