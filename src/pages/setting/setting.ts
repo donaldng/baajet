@@ -52,7 +52,7 @@ export class SettingPage {
             }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                this.tripEnd = this.dateLib.addDay(new Date(), 7);
+                this.tripEnd = this.dateLib.addDay(new Date(), 6);
                 this.tripEnd = this.dateLib.toString(this.tripEnd);
             }
         });
@@ -84,7 +84,7 @@ export class SettingPage {
         this.clearAll()
 
         this.tripStart = this.dateLib.toString(new Date());
-        this.tripEnd = this.dateLib.addDay(new Date(), 7);
+        this.tripEnd = this.dateLib.addDay(new Date(), 6);
         this.tripEnd = this.dateLib.toString(this.tripEnd);
 
         var duration = this.tripStart + ' ~ ' + this.tripEnd;

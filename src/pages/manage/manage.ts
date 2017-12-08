@@ -67,7 +67,7 @@ export class ManagePage {
             }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                var tripEnd = this.dateLib.addDay(new Date(), 7);
+                var tripEnd = this.dateLib.addDay(new Date(), 6);
                 this.tripEnd = this.dateLib.toString(tripEnd);
             }
 
