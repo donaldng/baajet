@@ -50,10 +50,6 @@ export class ExpensesPage {
             if(v) this.display_currency = v;
         });
 
-        events.subscribe('expenses:total_expenses', (n) => {
-            this.tot_expenses = n;
-        });
-
         events.subscribe('update:currency', (c) => {
             this.display_currency = c;
         });
@@ -95,7 +91,12 @@ export class ExpensesPage {
                 this.setSegment(this.expensesList[i].freq);
             }
             this.showSegment = this.getSegmentStatus();               
-        });        
+        });      
+        
+        events.subscribe('expenses:total_expenses', (n) => {
+            this.tot_expenses = n;
+        });
+
     }
 
     previousDiff(expenses, idx){

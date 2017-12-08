@@ -62,7 +62,7 @@ export class HomePage {
 
         events.subscribe('reload:home', (k, v) => {
             if (k == "expensesList"){
-                this.calc(v);
+                this.calculate_budget(v);
                 this.expensesList = v;
                 this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
             }
@@ -77,7 +77,7 @@ export class HomePage {
         });
 
         events.subscribe('reload:expenses', (v) => {
-            this.calc(v);
+            this.calculate_budget(v);
         });
 
         events.subscribe('enter:home', () => {
@@ -201,7 +201,7 @@ export class HomePage {
     calcDbBudget(){
         // minus expenses
         this.storage.get('expensesList').then((v) => {
-            this.calc(v);
+            this.calculate_budget(v);
         });
     }
 
@@ -219,7 +219,7 @@ export class HomePage {
         return n_day;
     }
 
-    calc(v){
+    calculate_budget(v){
         var n_day = this.get_nday();
         this.budgetTmp = this.tot_budget;
         this.tot_expenses = 0;
@@ -268,6 +268,7 @@ export class HomePage {
         // Since we don't want to affect day_budget every time we spent money
 
         this.tot_expenses += this.day_expenses;
+
         this.events.publish('expenses:total_expenses',this.tot_expenses);
 
         this.storage.set('day_budget', this.day_budget);

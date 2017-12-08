@@ -83,18 +83,11 @@ export class SettingPage {
         //this.storage.clear();
         this.clearAll()
 
-        this.tripStart = this.dateLib.toString(new Date());
-        this.tripEnd = this.dateLib.addDay(new Date(), 6);
-        this.tripEnd = this.dateLib.toString(this.tripEnd);
+        // this.tripStart = this.dateLib.toString(new Date());
+        // this.tripEnd = this.dateLib.addDay(new Date(), 6);
+        // this.tripEnd = this.dateLib.toString(this.tripEnd);
 
-        var duration = this.tripStart + ' ~ ' + this.tripEnd;
-
-        this.events.publish('reload:home', 'tot_budget', 0);
-        this.events.publish('reload:home', 'duration', duration);
-        this.events.publish('expenses:total_expenses', 0);
-        this.events.publish('reload:expenses', []);
-        
-        this.events.publish('app:reload', []);
+        // var duration = this.tripStart + ' ~ ' + this.tripEnd;
 
         this.dismiss()
 
@@ -110,8 +103,14 @@ export class SettingPage {
         this.storage.set('enablePhotoFlag', 0);
         this.storage.set('expensesList', []);
 
+        this.events.publish('reload:expenses', []);        
+        this.events.publish('expenses:total_expenses', 0);
+        this.events.publish('app:reload', []);
+
         this.events.publish('reload:home', 'tot_budget', 0);
         this.events.publish('reload:home', 'duration', '');
+        this.events.publish('reload:home', 'expensesList', []);
+
         this.events.publish('update:currency', '$');
         this.events.publish('saveimageFlag', 0);
         this.events.publish('editFlag', 0);

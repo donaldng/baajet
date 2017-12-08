@@ -6,8 +6,8 @@
             </button>
         </ion-buttons>-->
         <ion-title>
-            <span *ngIf="tot_expenses != 0">Total {{ display_currency }}{{ tot_expenses }}</span>
-            <span *ngIf="tot_expenses == 0">Expenses</span>
+            <span *ngIf="tot_expenses != 0 && expensesList.length > 0">Total {{ display_currency }}{{ tot_expenses }}</span>
+            <span *ngIf="tot_expenses == 0 || expensesList.length == 0">Expenses</span>
         </ion-title>
         <ion-buttons right>
             <button ion-button color="dark" (click)="gotoSetting()">

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.eone.baajet" version="0.1.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.eone.baajet" version="0.1.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Baajet</name>
     <description>
         An app designed to make travellers' life easy. Stay informed of daily spending limits. Never overspent another trip no more.        
     </description>
     <author email="contact@baajetapp.com" href="https://baajetapp.com/">Baajet Developer</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.159.192:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
