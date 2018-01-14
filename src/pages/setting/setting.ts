@@ -163,6 +163,7 @@ export class SettingPage {
         this.socialSharing.shareViaTwitter("Baajet app - budget tracking made easy.", "https://baajetapp.com/images/logo.png", "https://baajetapp.com").then(() => {
             console.log("shareViaTwitter: Success");
             this.storage.set('promoPaid', 1);
+            alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
         }).catch(() => {
             console.error("shareViaTwitter: failed");
         });
