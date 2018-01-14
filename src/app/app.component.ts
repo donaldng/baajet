@@ -18,7 +18,12 @@ export class MyApp {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
-            admobLib.runAds();
+            
+            this.storage.get('promoPaid').then((status) => {
+                if (!status)
+                    admobLib.runAds();
+            });
+            
             this.preloadData();
             var backbutton = 0;
             

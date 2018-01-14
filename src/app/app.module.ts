@@ -18,6 +18,8 @@ import { Camera } from '@ionic-native/camera';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AdMobFree } from '@ionic-native/admob-free';
 
+import { SocialSharing } from '@ionic-native/social-sharing';
+
 // Services
 import { ImageService } from '../service/image';
 import { AdMobService } from '../service/admob';
@@ -39,7 +41,7 @@ import { DateService } from '../service/date';
     IonicStorageModule.forRoot(),
     IonicImageViewerModule
   ],
-  bootstrap: [IonicApp],
+  bootstrap: [IonicApp, IonicApp],
   entryComponents: [
     MyApp,
     ExpensesPage,
@@ -54,6 +56,7 @@ import { DateService } from '../service/date';
     SplashScreen,
     Camera,
     AdMobFree,
+    SocialSharing,
     ImageService,
     AdMobService,
     DateService,

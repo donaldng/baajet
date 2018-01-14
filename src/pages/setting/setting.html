@@ -58,7 +58,16 @@
                     <ion-label>Save photos in device?</ion-label>
                     <ion-toggle [(ngModel)]="saveimageFlag" name="saveimageFlag" checked="false"></ion-toggle>
                 </ion-item>                          
-            </ion-item-group>    
+            </ion-item-group>
+            <ion-item-group *ngIf="!promoPaid">
+                <ion-item-divider color="light">Remove ads by sharing us</ion-item-divider>
+                <ion-item (click)="twitterShare()">
+                    <ion-icon ios="ios-twitter" md="md-twitter"></ion-icon>&nbsp;&nbsp;Twitter
+                </ion-item>
+                <ion-item (click)="facebookShare()">
+                    <ion-icon ios="ios-facebook" md="md-facebook"></ion-icon>&nbsp;&nbsp;Facebook
+                </ion-item>
+            </ion-item-group>
             <ion-item-group>
                 <ion-item-divider color="light">Contact</ion-item-divider>
                     <ion-item>

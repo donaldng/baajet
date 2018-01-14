@@ -3,6 +3,7 @@ import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { DateService } from '../../service/date';
 
 @Component({
@@ -22,9 +23,11 @@ export class SettingPage {
     newphotoFlag;
     enablePhotoFlag;
     maxDate;
+    promoPaid;
 
-    constructor(public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+    constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');        
+        this.promoPaid = 0;
 
         this.items = ['$', '¥', '€', '£', '฿'];
         this.currency = '$';
@@ -38,6 +41,10 @@ export class SettingPage {
                 if(v) this.budget = v;
             });
         }
+
+        this.storage.get('promoPaid').then((v) => {
+            if (v) this.promoPaid = v;
+        });
 
         this.storage.get('currency').then((v) => {
             if(v) this.currency = v;
@@ -150,6 +157,15 @@ export class SettingPage {
         if (field == "end"){
             this.tripStart = this.tripEnd;
         }
+    }
+
+    twitterShare() {
+        this.socialSharing.shareViaTwitter("Baajet app - budget tracking made easy.", "https://baajetapp.com/images/logo.png", "https://baajetapp.com").then(() => {
+            console.log("shareViaTwitter: Success");
+            this.storage.set('promoPaid', 1);
+        }).catch(() => {
+            console.error("shareViaTwitter: failed");
+        });
     }
 
     submitForm() {
