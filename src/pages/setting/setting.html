@@ -59,7 +59,7 @@
                     <ion-toggle [(ngModel)]="saveimageFlag" name="saveimageFlag" checked="false"></ion-toggle>
                 </ion-item>                          
             </ion-item-group>
-            <ion-item-group *ngIf="promoPaid">
+            <ion-item-group *ngIf="!promoPaid">
                 <ion-item-divider color="light">Remove ads by sharing us</ion-item-divider>
                 <ion-item (click)="twitterShare()">
                     <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>&nbsp;&nbsp;Twitter
