@@ -74,11 +74,7 @@
         </ion-item-group>           
     </ion-list>           
 
-    <ion-item position="bottom" *ngIf="!tot_budget" no-lines>
-        <button ion-button color="primary" (click)="firstTimeSetting()" padding block large>
-            <ion-icon ios="ios-settings" md="md-settings"></ion-icon>&nbsp;Setup trip's budget
-        </button> 
-    </ion-item>
+
   
     <ion-item no-lines *ngIf="!tot_budget" >
             <img class="thumbnail" src="{{ baaThumbnail }}" item-start />
@@ -95,3 +91,10 @@
 
     </ion-fab>    
 </ion-content>
+<ion-footer no-border>
+    <ion-item bottom *ngIf="!tot_budget" no-lines>
+        <button ion-button color="primary" (click)="firstTimeSetting()" padding block large>
+            <ion-icon ios="ios-settings" md="md-settings"></ion-icon>&nbsp;Setup trip's budget
+        </button>
+    </ion-item>
+</ion-footer>
