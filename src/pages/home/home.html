@@ -77,17 +77,7 @@
     <ion-item no-lines *ngIf="!tot_budget" >
             <img class="thumbnail" src="{{ baaThumbnail }}" item-start />
             <p class="bubble" item-start>{{ greetMsg }}</p>
-    </ion-item>
-
-    <ion-fab right bottom *ngIf="tot_budget">
-        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd(0)">
-            <ion-icon name="add"></ion-icon>
-        </button>
-        <button *ngIf="newphotoFlag" ion-fab color="danger" (click)="gotoImage()">
-            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-        </button>
-
-    </ion-fab>    
+    </ion-item>  
 </ion-content>
 <ion-footer no-border>
     <ion-item bottom *ngIf="!tot_budget" no-lines>
@@ -95,4 +85,12 @@
             <ion-icon ios="ios-settings" md="md-settings"></ion-icon>&nbsp;Setup trip's budget
         </button>
     </ion-item>
+    <ion-fab right bottom *ngIf="tot_budget">
+        <button *ngIf="!newphotoFlag" ion-fab color="danger" (click)="quickAdd(0)">
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <button *ngIf="newphotoFlag" ion-fab color="danger" (click)="gotoImage()">
+            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-footer>
