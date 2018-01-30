@@ -168,7 +168,7 @@ export class SettingPage {
     // facebookShare() {
     //     this.socialSharing.shareVia("facebook", "Baajet App - Track your travelling budget free and easy! #baajet #travelling", "", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
     //         setTimeout(function () {
-    //             alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+    //             alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");
     //             this.storage.set('promoPaid', 1);
     //         }, 3000);
     //     }).catch(() => {
@@ -179,7 +179,7 @@ export class SettingPage {
     twitterShare() {
         this.socialSharing.shareViaTwitter("Baajet App - Track your travelling budget free and easy! #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
             setTimeout(function () { 
-                alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+                alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");
                 this.storage.set('promoPaid', 1);                                
              }, 3000);
         }).catch(() => {
@@ -190,7 +190,7 @@ export class SettingPage {
     // instaShare() {
     //     this.instagram.share('https://i.imgur.com/twGB1DD.jpg', 'Baajet App - Track your travelling budget free and easy! https://baajetapp.com #baajet #travelling')
     //         .then(() => setTimeout(function () {
-    //             alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+    //             alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");
     //             this.storage.set('promoPaid', 1);
     //         }, 3000))
     //         .catch((error: any) => alert(error));
