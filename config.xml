@@ -96,4 +96,5 @@
     <plugin name="cordova-plugin-admob-free" spec="0.11.0" />
     <plugin name="cordova-plugin-statusbar" spec="^2.3.0" />
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.2.1" />
+    <plugin name="cordova-instagram-plugin" spec="^0.5.5" />
 </widget>

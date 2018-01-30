@@ -19,6 +19,7 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AdMobFree } from '@ionic-native/admob-free';
 
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Instagram } from '@ionic-native/instagram';
 
 // Services
 import { ImageService } from '../service/image';
@@ -55,6 +56,7 @@ import { DateService } from '../service/date';
     StatusBar,
     SplashScreen,
     Camera,
+    Instagram,
     AdMobFree,
     SocialSharing,
     ImageService,
