@@ -194,7 +194,7 @@ export class SettingPage {
                 alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
                 this.storage.set('promoPaid', 1);
             }, 3000))
-            .catch((error: any) => console.error(error));
+            .catch((error: any) => alert(error));
     }    
 
     submitForm() {
