@@ -178,8 +178,8 @@ export class SettingPage {
 
     twitterShare() {
         this.socialSharing.shareViaTwitter("Baajet App - Track your travelling budget free and easy! #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
+            this.storage.set('promoPaid', 1);
             setTimeout(function () { 
-                this.storage.set('promoPaid', 1);
                 alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");                                
              }, 3000);
         }).catch(() => {
