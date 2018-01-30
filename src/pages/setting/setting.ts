@@ -32,7 +32,7 @@ export class SettingPage {
         this.budget = this.params.get('init_budget');
 
         // Force reset
-        this.storage.set('promoPaid', 0);
+        // this.storage.set('promoPaid', 0);
 
         this.promoPaid = 0;
 
@@ -188,14 +188,14 @@ export class SettingPage {
         });
     }
 
-    instaShare() {
-        this.instagram.share('https://i.imgur.com/twGB1DD.jpg', 'Baajet App - Track your travelling budget free and easy! https://baajetapp.com #baajet #travelling')
-            .then(() => setTimeout(function () {
-                alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
-                this.storage.set('promoPaid', 1);
-            }, 3000))
-            .catch((error: any) => alert(error));
-    }    
+    // instaShare() {
+    //     this.instagram.share('https://i.imgur.com/twGB1DD.jpg', 'Baajet App - Track your travelling budget free and easy! https://baajetapp.com #baajet #travelling')
+    //         .then(() => setTimeout(function () {
+    //             alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+    //             this.storage.set('promoPaid', 1);
+    //         }, 3000))
+    //         .catch((error: any) => alert(error));
+    // }    
 
     submitForm() {
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
