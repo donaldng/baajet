@@ -26,7 +26,9 @@ export class SettingPage {
     promoPaid;
 
     constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
-        this.budget = this.params.get('init_budget');        
+        this.budget = this.params.get('init_budget');
+        this.storage.set('promoPaid', 1);
+
         this.promoPaid = 0;
 
         this.items = ['$', '¥', '€', '£', '฿'];
