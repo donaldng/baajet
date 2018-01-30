@@ -5,7 +5,6 @@ import { NavController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { Instagram } from '@ionic-native/instagram';
 
 import { DateService } from '../../service/date';
 
@@ -28,7 +27,7 @@ export class SettingPage {
     maxDate;
     promoPaid;
 
-    constructor(private instagram: Instagram, public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+    constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');
 
         // Force reset
