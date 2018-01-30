@@ -27,7 +27,9 @@ export class SettingPage {
 
     constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');
-        this.storage.set('promoPaid', 1);
+
+        // Force reset
+        this.storage.set('promoPaid', 0);
 
         this.promoPaid = 0;
 
