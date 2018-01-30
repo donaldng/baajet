@@ -60,13 +60,16 @@
                 </ion-item>                          
             </ion-item-group>
             <ion-item-group *ngIf="!promoPaid">
-                <ion-item-divider color="light">Remove ads by sharing us</ion-item-divider>
+                <ion-item-divider color="light">Share us and enjoy ads free experience!</ion-item-divider>
+                <ion-item (click)="facebookShare()">
+                    <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>&nbsp;&nbsp;Facebook
+                </ion-item>
                 <ion-item (click)="twitterShare()">
                     <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>&nbsp;&nbsp;Twitter
                 </ion-item>
-                <!-- <ion-item (click)="facebookShare()">
-                    <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>&nbsp;&nbsp;Facebook
-                </ion-item> -->
+                <ion-item (click)="instaShare()">
+                    <ion-icon ios="logo-instagram" md="logo-instagram"></ion-icon>&nbsp;&nbsp;Instagram
+                </ion-item>
             </ion-item-group>
             <ion-item-group>
                 <ion-item-divider color="light">Contact</ion-item-divider>

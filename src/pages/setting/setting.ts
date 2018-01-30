@@ -163,15 +163,38 @@ export class SettingPage {
         }
     }
 
-    twitterShare() {
-        this.socialSharing.shareViaTwitter("Baajet - track your travelling budget free and easy.", "https://ph-files.imgix.net/d5128e7c-e1f8-450a-af0f-e55e0d658c01?auto=format&auto=compress&codec=mozjpeg&cs=strip", "https://baajetapp.com").then(() => {
-            console.log("shareViaTwitter: Success");
-            this.storage.set('promoPaid', 1);
-            alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+    facebookShare() {
+        this.socialSharing.shareViaFacebook("Baajet App - Track your travelling budget free and easy! #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
+            setTimeout(function () {
+                alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+                this.storage.set('promoPaid', 1);
+            }, 3000);
         }).catch(() => {
             console.error("shareViaTwitter: failed");
         });
     }
+
+    twitterShare() {
+        this.socialSharing.shareViaTwitter("Baajet App - Track your travelling budget free and easy! #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
+            setTimeout(function () { 
+                alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+                this.storage.set('promoPaid', 1);                                
+             }, 3000);
+        }).catch(() => {
+            console.error("shareViaTwitter: failed");
+        });
+    }
+
+    instaShare() {
+        this.socialSharing.shareViaInstagram("Baajet App - Track your travelling budget free and easy! https://baajetapp.com #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg").then(() => {
+            setTimeout(function () {
+                alert("Thank you for helping us grow. Enjoy ads-free experience in your following session!");
+                this.storage.set('promoPaid', 1);
+            }, 3000);
+        }).catch(() => {
+            console.error("shareViaTwitter: failed");
+        });
+    }    
 
     submitForm() {
         var duration = this.tripStart + ' ~ ' + this.tripEnd;
