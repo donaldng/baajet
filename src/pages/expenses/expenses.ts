@@ -273,7 +273,7 @@ export class ExpensesPage {
             'value': value,
             'message': message,
             'claim': claim,
-            'firsttime': 0,
+            'firsttime': false,
             'from': 'expenses'
         }
 

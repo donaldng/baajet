@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, Events } from 'ionic-angular';
 
-
 @Component({
     selector: 'page-number',
     templateUrl: 'number.html',
@@ -12,13 +11,13 @@ export class NumberPage {
     placeholder: string;
     message: string;
     value;
-    claim;
-    firsttime;
+    claim: any;
+    firsttime: boolean;
     from: string;
 
     constructor(public viewCtrl: ViewController, public params: NavParams, public events: Events) {
-        this.firsttime = 0;
-        this.claim = 0;
+        this.firsttime = false;
+        this.claim = false;
 
         this.title = this.params.get('title');
         this.placeholder = this.params.get('placeholder');
@@ -46,6 +45,6 @@ export class NumberPage {
     }
     dismiss() {
         this.value = '';
-        this.viewCtrl.dismiss({'claim': 0});
+        this.viewCtrl.dismiss({'claim': false});
     }
 }

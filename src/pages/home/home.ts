@@ -341,7 +341,7 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': claim,
-            'firsttime': 0,
+            'firsttime': false,
             'from': 'home'
         }
 
@@ -361,7 +361,7 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': 0,
-            'firsttime': 1,
+            'firsttime': false,
             'from':'home'
         }
 
