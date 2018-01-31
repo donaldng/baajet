@@ -85,7 +85,7 @@ export class ExpensesPage {
         events.subscribe('reload:expenses', (v) => {
             this.expensesList = v.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
             this.resetSegment();
-            for (var i = 0 ; i < this.expensesList.length ; i++ ){
+            for (let i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                 this.setSegment(this.expensesList[i].freq);
             }
@@ -101,8 +101,8 @@ export class ExpensesPage {
     previousDiff(expenses, idx: number){
         if (idx == 0) return true;
 
-        var prevDate = this.expensesList[idx - 1].datetime;
-        var prevFreq = this.expensesList[idx - 1].freq;
+        let prevDate = this.expensesList[idx - 1].datetime;
+        let prevFreq = this.expensesList[idx - 1].freq;
 
         if (expenses.datetime.slice(0,10) != prevDate.slice(0,10) || prevFreq != expenses.freq) return true;
 
@@ -116,7 +116,7 @@ export class ExpensesPage {
             this.expensesList = expensesList.sort(function(a, b) {  return a.freq - b.freq || b.id - a.id; });
 
             this.resetSegment();
-            for (var i = 0 ; i < this.expensesList.length ; i++ ){
+            for (let i = 0 ; i < this.expensesList.length ; i++ ){
                 this.expensesList[i].timeago = this.timeSince(this.expensesList[i].datetime);
                 this.setSegment(this.expensesList[i].freq);
                 // available_dates.push(this.daySince(this.expensesList[i].datetime));
@@ -150,7 +150,7 @@ export class ExpensesPage {
         else return this.recurring;
     }
     getSegmentStatus(){
-        var x = 0;
+        let x = 0;
         if (this.onetime) x += 1;
         if (this.reserved) x += 1;
         if (this.recurring) x += 1;
@@ -167,8 +167,8 @@ export class ExpensesPage {
     
     getFreqText(expenses){
         if (expenses.freq == 2){
-            var days = expenses.freq_amt;
-            var text = "";
+            let days = expenses.freq_amt;
+            let text = "";
 
             if (days != 1){
                 text = "" + days + " ";
@@ -183,7 +183,7 @@ export class ExpensesPage {
     
     refreshSegment(expenses){
         if (!this.getSegment(expenses.freq)){
-            for(var i = 0; i < this.freqMap.length; i++){
+            for(let i = 0; i < this.freqMap.length; i++){
                 if(this.getSegment(i)){
                     this.expenses_type = this.getSwitchType(i);
                     break;
@@ -202,12 +202,12 @@ export class ExpensesPage {
     }
 
     timeSince(oridate) {
-        var now = +new Date();
-        var d = +new Date(oridate.replace(" ","T"));
+        let now = +new Date();
+        let d = +new Date(oridate.replace(" ","T"));
 
-        var seconds = Math.floor((now - d) / 1000);
+        let seconds = Math.floor((now - d) / 1000);
 
-        var interval = Math.floor(seconds / 31536000);
+        let interval = Math.floor(seconds / 31536000);
 
         interval = Math.floor(seconds / 3600);
         if (interval >= 24) 
@@ -224,15 +224,15 @@ export class ExpensesPage {
     }
 
     daySince(oridate){
-        var today = new Date();
-        var createdOn = new Date(oridate.replace(" ","T"));
+        let today = new Date();
+        let createdOn = new Date(oridate.replace(" ","T"));
 
-        var msInDay = 24 * 60 * 60 * 1000;
+        let msInDay = 24 * 60 * 60 * 1000;
 
         createdOn.setHours(0,0,0,0);
 
-        var day = Math.abs((+today - +createdOn)/msInDay);
-        var diff = String(day).split('.')[0];
+        let day = Math.abs((+today - +createdOn)/msInDay);
+        let diff = String(day).split('.')[0];
 
         if(diff == "0") return "Today"
         if (diff == "1") return 'Yesterday';
@@ -304,12 +304,12 @@ export class ExpensesPage {
         let thumbnail = 0;
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
-        var x = new Date();
-        var today = this.dateLib.toString(x).replace('T',' ');
+        let x = new Date();
+        let today = this.dateLib.toString(x).replace('T',' ');
 
 
         // Add new expenses
-        var newExpenses = {
+        let newExpenses = {
             'id': Math.round((new Date()).getTime() / 1000),
             'name': expenses.name,
             'amount': Number(price),
@@ -337,7 +337,7 @@ export class ExpensesPage {
     }
 
     findIndex(find_id){
-        for (var i = 0, len = this.expensesList.length; i < len; i++) {
+        for (let i = 0, len = this.expensesList.length; i < len; i++) {
             if (this.expensesList[i].id == find_id){
                 return i;
             }
@@ -384,9 +384,9 @@ export class ExpensesPage {
     }
 
     getThumbnailName(name: string, src: string){
-        var list = this.imgLib.generateImageList(name);
+        let list = this.imgLib.generateImageList(name);
         
-        for (var i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++){
             if(list[i].src == src){
                 return list[i].name;
             }
@@ -400,7 +400,7 @@ export class ExpensesPage {
     } 
 
     getRandomInt(min: number, max: number) {
-        var n = Math.floor(Math.random() * (max - min + 1)) + min;
+        let n = Math.floor(Math.random() * (max - min + 1)) + min;
 
         if (n == 5) {
             // rare thumbnail

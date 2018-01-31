@@ -61,13 +61,13 @@ export class ManagePage {
 
         this.storage.get('duration').then((v) => {
             if (v){
-                var duration = v.split(" ~ ");
+                let duration = v.split(" ~ ");
                 this.tripStart = duration[0];
                 this.tripEnd = duration[1];
             }
             else{
                 this.tripStart = this.dateLib.toString(new Date());
-                var tripEnd = this.dateLib.addDay(new Date(), 6);
+                let tripEnd = this.dateLib.addDay(new Date(), 6);
                 this.tripEnd = this.dateLib.toString(tripEnd);
             }
             this.expenses.freq_start = this.tripStart;
@@ -90,8 +90,8 @@ export class ManagePage {
             if (this.expenses.freq == 0){
                 this.expenses.freq = 0;
                 this.todays_b = this.expenses.freq_start.replace(" ", "T");
-                var inputDate = new Date(this.todays_b);
-                var todaysDate = new Date();
+                let inputDate = new Date(this.todays_b);
+                let todaysDate = new Date();
                 this.expenses.todays = false;
 
                 if(inputDate.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)) {
@@ -126,7 +126,7 @@ export class ManagePage {
 
         if(this.enablePhotoFlag && this.tmpImage != 0) this.selected_tn = 5;
 
-        for(var i = 0; i < this.imageList.length ; i++){
+        for(let i = 0; i < this.imageList.length ; i++){
             if(this.imageList[i].src == this.expenses.thumbnail){
                 this.selected_tn = i;
                 break;
@@ -139,9 +139,9 @@ export class ManagePage {
     }
 
     getThumbnailIndex(name: string, src: string){
-        var list = this.imgLib.generateImageList(name);
+        let list = this.imgLib.generateImageList(name);
         
-        for (var i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++){
             if(list[i].src == src){
                 return list[i].name;
             }
@@ -154,7 +154,7 @@ export class ManagePage {
     }
 
     findIndex(find_id: number): number{
-        for (var i = 0, len = this.expensesList.length; i < len; i++) {
+        for (let i = 0, len = this.expensesList.length; i < len; i++) {
             if (this.expensesList[i].id == find_id){
                 return i;
             }
@@ -163,7 +163,7 @@ export class ManagePage {
     }
 
     chooseImage(){
-            var options = {
+            let options = {
                 sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
                 allowEdit: this.editFlag,
                 destinationType: this.camera.DestinationType.DATA_URL
@@ -202,12 +202,12 @@ export class ManagePage {
     }
 
     set_todays_b(){
-        var todays_b = this.dateLib.addDay(new Date(), 1);
+        let todays_b = this.dateLib.addDay(new Date(), 1);
         this.todays_b = this.dateLib.toString(todays_b);
     }
     
     submitForm() {
-        var name = this.default_placeholder;
+        let name = this.default_placeholder;
 
         if (this.expenses.name.trim() != "") name = this.expenses.name.trim();
 
@@ -225,7 +225,7 @@ export class ManagePage {
             }
         }
 
-        var image = 0;
+        let image = 0;
 
         this.thumbnail = this.imageList[this.selected_tn].src;
 
@@ -239,7 +239,7 @@ export class ManagePage {
             this.expenses.fromReserved = 0;
         }
 
-        var changes = {
+        let changes = {
             'id': this.expenses.id,
             'name':name,
             'amount': Number(this.expenses.amount),

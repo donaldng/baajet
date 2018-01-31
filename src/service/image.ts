@@ -53,16 +53,16 @@ export class ImageService {
     }
 
     generateImageList(name: string){
-        var imageList = [];
-        var img_size = 1;
+        let imageList = [];
+        let img_size = 1;
         name = name.toLowerCase();
 
         let category = this.getCategory();
         img_size = category[name].length;
 
         
-        for(var i = 0; i < img_size ; i++){
-            var img_name = this.capitalizeFirstLetter(category[name][i].replace('_', ' '));
+        for(let i = 0; i < img_size ; i++){
+            let img_name = this.capitalizeFirstLetter(category[name][i].replace('_', ' '));
 
             imageList.push({
                 name: img_name,

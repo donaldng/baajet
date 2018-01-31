@@ -26,7 +26,7 @@ export class AdMobService {
     }
 
     showInterstitialAds(){
-        var showchance = Math.round(Math.random()); // 50% chance of showing
+        let showchance = Math.round(Math.random()); // 50% chance of showing
         if (!this.paidVersion && showchance <= 0.4){
             this.admob.interstitial.config(this.bannerConfig);
             

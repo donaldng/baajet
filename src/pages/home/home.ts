@@ -181,8 +181,8 @@ export class HomePage {
         tripStart.setHours(0, 0, 0, 0);
         tripEnd.setHours(12, 0, 0, 0);
 
-        var timeDiff = Math.abs(tripEnd - tripStart);
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        let timeDiff = Math.abs(tripEnd - tripStart);
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 
         return diffDays;
     }
@@ -204,7 +204,7 @@ export class HomePage {
     }
 
     get_nday(){
-        var startDate = new Date();
+        let startDate = new Date();
 
         if (new Date(this.tripStart) > startDate){
             startDate = new Date(this.tripStart);
@@ -229,7 +229,7 @@ export class HomePage {
         this.day_bar = document.getElementById('day_bar');
 
         if(v){
-            for (var i=0; i < v.length; i++){
+            for (let i=0; i < v.length; i++){
                 if (v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T', ' ') && v[i].freq_end.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T',' ')){
                     // Do not account day expenses into daily budget calculation
                     // Unless it's a over spent, then we deduct overspent amount from daily budget
@@ -246,7 +246,7 @@ export class HomePage {
 
             // If we over spent the day budget, then lessen day budget.
             if(this.day_budget < this.day_expenses){
-                var overspent = this.day_expenses - this.day_budget;
+                let overspent = this.day_expenses - this.day_budget;
                 this.day_budget -= Number(overspent/n_day);
                 this.day_budget = Number(this.day_budget.toFixed(2));
             }
@@ -387,7 +387,7 @@ export class HomePage {
 
         if(!expensesList) return;
 
-        for (var i = 0, len = expensesList.length; i < len; i++) {
+        for (let i = 0, len = expensesList.length; i < len; i++) {
             // if is reserved
             if (expensesList[i].freq == 1){
                 this.reserved_amount += Number(expensesList[i].amount);
@@ -452,11 +452,11 @@ export class HomePage {
         let thumbnail = 0;
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
-        var x = new Date();
-        var today = this.dateLib.toString(x).replace('T',' ');
+        let x = new Date();
+        let today = this.dateLib.toString(x).replace('T',' ');
 
         // Add new expenses
-        var newExpenses = {
+        let newExpenses = {
             'id': Math.round((new Date()).getTime() / 1000),
             'name': expenses.name,
             'amount': Number(price),
@@ -485,7 +485,7 @@ export class HomePage {
 
     findIndex(find_id: number){
         if(!this.expensesList) return;
-        for (var i = 0, len = this.expensesList.length; i < len; i++) {
+        for (let i = 0, len = this.expensesList.length; i < len; i++) {
             if (this.expensesList[i].id == find_id){
                 return i;
             }
@@ -494,7 +494,7 @@ export class HomePage {
     }  
 
     getRandomInt(min: number, max: number): number {
-        var n = Math.floor(Math.random() * (max - min + 1)) + min;
+        let n = Math.floor(Math.random() * (max - min + 1)) + min;
 
         if (n == 5) {
             // rare thumbnail
@@ -516,9 +516,9 @@ export class HomePage {
     }
 
     getThumbnailName(name: string, src: string): string{
-        var list = this.imgLib.generateImageList(name);
+        let list = this.imgLib.generateImageList(name);
         
-        for (var i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++){
             if(list[i].src == src){
                 return list[i].name;
             }

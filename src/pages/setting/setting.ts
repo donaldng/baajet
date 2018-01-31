@@ -95,15 +95,7 @@ export class SettingPage {
     resetStorage(){
         //this.storage.clear();
         this.clearAll()
-
-        // this.tripStart = this.dateLib.toString(new Date());
-        // this.tripEnd = this.dateLib.addDay(new Date(), 6);
-        // this.tripEnd = this.dateLib.toString(this.tripEnd);
-
-        // var duration = this.tripStart + ' ~ ' + this.tripEnd;
-
         this.dismiss()
-
     }
 
     clearAll(){
@@ -197,8 +189,8 @@ export class SettingPage {
     // }    
 
     submitForm() {
-        var duration = this.tripStart + ' ~ ' + this.tripEnd;
-        var budget = Number(this.budget);
+        let duration = this.tripStart + ' ~ ' + this.tripEnd;
+        let budget = Number(this.budget);
 
         if(this.budget <= 0 || typeof this.budget == 'undefined'){
             alert('We need a valid budget please..!');
