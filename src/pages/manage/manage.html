@@ -18,14 +18,14 @@
         </ion-buttons>
     </ion-toolbar>
 
-    <ion-segment [(ngModel)]="expenses.freq">
-        <ion-segment-button value="0">
+    <ion-segment [(ngModel)]="segmentVal">
+        <ion-segment-button value="onetime" (click)="setFreq(0)">
             One time
         </ion-segment-button>
-        <ion-segment-button value="1">
+        <ion-segment-button value="reserved" (click)="setFreq(1)">
             Reserved
         </ion-segment-button>        
-        <ion-segment-button value="2">
+        <ion-segment-button value="recurring" (click)="setFreq(2)">
             Recurring
         </ion-segment-button>
     </ion-segment>

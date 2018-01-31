@@ -22,6 +22,7 @@ export class ManagePage {
     selected_id: number;
     default_placeholder: string;
     freq: number;
+    segmentVal: string = "onetime";
     tripStart;
     tripEnd;
     tmpImage: any;
@@ -74,19 +75,20 @@ export class ManagePage {
             this.expenses.freq_end = this.tripEnd;            
         });
 
-        if(this.selected_id == -1){
+        if (this.selected_id == -1) { // New expenses
             this.expenses = {name: 'General', amount: '', freq: this.segment, freq_amt: "1" };
             if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add Expenses";
             this.expenses.todays = true;
             this.expenses.fromReserved = 0;
         }
-        else{
+        else{ // Existing expenses
             let index = this.findIndex(this.selected_id);
 
             this.expenses = this.expensesList[index];
             this.tmpImage = this.expenses.image;
             this.pageName = "Manage Expenses";
+
             if (this.expenses.freq == 0){
                 this.expenses.freq = 0;
                 this.todays_b = this.expenses.freq_start.replace(" ", "T");
@@ -99,6 +101,7 @@ export class ManagePage {
                 }
             }
 
+            this.setFreq(this.expenses.freq);
             this.oriAmt = this.expenses.amount;
 
         }      
@@ -364,6 +367,14 @@ export class ManagePage {
             this.imageList[5].src = this.tmpImage;
             this.imageList[5].name = 'Photo';
         }
+    }
+
+    setFreq(freq: number): void{
+        if (freq == 0) this.segmentVal = "onetime";
+        if (freq == 1) this.segmentVal = "reserved";
+        if (freq == 2) this.segmentVal = "recurring";
+
+        this.expenses.freq = freq;
     }
 
     clickIcon(idx: number, thisImage){
