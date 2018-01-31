@@ -14,18 +14,18 @@ import { DateService } from '../../service/date';
 })
 
 export class SettingPage {
-    items;
-    budget;
-    currency;
+    items: string[];
+    budget: number;
+    currency: string;
     duration;
     tripStart;
     tripEnd;
-    saveimageFlag;
-    editFlag;
-    newphotoFlag;
-    enablePhotoFlag;
+    saveimageFlag: boolean;
+    editFlag: boolean;
+    newphotoFlag: boolean;
+    enablePhotoFlag: boolean;
     maxDate;
-    promoPaid;
+    promoPaid: number;
 
     constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');
@@ -110,10 +110,10 @@ export class SettingPage {
         this.storage.set('budget', 0);
         this.storage.set('currency', '$');
         this.storage.set('duration', '');
-        this.storage.set('saveimageFlag', 0);
-        this.storage.set('editFlag', 0);
-        this.storage.set('newphotoFlag', 0);
-        this.storage.set('enablePhotoFlag', 0);
+        this.storage.set('saveimageFlag', false);
+        this.storage.set('editFlag', false);
+        this.storage.set('newphotoFlag', false);
+        this.storage.set('enablePhotoFlag', false);
         this.storage.set('expensesList', []);
 
         this.events.publish('reload:expenses', []);        
@@ -125,10 +125,10 @@ export class SettingPage {
         this.events.publish('reload:home', 'expensesList', []);
 
         this.events.publish('update:currency', '$');
-        this.events.publish('saveimageFlag', 0);
-        this.events.publish('editFlag', 0);
-        this.events.publish('newphotoFlag', 0);
-        this.events.publish('enablePhotoFlag', 0);        
+        this.events.publish('saveimageFlag', false);
+        this.events.publish('editFlag', false);
+        this.events.publish('newphotoFlag', false);
+        this.events.publish('enablePhotoFlag', false);        
     }
 
     presentConfirm() {
@@ -153,7 +153,7 @@ export class SettingPage {
         alert.present();
     }
 
-    validateDate(field){
+    validateDate(field: string){
         if (this.tripStart <= this.tripEnd) return;
 
         if (field == "start"){

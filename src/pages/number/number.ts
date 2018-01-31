@@ -8,13 +8,13 @@ import { NavParams, ViewController, Events } from 'ionic-angular';
 })
 
 export class NumberPage {
-    title;
-    placeholder;
-    message;
+    title: string;
+    placeholder: string;
+    message: string;
     value;
     claim;
     firsttime;
-    from;
+    from: string;
 
     constructor(public viewCtrl: ViewController, public params: NavParams, public events: Events) {
         this.firsttime = 0;

@@ -15,12 +15,12 @@ export class TabsPage {
 
     tab1Root = HomePage;
     tab2Root = ExpensesPage;
-    expensesList = [];
-    camOn = 0;
-    selected_id;
-    tot_budget = 0;
-    init_price = 0;
-    segment;
+    expensesList: any[] = [];
+    camOn: boolean = false;
+    selected_id: number;
+    tot_budget: number = 0;
+    init_price: number = 0;
+    segment: number;
 
     constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
         this.storage.get('budget').then((v) => {
@@ -42,16 +42,16 @@ export class TabsPage {
 
         events.subscribe('gotoManage', (v) => {
             this.selected_id = v.selected_id;
-            this.camOn = 0;
+            this.camOn = false;
             this.segment = 0;
             this.init_price = 0;
 
             if (v.camOn) this.camOn = v.camOn;
             if (v.init_price) this.init_price = v.init_price;
             if (v.segment){
-                if(v.segment == "onetime") this.segment = "0";
-                else if(v.segment == "reserved") this.segment = "1";
-                else this.segment = "2";
+                if(v.segment == "onetime") this.segment = 0;
+                else if(v.segment == "reserved") this.segment = 1;
+                else this.segment = 2;
             }
             this.runModal();
 

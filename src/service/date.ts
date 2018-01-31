@@ -11,7 +11,7 @@ export class DateService {
         return format(dateObj).slice(0, 19)
     }
 
-    addDay(date, days){
+    addDay(date, days: number){
         return addDays(date, days);
     }
 }

@@ -12,23 +12,22 @@ import { NumberPage } from '../number/number';
 })
 
 export class ExpensesPage {
-    expensesList = [];
-    display_currency = '$';
-    freqMap = ['One time','Reserved fund','Daily','Weekly','Monthly'];
-    runningId;
-    lastExpenses = 0;
-    currentHeader;
-    expenses_type = 'onetime';
-    onetime = 0;
-    recurring = 0;
-    reserved = 0;
-    showSegment = 0;
-    tot_budget : number;
-    newphotoFlag;
-    init_price;
-    baaThumbnail;
-    imageList;
-    tot_expenses : number = 0;
+    expensesList: any[] = [];
+    display_currency: string = '$';
+    freqMap: string[] = ['One time','Reserved fund','Daily','Weekly','Monthly'];
+    lastExpenses: number = 0;
+    currentHeader: string;
+    expenses_type: string = 'onetime';
+    onetime: number = 0;
+    recurring: number = 0;
+    reserved: number = 0;
+    showSegment: number = 0;
+    tot_budget: number;
+    newphotoFlag: boolean;
+    init_price: number;
+    baaThumbnail: string;
+    imageList: any[];
+    tot_expenses: number = 0;
 
     constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
@@ -79,7 +78,7 @@ export class ExpensesPage {
         events.subscribe('dismiss:expenses', (data) => {
             if (!data.claim) {
                 this.init_price = data.value;
-                this.gotoManage('-1');
+                this.gotoManage(-1);
             }
         });                
 
@@ -99,7 +98,7 @@ export class ExpensesPage {
 
     }
 
-    previousDiff(expenses, idx){
+    previousDiff(expenses, idx: number){
         if (idx == 0) return true;
 
         var prevDate = this.expensesList[idx - 1].datetime;
@@ -110,7 +109,7 @@ export class ExpensesPage {
         return false;
     }
 
-    processExpensesList(expensesList){
+    processExpensesList(expensesList: any[]){
         // let available_dates = [];
 
         if (expensesList){
@@ -134,7 +133,7 @@ export class ExpensesPage {
         this.events.publish('reload:home', 'expensesList', this.expensesList);
     }
 
-    setSegment(freq){
+    setSegment(freq: number){
         if (freq == 0) this.onetime += 1;
         else if (freq == 1) this.reserved += 1;
         else this.recurring += 1;
@@ -145,7 +144,7 @@ export class ExpensesPage {
         this.reserved = 0;
         this.showSegment = 0;        
     }
-    getSegment(freq){
+    getSegment(freq: number){
         if (freq == 0) return this.onetime;
         else if (freq == 1) return this.reserved;
         else return this.recurring;
@@ -158,11 +157,11 @@ export class ExpensesPage {
         return x;
     }
 
-    changeSwitchType(type){
-        this.expenses_type = type;
+    changeSwitchType(typeName: string){
+        this.expenses_type = typeName;
     }
 
-    gotoManage(selected_id) {
+    gotoManage(selected_id: number) {
         this.events.publish('gotoManage', {'selected_id': selected_id, 'expensesList': this.expensesList, 'camOn': this.newphotoFlag, 'init_price': this.init_price, 'segment': this.expenses_type});
     }
     
@@ -250,9 +249,9 @@ export class ExpensesPage {
         }, 1000);
     }
 
-    getSwitchType(freq){
-        if (freq == '0') return 'onetime';
-        if (freq == '1') return 'reserved';
+    getSwitchType(freq: number){
+        if (freq == 0) return 'onetime';
+        if (freq == 1) return 'reserved';
         return 'recurring';
     }
 
@@ -282,7 +281,7 @@ export class ExpensesPage {
 
     }
 
-    claimExpenses(expenses, price){
+    claimExpenses(expenses, price: number){
         let index = this.findIndex(expenses.id);
 
         // Validate
@@ -384,7 +383,7 @@ export class ExpensesPage {
         actionSheet.present();
     }
 
-    getThumbnailName(name, src){
+    getThumbnailName(name: string, src: string){
         var list = this.imgLib.generateImageList(name);
         
         for (var i = 0; i < list.length; i++){
@@ -396,11 +395,11 @@ export class ExpensesPage {
         return 'Photo';
     }
 
-    getDefaultThumbnail(x, y){
-        return this.imgLib.getDefaultThumbnail(x , y);
+    getDefaultThumbnail(name: string, type: number){
+        return this.imgLib.getDefaultThumbnail(name, type);
     } 
 
-    getRandomInt(min, max) {
+    getRandomInt(min: number, max: number) {
         var n = Math.floor(Math.random() * (max - min + 1)) + min;
 
         if (n == 5) {

@@ -16,36 +16,36 @@ import { DateService } from '../../service/date';
 
 export class ManagePage {
     unchanged: any;
-    expensesList;
-    expenses;
-    pageName;
-    selected_id;
-    default_placeholder;
-    freq;
+    expensesList: any[];
+    expenses: any;
+    pageName: string;
+    selected_id: number;
+    default_placeholder: string;
+    freq: number;
     tripStart;
     tripEnd;
-    tmpImage;
-    lastImage;
-    thumbnail;
-    saveimageFlag = false;
-    editFlag = false;
-    camOn = false;
-    todays_b;
-    init_price;
-    expenses_cat;
+    tmpImage: any;
+    lastImage; // (?)
+    thumbnail: string;
+    saveimageFlag: boolean = false;
+    editFlag: boolean = false;
+    camOn: boolean = false;
+    enablePhotoFlag: boolean;    
+    todays_b: string;
+    init_price: number;
+    expenses_cat: string[];
     _imageViewerCtrl: ImageViewerController;
-    enablePhotoFlag;
-    imageList;
-    submitted;
-    selected_tn;
-    recur_text;
-    segment;
-    oriAmt;
+    imageList: any[];
+    submitted: boolean;
+    selected_tn: number;
+    recur_text: string;
+    segment: number;
+    oriAmt: number;
 
     constructor(public dateLib: DateService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
-        this.enablePhotoFlag = 0;
-        this.submitted = 0;
+        this.enablePhotoFlag = false;
+        this.submitted = false;
         this.selected_id = this.params.get('selected_id');
         this.expensesList = this.params.get('expensesList');
         this.camOn = this.params.get('camOn');
@@ -70,12 +70,11 @@ export class ManagePage {
                 var tripEnd = this.dateLib.addDay(new Date(), 6);
                 this.tripEnd = this.dateLib.toString(tripEnd);
             }
-
-                this.expenses.freq_start = this.tripStart;
-                this.expenses.freq_end = this.tripEnd;            
+            this.expenses.freq_start = this.tripStart;
+            this.expenses.freq_end = this.tripEnd;            
         });
 
-        if(this.selected_id == '-1'){
+        if(this.selected_id == -1){
             this.expenses = {name: 'General', amount: '', freq: this.segment, freq_amt: "1" };
             if (this.init_price) this.expenses.amount = this.init_price;
             this.pageName = "Add Expenses";
@@ -89,7 +88,7 @@ export class ManagePage {
             this.tmpImage = this.expenses.image;
             this.pageName = "Manage Expenses";
             if (this.expenses.freq == 0){
-                this.expenses.freq = "0";
+                this.expenses.freq = 0;
                 this.todays_b = this.expenses.freq_start.replace(" ", "T");
                 var inputDate = new Date(this.todays_b);
                 var todaysDate = new Date();
@@ -121,6 +120,7 @@ export class ManagePage {
         this.expenses_cat = ['General', 'Food', 'Transport', 'Shopping', 'Stay', 'Relax', 'Souvenir', 'Other'];        
         this.unchanged = JSON.parse(JSON.stringify(this.expensesList));
     }
+
     getSelectedTN(){
         this.selected_tn = 0;
 
@@ -133,10 +133,12 @@ export class ManagePage {
             }
         }
     }
+
     updateRecurTxt(){
         this.recur_text = "Every " + this.expenses.freq_amt + " days?"
     }
-    getThumbnailIndex(name, src){
+
+    getThumbnailIndex(name: string, src: string){
         var list = this.imgLib.generateImageList(name);
         
         for (var i = 0; i < list.length; i++){
@@ -151,7 +153,7 @@ export class ManagePage {
         this.menuCtrl.open();
     }
 
-    findIndex(find_id){
+    findIndex(find_id: number): number{
         for (var i = 0, len = this.expensesList.length; i < len; i++) {
             if (this.expensesList[i].id == find_id){
                 return i;
@@ -256,7 +258,7 @@ export class ManagePage {
             alert('Why is the start date bigger than end date? :(');
         }
         else{
-            if (this.selected_id == "-1"){
+            if (this.selected_id == -1){
                 changes['id'] = Math.round((new Date()).getTime() / 1000);
                 changes['datetime'] = this.dateLib.toString(new Date()).replace('T',' ');
                 if (this.expensesList)
@@ -274,7 +276,7 @@ export class ManagePage {
             this.storage.set('expensesList', this.expensesList);
             this.events.publish('reload:expenses', this.expensesList);
 
-            this.submitted = 1;
+            this.submitted = true;
             this.dismiss();    
         }          
     }
@@ -284,7 +286,7 @@ export class ManagePage {
         this.expensesList.splice(index,1);
         this.storage.set('expensesList', this.expensesList);
         this.events.publish('reload:home','expensesList',this.expensesList);
-        this.submitted = 1;
+        this.submitted = true;
         this.dismiss();
     }
 
@@ -351,7 +353,7 @@ export class ManagePage {
         actionSheet.present();
     }
 
-    generateImageList(name){
+    generateImageList(name: string){
         this.imageList = this.imgLib.generateImageList(name);
 
         if (this.enablePhotoFlag && this.tmpImage == 0){
@@ -364,7 +366,7 @@ export class ManagePage {
         }
     }
 
-    clickIcon(idx, thisImage){
+    clickIcon(idx: number, thisImage){
         if (this.enablePhotoFlag && this.imageList[idx].name == 'Add Media'){
             this.addMedia();
         }

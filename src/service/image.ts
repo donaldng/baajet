@@ -35,7 +35,7 @@ export class ImageService {
         };
         return imageCat;
     }
-    getDefaultThumbnail(name, type){
+    getDefaultThumbnail(name: string, type: number){
         
         if(type==1 && name=="General") return "assets/imgs/icons/reserved.png";
         if(type > 1) return "assets/imgs/icons/recurring.png";
@@ -52,7 +52,7 @@ export class ImageService {
         return 0;
     }
 
-    generateImageList(name){
+    generateImageList(name: string){
         var imageList = [];
         var img_size = 1;
         name = name.toLowerCase();
@@ -73,8 +73,8 @@ export class ImageService {
         return imageList;
     }
 
-    capitalizeFirstLetter(string) {
-       return string.charAt(0).toUpperCase() + string.slice(1);
+    capitalizeFirstLetter(str: string) {
+       return str.charAt(0).toUpperCase() + str.slice(1);
     }
  
 }

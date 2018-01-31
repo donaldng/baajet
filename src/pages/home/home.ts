@@ -11,36 +11,34 @@ import { NumberPage } from '../number/number';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    items;
-    selectedItem;
-    display_currency;
-    tot_budget;
-    day_budget;
-    budgetTmp;
+    display_currency: string;
+    tot_budget: number;
+    day_budget: number;
+    budgetTmp: number;
     tripEnd;
     tripStart;
-    n_day;
-    duration;
-    tot_expenses;
+    n_day: number;
+    duration: any;
+    tot_expenses: number;
     campaign_ended;
-    greetMsg;
-    expensesList;
+    greetMsg: string;
+    expensesList: any[];
     timezone;
-    newphotoFlag;
-    tot_remaining;
-    day_remaining;
-    day_expenses;
-    day_color = 'primary';
-    day_color_label = 'primary';
-    tot_color = 'primary';
-    tot_color_label = 'primary';
+    newphotoFlag: boolean;
+    tot_remaining: number;
+    day_remaining: number;
+    day_expenses: number;
+    day_color: string = 'primary';
+    day_color_label: string = 'primary';
+    tot_color: string = 'primary';
+    tot_color_label: string = 'primary';
     tot_bar;
     day_bar;
-    reserved_amount;
-    reserveList;
-    seemore_reserved;
-    baaThumbnail;
-    seemore_ok;
+    reserved_amount: number;
+    reserveList: any[];
+    seemore_reserved: boolean;
+    baaThumbnail: string;
+    seemore_ok: number;
 
     constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
@@ -53,7 +51,7 @@ export class HomePage {
         this.tot_remaining = 0;
         this.day_remaining = 0;
         this.day_expenses = 0;
-        this.seemore_reserved = 0;
+        this.seemore_reserved = false;
         this.seemore_ok = 0;
 
         this.updateData();
@@ -212,15 +210,17 @@ export class HomePage {
             startDate = new Date(this.tripStart);
         }
 
-        var n_day = 1;
+        let n_day: number = 1;
 
         if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
 
         return n_day;
     }
 
-    calculate_budget(v){
-        var n_day = this.get_nday();
+    calculate_budget(expensesList){
+        let v = expensesList;
+
+        let n_day: number = this.get_nday();
         this.budgetTmp = this.tot_budget;
         this.tot_expenses = 0;
         this.day_expenses = 0;
@@ -241,13 +241,14 @@ export class HomePage {
             this.tot_expenses = Math.abs(this.tot_expenses);
             this.budgetTmp -= this.tot_expenses;
 
-            this.day_budget = (this.budgetTmp / n_day).toFixed(2);
+            // parse Number because to toFixed will turn output in String
+            this.day_budget = Number((this.budgetTmp / n_day).toFixed(2));
 
             // If we over spent the day budget, then lessen day budget.
             if(this.day_budget < this.day_expenses){
                 var overspent = this.day_expenses - this.day_budget;
                 this.day_budget -= Number(overspent/n_day);
-                this.day_budget = this.day_budget.toFixed(2);
+                this.day_budget = Number(this.day_budget.toFixed(2));
             }
 
             this.n_day = n_day;
@@ -255,9 +256,9 @@ export class HomePage {
             this.storage.set('n_day', this.n_day);
         }
         else if(this.tot_budget) {
-            this.n_day = n_day.toFixed(0);
+            this.n_day = Number(n_day.toFixed(0));
             this.storage.set('n_day', this.n_day);
-            this.day_budget = (this.budgetTmp / n_day).toFixed(2);                
+            this.day_budget = Number((this.budgetTmp / n_day).toFixed(2));
         }
         else{
             this.n_day = 0;
@@ -274,10 +275,10 @@ export class HomePage {
         this.storage.set('day_budget', this.day_budget);
         
         this.tot_remaining = this.tot_budget - this.tot_expenses;
-        this.tot_remaining = this.tot_remaining.toFixed(2);
+        this.tot_remaining = Number(this.tot_remaining.toFixed(2));
         
         this.day_remaining = this.day_budget - this.day_expenses;
-        this.day_remaining = this.day_remaining.toFixed(2);
+        this.day_remaining = Number(this.day_remaining.toFixed(2));
 
         if(this.day_remaining / this.day_budget <= 0.15 || this.day_remaining <= 0){
             this.day_color = "danger";
@@ -400,25 +401,25 @@ export class HomePage {
         if(!this.seemore_ok){
             this.reserveList = this.reserveList.slice(0, 6);
             if (resv_length > 6){
-                this.seemore_reserved = 1;
+                this.seemore_reserved = true;
             }            
         }
         else{
-            this.seemore_reserved = 0;
+            this.seemore_reserved = false;
         }
     }
 
-    gotoManage(init_price){
+    gotoManage(init_price: number){
         this.events.publish('gotoManage', {'selected_id': -1, 'camOn': this.newphotoFlag, 'init_price': init_price, 'segment': "onetime"});
         //this.navCtrl.parent.select(1);
     }
 
     gotoImage(){
-        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': 1});
+        this.events.publish('gotoManage', {'selected_id': -1, 'camOn': true});
         //this.navCtrl.parent.select(1);
     }
 
-    gotoSetting(init_budget){
+    gotoSetting(init_budget: number){
         let modal = this.modalCtrl.create(SettingPage, { 'init_budget': init_budget }, { showBackdrop: false, enableBackdropDismiss: true });
         modal.present();
     }
@@ -428,7 +429,7 @@ export class HomePage {
         if (freq_type == 2) return this.dayDiff(new Date(start), new Date(end)) / freq_amount;
     }
 
-    claimExpenses(expenses, price){
+    claimExpenses(expenses, price: number){
         let index = this.findIndex(expenses.id);
 
         // Validate
@@ -482,7 +483,7 @@ export class HomePage {
         this.events.publish('reload:expenses', this.expensesList);
     }
 
-    findIndex(find_id){
+    findIndex(find_id: number){
         if(!this.expensesList) return;
         for (var i = 0, len = this.expensesList.length; i < len; i++) {
             if (this.expensesList[i].id == find_id){
@@ -492,7 +493,7 @@ export class HomePage {
         return -1;
     }  
 
-    getRandomInt(min, max) {
+    getRandomInt(min: number, max: number): number {
         var n = Math.floor(Math.random() * (max - min + 1)) + min;
 
         if (n == 5) {
@@ -510,11 +511,11 @@ export class HomePage {
         return n;
     }
 
-    getDefaultThumbnail(x, y){
-        return this.imgLib.getDefaultThumbnail(x , y);
+    getDefaultThumbnail(name: string, type: number){
+        return this.imgLib.getDefaultThumbnail(name, type);
     }
 
-    getThumbnailName(name, src){
+    getThumbnailName(name: string, src: string): string{
         var list = this.imgLib.generateImageList(name);
         
         for (var i = 0; i < list.length; i++){
