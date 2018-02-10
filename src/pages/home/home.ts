@@ -361,7 +361,7 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': 0,
-            'firsttime': false,
+            'firsttime': true,
             'from':'home'
         }
 
