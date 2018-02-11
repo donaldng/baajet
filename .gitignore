@@ -23,7 +23,7 @@ node_modules/
 tmp/
 temp/
 hooks/
-src/environments
+src/environments/environment.production.ts
 platforms/
 plugins/
 plugins/android.json
