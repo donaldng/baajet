@@ -27,7 +27,7 @@
     <ion-list *ngIf="tot_budget != 0">
         <ion-item-group (click)="gotoSetting(0)">
             <ion-list-header color="light">
-                <span *ngIf="campaign_ended == 0">Total Budget ({{ n_day }} days)</span>
+                <span *ngIf="campaign_ended == 0">Total Budget ({{ noOfDays }} days)</span>
                 <span *ngIf="campaign_ended == 1">Left Overs</span>
                 <ion-badge color="{{ tot_color_label }}" item-end>{{ display_currency }}{{ tot_remaining }}</ion-badge>
             </ion-list-header>        

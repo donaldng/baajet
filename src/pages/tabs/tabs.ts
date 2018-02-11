@@ -7,6 +7,7 @@ import { ManagePage } from '../manage/manage';
 import { Events } from 'ionic-angular';
 import { ModalController, NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { FirebaseService } from '../../service/firebasedb';
 
 @Component({
     templateUrl: 'tabs.html'
@@ -22,14 +23,16 @@ export class TabsPage {
     init_price: number = 0;
     segment: number;
 
-    constructor(public events: Events, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
-        this.storage.get('budget').then((v) => {
+    constructor(public events: Events, public firebaseStorage: FirebaseService, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
+        this.firebaseStorage.get('budget', (err, snap) => {
+            let v = snap.val();
             if (v && this.tot_budget != v){
                 this.tot_budget = v;
             }
         });
 
-        this.storage.get('expensesList').then((v) => {
+        this.firebaseStorage.get('expensesList', (err, snap) => {
+            let v = snap.val();
             if(v) this.expensesList = v;
         });        
 

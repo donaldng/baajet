@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ModalController, Platform, NavController, Events } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { SettingPage } from '../setting/setting';
 import { ImageService } from '../../service/image';
 import { DateService } from '../../service/date';
+import { FirebaseService } from '../../service/firebasedb';
+
 import { NumberPage } from '../number/number';
 
 @Component({
@@ -17,7 +21,7 @@ export class HomePage {
     budgetTmp: number;
     tripEnd;
     tripStart;
-    n_day: number;
+    noOfDays: number;
     duration: any;
     tot_expenses: number;
     campaign_ended;
@@ -40,7 +44,7 @@ export class HomePage {
     baaThumbnail: string;
     seemore_ok: number;
 
-    constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public splashScreen: SplashScreen, public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;
@@ -54,27 +58,29 @@ export class HomePage {
         this.seemore_reserved = false;
         this.seemore_ok = 0;
 
-        this.updateData();
-
         if(!this.baaThumbnail) this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
 
         events.subscribe('reload:home', (k, v) => {
             if (k == "expensesList"){
+                console.log("calculate_budget subscribe reload:home");
                 this.calculate_budget(v);
                 this.expensesList = v;
                 this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
             }
             else if(k == "tot_budget"){
                 this.tot_budget = v;
+                console.log("calcDbBudget subscribe reload:home");
                 this.calcDbBudget();
             }
             else if(k == "duration"){
+                console.log("decodeDuration subscribe");
                 this.decodeDuration(v);    
                 this.check_ended();
             }
         });
 
         events.subscribe('reload:expenses', (v) => {
+            console.log("calculate_budget subscribe reload:expenses");            
             this.calculate_budget(v);
         });
 
@@ -100,52 +106,65 @@ export class HomePage {
             }
         });            
 
+        this.updateData();        
+
         this.campaign_ended = 0;
         this.getGreetMsg();
     }
 
     updateData(){
-        // update once modal close
-        this.storage.get('budget').then((v) => {
-            if (v && this.tot_budget != v){
-                this.tot_budget = v;
-            }
-        });
+        this.firebaseStorage.getAll((err, snap) => {
+            let db = snap.val();
 
-        this.storage.get('newphotoFlag').then((v) => {
-            if (v && this.newphotoFlag != v){
-                this.newphotoFlag = v;
-            }
-        });  
+            // Update budget
+            let budget = db.budget;
 
-        this.storage.get('currency').then((v) => {
-            if (v && this.display_currency != v){
-                this.display_currency = v;
+            if (budget && this.tot_budget != budget) {
+                this.tot_budget = budget;
             }
-        });
 
-        this.storage.get('n_day').then((v) => {
-            if (v && this.n_day != v && !this.campaign_ended){
-                this.n_day = v;
-            }
-        });
+            // Update newphotoFlag
+            let newphotoFlag = db.newphotoFlag;
 
-        this.storage.get('duration').then((v) => {
-            if (v){
-                this.decodeDuration(v);        
-          }
-            else{
-                this.tripStart = this.dateLib.toString(new Date());
-                this.tripEnd = this.dateLib.addDay(new Date(), 6);
-                this.tripEnd = this.dateLib.toString(this.tripEnd);
+            if (newphotoFlag && this.newphotoFlag != newphotoFlag) {
+                this.newphotoFlag = newphotoFlag;
             }
+
+            // Update currency
+            let currency = db.currency;
+            if (currency && this.display_currency != currency) {
+                this.display_currency = currency;
+            }
+
+            // Update noOfDays
+            let noOfDays = db.noOfDays;
+
+            if (noOfDays && this.noOfDays != noOfDays && !this.campaign_ended) {
+                this.noOfDays = noOfDays;
+            }
+
+            //Update duration
+            let duration = db.duration;
+
+            if (duration) {
+                console.log("decodeDuration firebase");
+                this.decodeDuration(duration);
+            }
+            else {
+                let now = new Date();
+                this.tripStart = this.dateLib.dateToString(now);
+                this.tripEnd = this.dateLib.addDay(now, 6);
+                this.tripEnd = this.dateLib.dateToString(this.tripEnd);
+            }
+
+            // Update expensesList
+            let expensesList = db.expensesList;
+            if (expensesList) this.expensesList = expensesList;
 
             this.check_ended();
-
+            this.calculate_budget(expensesList);
+            this.splashScreen.hide();
         });
-        
-        this.calcDbBudget();
-
     }
 
     trip_ended(){
@@ -154,8 +173,9 @@ export class HomePage {
         else
             this.greetMsg = 'Hope this trip don\'t break your bank account. :(';
 
-        this.n_day = 0;
+        this.noOfDays = 0;
     }
+
     check_ended(){
         if(new Date() > new Date(this.tripEnd)){
             this.campaign_ended = 1;
@@ -166,6 +186,7 @@ export class HomePage {
             this.getGreetMsg();   
         }           
     }
+
     openSettingModal(){
         let modal = this.modalCtrl.create(SettingPage, {'budget': this.tot_budget, 'currency': this.display_currency});
         modal.onDidDismiss(data => {
@@ -176,7 +197,7 @@ export class HomePage {
     }
     
     dayDiff(tripStart, tripEnd){
-        // setHours to fix after 12am but n_day not changing bug
+        // setHours to fix after 12am but noOfDays not changing bug
         // End trip we assume trip is ending by 12pm.
         tripStart.setHours(0, 0, 0, 0);
         tripEnd.setHours(12, 0, 0, 0);
@@ -198,29 +219,46 @@ export class HomePage {
     
     calcDbBudget(){
         // minus expenses
-        this.storage.get('expensesList').then((v) => {
+        this.firebaseStorage.get('expensesList', (err, snap) => {
+            let v = snap.val();
             this.calculate_budget(v);
         });
     }
 
-    get_nday(){
-        let startDate = new Date();
+    get_nday(): number{
+        let noOfDays: number = 1;
 
-        if (new Date(this.tripStart) > startDate){
-            startDate = new Date(this.tripStart);
+        if (this.noOfDays){
+            console.log("db noOfDays", this.noOfDays);
+            noOfDays = this.noOfDays;
+        }
+        else{
+            console.log("calc noOfDays");
+            
+            let startDate = new Date();
+            let endDate = new Date(this.tripEnd);
+
+            if (new Date(this.tripStart) > startDate) {
+                startDate = new Date(this.tripStart);
+            }
+
+            console.log("startdate", startDate);
+            console.log("endtrip", this.tripEnd);
+            console.log("enddate converted", endDate);
+
+            noOfDays = Number(this.dayDiff(startDate, endDate));
+            console.log("get_nday", noOfDays);            
         }
 
-        let n_day: number = 1;
+        if (this.campaign_ended) noOfDays = 1;        
 
-        if (!this.campaign_ended) n_day = Number(this.dayDiff(startDate, new Date(this.tripEnd)));
-
-        return n_day;
+        return noOfDays;
     }
 
     calculate_budget(expensesList){
         let v = expensesList;
 
-        let n_day: number = this.get_nday();
+        let noOfDays: number = this.get_nday();
         this.budgetTmp = this.tot_budget;
         this.tot_expenses = 0;
         this.day_expenses = 0;
@@ -230,7 +268,7 @@ export class HomePage {
 
         if(v){
             for (let i=0; i < v.length; i++){
-                if (v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T', ' ') && v[i].freq_end.slice(0, 10).replace('T', ' ') == this.dateLib.toString(new Date()).slice(0, 10).replace('T',' ')){
+                if (v[i].fromReserved == 0 && v[i].freq == 0 && v[i].freq_start.slice(0, 10).replace('T', ' ') == this.dateLib.dateToString(new Date()).slice(0, 10).replace('T', ' ') && v[i].freq_end.slice(0, 10).replace('T', ' ') == this.dateLib.dateToString(new Date()).slice(0, 10).replace('T',' ')){
                     // Do not account day expenses into daily budget calculation
                     // Unless it's a over spent, then we deduct overspent amount from daily budget
                     this.day_expenses += Number(v[i].amount);
@@ -242,26 +280,27 @@ export class HomePage {
             this.budgetTmp -= this.tot_expenses;
 
             // parse Number because to toFixed will turn output in String
-            this.day_budget = Number((this.budgetTmp / n_day).toFixed(2));
+            this.day_budget = Number((this.budgetTmp / noOfDays).toFixed(2));
 
             // If we over spent the day budget, then lessen day budget.
             if(this.day_budget < this.day_expenses){
                 let overspent = this.day_expenses - this.day_budget;
-                this.day_budget -= Number(overspent/n_day);
+                this.day_budget -= Number(overspent/noOfDays);
                 this.day_budget = Number(this.day_budget.toFixed(2));
             }
 
-            this.n_day = n_day;
-            if (this.campaign_ended) this.n_day = 0;
-            this.storage.set('n_day', this.n_day);
+            this.noOfDays = noOfDays;
+            if (this.campaign_ended) this.noOfDays = 0;
+            this.firebaseStorage.set('noOfDays', this.noOfDays);
+            
         }
         else if(this.tot_budget) {
-            this.n_day = Number(n_day.toFixed(0));
-            this.storage.set('n_day', this.n_day);
-            this.day_budget = Number((this.budgetTmp / n_day).toFixed(2));
+            this.noOfDays = Number(noOfDays.toFixed(0));
+            this.firebaseStorage.set('noOfDays', this.noOfDays);
+            this.day_budget = Number((this.budgetTmp / noOfDays).toFixed(2));
         }
         else{
-            this.n_day = 0;
+            this.noOfDays = 0;
         }
 
         // Exclude day_expenses from day_budget calculation
@@ -272,7 +311,7 @@ export class HomePage {
 
         this.events.publish('expenses:total_expenses',this.tot_expenses);
 
-        this.storage.set('day_budget', this.day_budget);
+        this.firebaseStorage.set('day_budget', this.day_budget);
         
         this.tot_remaining = this.tot_budget - this.tot_expenses;
         this.tot_remaining = Number(this.tot_remaining.toFixed(2));
@@ -320,7 +359,7 @@ export class HomePage {
     decodeDuration(v){
         this.duration = v.split(" ~ ");
         this.tripStart = this.duration[0];
-        this.tripEnd = this.duration[1];   
+        this.tripEnd = this.duration[1];
     }
 
     quickAdd(claim){
@@ -361,7 +400,7 @@ export class HomePage {
             'value': value,
             'message': message,
             'claim': 0,
-            'firsttime': false,
+            'firsttime': true,
             'from':'home'
         }
 
@@ -370,7 +409,8 @@ export class HomePage {
 
     getReservedAmount(expensesList){
         if(!expensesList){
-            this.storage.get('expensesList').then((v) => {
+            this.firebaseStorage.get('expensesList', (err, snap) => {
+                let v = snap.val();
                 this.processReserved(v);
                 this.expensesList = v;
             });
@@ -453,7 +493,7 @@ export class HomePage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         let x = new Date();
-        let today = this.dateLib.toString(x).replace('T',' ');
+        let today = this.dateLib.dateToString(x).replace('T',' ');
 
         // Add new expenses
         let newExpenses = {
@@ -479,7 +519,7 @@ export class HomePage {
 
         this.events.publish('reload:home', 'expensesList', this.expensesList);
         this.events.publish('change_segment', newExpenses.freq);
-        this.storage.set('expensesList', this.expensesList);
+        this.firebaseStorage.set('expensesList', this.expensesList);
         this.events.publish('reload:expenses', this.expensesList);
     }
 

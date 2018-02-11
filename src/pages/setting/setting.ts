@@ -7,6 +7,7 @@ import { Events } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { DateService } from '../../service/date';
+import { FirebaseService } from '../../service/firebasedb';
 
 @Component({
     selector: 'page-setting',
@@ -27,11 +28,11 @@ export class SettingPage {
     maxDate;
     promoPaid: number;
 
-    constructor(public socialSharing: SocialSharing, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+    constructor(public socialSharing: SocialSharing, public firebaseStorage: FirebaseService, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');
 
         // Force reset
-        // this.storage.set('promoPaid', 0);
+        // this.firebaseStorage.set('promoPaid', 0);
 
         this.promoPaid = 0;
 
@@ -39,24 +40,28 @@ export class SettingPage {
         this.currency = '$';
 
         this.maxDate = this.dateLib.addDay(new Date(), 180);
-        this.maxDate = this.dateLib.toString(this.maxDate);
+        this.maxDate = this.dateLib.dateToString(this.maxDate);
 
         // If no budget passed in, check if database has the value.
         if (this.budget == 0){
-            this.storage.get('budget').then((v) => {
+            this.firebaseStorage.get('budget', (err, snap) => {
+                let v = snap.val();
                 if(v) this.budget = v;
             });
         }
 
-        this.storage.get('promoPaid').then((v) => {
+        this.firebaseStorage.get('promoPaid', (err, snap) => {
+            let v = snap.val();
             if (v) this.promoPaid = v;
         });
 
-        this.storage.get('currency').then((v) => {
+        this.firebaseStorage.get('currency', (err, snap) => {
+            let v = snap.val();
             if(v) this.currency = v;
         });
 
-        this.storage.get('duration').then((v) => {
+        this.firebaseStorage.get('duration', (err, snap) => {
+            let v = snap.val();
 
             if (v){
                 this.duration = v.split(" ~ ");
@@ -64,22 +69,26 @@ export class SettingPage {
                 this.tripEnd = this.duration[1];
             }
             else{
-                this.tripStart = this.dateLib.toString(new Date());
+                this.tripStart = this.dateLib.dateToString(new Date());
                 this.tripEnd = this.dateLib.addDay(new Date(), 6);
-                this.tripEnd = this.dateLib.toString(this.tripEnd);
+                this.tripEnd = this.dateLib.dateToString(this.tripEnd);
             }
         });
 
-        this.storage.get('saveimageFlag').then((v) => {
+        this.firebaseStorage.get('saveimageFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.saveimageFlag = v;
         });    
-        this.storage.get('editFlag').then((v) => {
+        this.firebaseStorage.get('editFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.editFlag = v;
         }); 
-        this.storage.get('newphotoFlag').then((v) => {
+        this.firebaseStorage.get('newphotoFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.newphotoFlag = v;
         });       
-        this.storage.get('enablePhotoFlag').then((v) => {
+        this.firebaseStorage.get('enablePhotoFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.enablePhotoFlag = v;
         });  
     }
@@ -93,20 +102,20 @@ export class SettingPage {
     }
     
     resetStorage(){
-        //this.storage.clear();
+        //this.firebaseStorage.clear();
         this.clearAll()
         this.dismiss()
     }
 
     clearAll(){
-        this.storage.set('budget', 0);
-        this.storage.set('currency', '$');
-        this.storage.set('duration', '');
-        this.storage.set('saveimageFlag', false);
-        this.storage.set('editFlag', false);
-        this.storage.set('newphotoFlag', false);
-        this.storage.set('enablePhotoFlag', false);
-        this.storage.set('expensesList', []);
+        this.firebaseStorage.set('budget', 0);
+        this.firebaseStorage.set('currency', '$');
+        this.firebaseStorage.set('duration', '');
+        this.firebaseStorage.set('saveimageFlag', false);
+        this.firebaseStorage.set('editFlag', false);
+        this.firebaseStorage.set('newphotoFlag', false);
+        this.firebaseStorage.set('enablePhotoFlag', false);
+        this.firebaseStorage.set('expensesList', []);
 
         this.events.publish('reload:expenses', []);        
         this.events.publish('expenses:total_expenses', 0);
@@ -150,7 +159,7 @@ export class SettingPage {
 
         if (field == "start"){
             this.tripEnd = this.dateLib.addDay(new Date(this.tripStart), 3);
-            this.tripEnd = this.dateLib.toString(this.tripEnd);            
+            this.tripEnd = this.dateLib.dateToString(this.tripEnd);            
         }
         if (field == "end"){
             this.tripStart = this.tripEnd;
@@ -161,7 +170,7 @@ export class SettingPage {
     //     this.socialSharing.shareVia("facebook", "Baajet App - Track your travelling budget free and easy! #baajet #travelling", "", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
     //         setTimeout(function () {
     //             alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");
-    //             this.storage.set('promoPaid', 1);
+    //             this.firebaseStorage.set('promoPaid', 1);
     //         }, 3000);
     //     }).catch(() => {
     //         console.error("shareViaTwitter: failed");
@@ -170,7 +179,7 @@ export class SettingPage {
 
     twitterShare() {
         this.socialSharing.shareViaTwitter("Baajet App - Track your travelling budget free and easy! #baajet #travelling", "https://i.imgur.com/twGB1DD.jpg", "https://baajetapp.com").then(() => {
-            this.storage.set('promoPaid', 1);
+            this.firebaseStorage.set('promoPaid', 1);
             setTimeout(function () { 
                 alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");                                
              }, 3000);
@@ -183,7 +192,7 @@ export class SettingPage {
     //     this.instagram.share('https://i.imgur.com/twGB1DD.jpg', 'Baajet App - Track your travelling budget free and easy! https://baajetapp.com #baajet #travelling')
     //         .then(() => setTimeout(function () {
     //             alert("Thank you for helping us grow. Enjoy ad-free experience in your following session!");
-    //             this.storage.set('promoPaid', 1);
+    //             this.firebaseStorage.set('promoPaid', 1);
     //         }, 3000))
     //         .catch((error: any) => alert(error));
     // }    
@@ -199,13 +208,13 @@ export class SettingPage {
             alert('Why is the start date bigger than end date? :(');
         }
         else{
-            this.storage.set('budget', budget);
-            this.storage.set('currency', this.currency);
-            this.storage.set('duration', duration);
-            this.storage.set('saveimageFlag', this.saveimageFlag);
-            this.storage.set('editFlag', this.editFlag);
-            this.storage.set('newphotoFlag', this.newphotoFlag);
-            this.storage.set('enablePhotoFlag', this.enablePhotoFlag);
+            this.firebaseStorage.set('budget', budget);
+            this.firebaseStorage.set('currency', this.currency);
+            this.firebaseStorage.set('duration', duration);
+            this.firebaseStorage.set('saveimageFlag', this.saveimageFlag);
+            this.firebaseStorage.set('editFlag', this.editFlag);
+            this.firebaseStorage.set('newphotoFlag', this.newphotoFlag);
+            this.firebaseStorage.set('enablePhotoFlag', this.enablePhotoFlag);
 
             this.events.publish('reload:home', 'tot_budget', budget);
             this.events.publish('reload:home', 'duration', duration);

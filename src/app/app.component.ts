@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AdMobService } from '../service/admob';
+import { FirebaseService } from '../service/firebasedb';
 
 @Component({
     templateUrl: 'app.html'
@@ -14,12 +15,13 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(private toastCtrl: ToastController, app: App, public ionicApp: IonicApp, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(private toastCtrl: ToastController, public firebaseStorage: FirebaseService, app: App, public ionicApp: IonicApp, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();
             
-            this.storage.get('promoPaid').then((status) => {
+            this.firebaseStorage.get('promoPaid', (err, snap) => {
+                let status = snap.val();
                 if (!status)
                     admobLib.runAds();
             });
@@ -50,7 +52,7 @@ export class MyApp {
                 
             });
             
-            splashScreen.hide();
+            // splashScreen.hide();
         });
 
         events.subscribe('history:dates', (v) => {
@@ -76,7 +78,8 @@ export class MyApp {
 
     preloadData(){
         // preload data to solve expensesPage first time loading problem.
-        this.storage.get('expensesList').then((expensesList) => {
+        this.firebaseStorage.get('expensesList', (err, snap) => {
+            let expensesList = snap.val();
             if(expensesList) this.expensesList = expensesList;
         });
     }

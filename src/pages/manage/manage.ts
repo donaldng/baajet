@@ -8,6 +8,7 @@ import { ImageViewerController } from 'ionic-img-viewer';
 import { ImageService } from '../../service/image';
 import { AdMobService } from '../../service/admob';
 import { DateService } from '../../service/date';
+import { FirebaseService } from '../../service/firebasedb';
 
 @Component({
     selector: 'page-manage',
@@ -43,7 +44,7 @@ export class ManagePage {
     segment: number;
     oriAmt: number;
 
-    constructor(public dateLib: DateService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = false;
         this.submitted = false;
@@ -59,21 +60,6 @@ export class ManagePage {
         this.tmpImage = 0;
 
         this.set_todays_b();
-
-        this.storage.get('duration').then((v) => {
-            if (v){
-                let duration = v.split(" ~ ");
-                this.tripStart = duration[0];
-                this.tripEnd = duration[1];
-            }
-            else{
-                this.tripStart = this.dateLib.toString(new Date());
-                let tripEnd = this.dateLib.addDay(new Date(), 6);
-                this.tripEnd = this.dateLib.toString(tripEnd);
-            }
-            this.expenses.freq_start = this.tripStart;
-            this.expenses.freq_end = this.tripEnd;            
-        });
 
         if (this.selected_id == -1) { // New expenses
             this.expenses = {name: 'General', amount: '', freq: this.segment, freq_amt: "1" };
@@ -106,15 +92,38 @@ export class ManagePage {
 
         }      
 
-        this.storage.get('saveimageFlag').then((v) => {
+        this.firebaseStorage.get('duration', (err, snap) => {
+            let v = snap.val();
+
+            if (v) {
+                let duration = v.split(" ~ ");
+                this.tripStart = duration[0];
+                this.tripEnd = duration[1];
+
+            }
+            else {
+                let now = new Date();
+                this.tripStart = this.dateLib.dateToString(now);
+                let tripEnd = this.dateLib.addDay(now, 6);
+                this.tripEnd = this.dateLib.dateToString(tripEnd);
+            }
+
+            this.expenses.freq_start = this.tripStart;
+            this.expenses.freq_end = this.tripEnd;
+        });
+
+        this.firebaseStorage.get('saveimageFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.saveimageFlag = v;
         });    
 
-        this.storage.get('editFlag').then((v) => {
+        this.firebaseStorage.get('editFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.editFlag = v;
         });          
 
-        this.storage.get('enablePhotoFlag').then((v) => {
+        this.firebaseStorage.get('enablePhotoFlag', (err, snap) => {
+            let v = snap.val();
             if(v) this.enablePhotoFlag = v;
             this.generateImageList(this.expenses.name);
             this.getSelectedTN();
@@ -206,7 +215,7 @@ export class ManagePage {
 
     set_todays_b(){
         let todays_b = this.dateLib.addDay(new Date(), 1);
-        this.todays_b = this.dateLib.toString(todays_b);
+        this.todays_b = this.dateLib.dateToString(todays_b);
     }
     
     submitForm() {
@@ -214,13 +223,13 @@ export class ManagePage {
 
         if (this.expenses.name.trim() != "") name = this.expenses.name.trim();
 
-        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = this.dateLib.toString(new Date()).replace('T',' ');
-        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = this.dateLib.toString(new Date()).replace('T',' ');
+        if (this.expenses.freq_start.trim() == "") this.expenses.freq_start = this.dateLib.dateToString(new Date()).replace('T',' ');
+        if (this.expenses.freq_end.trim() == "") this.expenses.freq_end = this.dateLib.dateToString(new Date()).replace('T',' ');
         
         if (this.expenses.freq == 0){
             if(this.expenses.todays){
-                this.expenses.freq_start = this.dateLib.toString(new Date()).replace('T',' ');
-                this.expenses.freq_end = this.dateLib.toString(new Date()).replace('T',' ');
+                this.expenses.freq_start = this.dateLib.dateToString(new Date()).replace('T',' ');
+                this.expenses.freq_end = this.dateLib.dateToString(new Date()).replace('T',' ');
             }
             else{
                 this.expenses.freq_start = this.todays_b.replace('T',' ');
@@ -240,6 +249,10 @@ export class ManagePage {
         // Hence, treating it as a new day expenses.
         if(this.expenses.fromReserved && this.oriAmt != this.expenses.amount){
             this.expenses.fromReserved = 0;
+        }
+
+        if (!this.expenses.freq_amt || typeof this.expenses.freq_amt == 'undefined') {
+            this.expenses.freq_amt = 0;
         }
 
         let changes = {
@@ -263,7 +276,7 @@ export class ManagePage {
         else{
             if (this.selected_id == -1){
                 changes['id'] = Math.round((new Date()).getTime() / 1000);
-                changes['datetime'] = this.dateLib.toString(new Date()).replace('T',' ');
+                changes['datetime'] = this.dateLib.dateToString(new Date()).replace('T',' ');
                 if (this.expensesList)
                     this.expensesList.push(changes);
                 else
@@ -276,7 +289,8 @@ export class ManagePage {
                 this.expensesList[index] = changes;
             }
 
-            this.storage.set('expensesList', this.expensesList);
+            console.log("save", this.expensesList);
+            this.firebaseStorage.set('expensesList', this.expensesList);
             this.events.publish('reload:expenses', this.expensesList);
 
             this.submitted = true;
@@ -287,7 +301,7 @@ export class ManagePage {
     deleteRecord(expenses){
         let index = this.expensesList.indexOf(expenses);
         this.expensesList.splice(index,1);
-        this.storage.set('expensesList', this.expensesList);
+        this.firebaseStorage.set('expensesList', this.expensesList);
         this.events.publish('reload:home','expensesList',this.expensesList);
         this.submitted = true;
         this.dismiss();

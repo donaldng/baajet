@@ -25,6 +25,7 @@ import { Instagram } from '@ionic-native/instagram';
 import { ImageService } from '../service/image';
 import { AdMobService } from '../service/admob';
 import { DateService } from '../service/date';
+import { FirebaseService } from '../service/firebasedb';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { DateService } from '../service/date';
     ImageService,
     AdMobService,
     DateService,
+    FirebaseService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

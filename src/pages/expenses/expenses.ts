@@ -5,6 +5,7 @@ import { ImageService } from '../../service/image';
 import { SettingPage } from '../setting/setting';
 import { DateService } from '../../service/date';
 import { NumberPage } from '../number/number';
+import { FirebaseService } from '../../service/firebasedb';
 
 @Component({
     selector: 'page-expenses',
@@ -29,13 +30,14 @@ export class ExpensesPage {
     imageList: any[];
     tot_expenses: number = 0;
 
-    constructor(public dateLib: DateService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
         this.init_price = 0;
 
         this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";
         
         // to show quick add button
-        this.storage.get('budget').then((v) => {
+        this.firebaseStorage.get('budget', (err, snap) => {
+            let v = snap.val();
             if (v && this.tot_budget != v) {
                 this.tot_budget = v;
             }
@@ -45,7 +47,8 @@ export class ExpensesPage {
             if (k == "tot_budget") this.tot_budget = v;
         });
 
-        this.storage.get('currency').then((v) => {
+        this.firebaseStorage.get('currency', (err, snap) => {
+            let v = snap.val();
             if(v) this.display_currency = v;
         });
 
@@ -125,7 +128,7 @@ export class ExpensesPage {
             // this.events.publish('filter:dates', available_dates); 
         }
         else{
-            this.storage.set('expensesList', []);
+            this.firebaseStorage.set('expensesList', []);
             this.expensesList = [];
         }
 
@@ -242,7 +245,8 @@ export class ExpensesPage {
 
     doRefresh(refresher) {
         setTimeout(() => {
-            this.storage.get('expensesList').then((expensesList) => {
+            this.firebaseStorage.get('expensesList', (err, snap) => {
+                let expensesList = snap.val();
                 if(expensesList) this.processExpensesList(expensesList);
                 refresher.complete();
             });
@@ -305,7 +309,7 @@ export class ExpensesPage {
         if (typeof expenses.thumbnail != 'undefined') thumbnail = expenses.thumbnail;
 
         let x = new Date();
-        let today = this.dateLib.toString(x).replace('T',' ');
+        let today = this.dateLib.dateToString(x).replace('T',' ');
 
 
         // Add new expenses
@@ -332,7 +336,7 @@ export class ExpensesPage {
 
         this.events.publish('reload:home','expensesList',this.expensesList);
         this.events.publish('change_segment', newExpenses.freq);
-        this.storage.set('expensesList', this.expensesList);
+        this.firebaseStorage.set('expensesList', this.expensesList);
         this.events.publish('reload:expenses', this.expensesList);
     }
 
