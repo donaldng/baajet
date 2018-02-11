@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.production';
 
 @Injectable()
 export class FirebaseService {
@@ -23,7 +23,6 @@ export class FirebaseService {
         let userId = 1;
         
         firebase.database().ref('/userdata/' + userId +  "/" + keyName).on("value", (snapshot) => {
-            // console.log("get " + '/userdata/' + userId, keyName, snapshot);
             callback(null, snapshot);
         }, function (error) {
             callback(error);
@@ -36,9 +35,6 @@ export class FirebaseService {
 
             var data = {};
             data['/userdata/' + userId + '/' + keyName] = value;
-            
-            // console.log("set", keyName, value);
-
             firebase.database().ref().update(data);
             
         }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { ModalController, Platform, NavController, Events } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -44,7 +43,7 @@ export class HomePage {
     baaThumbnail: string;
     seemore_ok: number;
 
-    constructor(public splashScreen: SplashScreen, public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public storage: Storage, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
+    constructor(public splashScreen: SplashScreen, public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public modalCtrl: ModalController, public events: Events,  public platform: Platform) {
             
         this.expensesList = [];
         this.timezone = new Date().getTimezoneOffset() / 60;

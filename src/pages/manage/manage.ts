@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, ActionSheetController, MenuController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { NavController, Platform, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Events } from 'ionic-angular';
@@ -44,7 +43,7 @@ export class ManagePage {
     segment: number;
     oriAmt: number;
 
-    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
+    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public menuCtrl: MenuController, public admobLib: AdMobService, public imgLib: ImageService, imageViewerCtrl: ImageViewerController, public actionSheetCtrl: ActionSheetController, public params: NavParams, public viewCtrl: ViewController, public navCtrl: NavController, private camera: Camera, public events: Events, public toastCtrl: ToastController, public platform: Platform) {
         this._imageViewerCtrl = imageViewerCtrl;
         this.enablePhotoFlag = false;
         this.submitted = false;

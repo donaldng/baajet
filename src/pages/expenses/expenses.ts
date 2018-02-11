@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActionSheetController, NavController, ModalController, Events } from 'ionic-angular'
-import { Storage } from '@ionic/storage';
 import { ImageService } from '../../service/image';
 import { SettingPage } from '../setting/setting';
 import { DateService } from '../../service/date';
@@ -30,7 +29,7 @@ export class ExpensesPage {
     imageList: any[];
     tot_expenses: number = 0;
 
-    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public storage: Storage, public events: Events) {
+    constructor(public dateLib: DateService, public firebaseStorage: FirebaseService, public imgLib: ImageService, public navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public modalCtrl: ModalController, public events: Events) {
         this.init_price = 0;
 
         this.baaThumbnail = "assets/imgs/thumbnail-" + this.getRandomInt(1,8) + ".png";

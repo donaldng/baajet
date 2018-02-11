@@ -6,7 +6,6 @@ import { ManagePage } from '../manage/manage';
 
 import { Events } from 'ionic-angular';
 import { ModalController, NavController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../service/firebasedb';
 
 @Component({
@@ -23,7 +22,7 @@ export class TabsPage {
     init_price: number = 0;
     segment: number;
 
-    constructor(public events: Events, public firebaseStorage: FirebaseService, public modalCtrl: ModalController, public navCtrl: NavController, public storage: Storage) {
+    constructor(public events: Events, public firebaseStorage: FirebaseService, public modalCtrl: ModalController, public navCtrl: NavController) {
         this.firebaseStorage.get('budget', (err, snap) => {
             let v = snap.val();
             if (v && this.tot_budget != v){

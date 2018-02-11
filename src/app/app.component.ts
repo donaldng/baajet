@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Platform, Events, App, ToastController, IonicApp } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Storage } from '@ionic/storage';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AdMobService } from '../service/admob';
 import { FirebaseService } from '../service/firebasedb';
@@ -15,7 +14,7 @@ export class MyApp {
     dates;
     expensesList;
 
-    constructor(private toastCtrl: ToastController, public firebaseStorage: FirebaseService, app: App, public ionicApp: IonicApp, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public events: Events) {
+    constructor(private toastCtrl: ToastController, public firebaseStorage: FirebaseService, app: App, public ionicApp: IonicApp, admobLib: AdMobService, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public events: Events) {
 
         platform.ready().then(() => {
             // statusBar.styleDefault();

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
@@ -28,7 +27,7 @@ export class SettingPage {
     maxDate;
     promoPaid: number;
 
-    constructor(public socialSharing: SocialSharing, public firebaseStorage: FirebaseService, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public storage: Storage, public navCtrl: NavController, private alertCtrl: AlertController) {
+    constructor(public socialSharing: SocialSharing, public firebaseStorage: FirebaseService, public dateLib: DateService, public events: Events, public params: NavParams, public viewCtrl: ViewController, public navCtrl: NavController, private alertCtrl: AlertController) {
         this.budget = this.params.get('init_budget');
 
         // Force reset
